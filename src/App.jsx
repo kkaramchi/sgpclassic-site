@@ -831,21 +831,59 @@ function SectionTitle({ icon: Icon, children }) {
   );
 }
 
-function Table({ columns, data, onRowClick }) {
+function Table({ columns, data, onRowClick, defaultSort, sortable }) {
+  const [sortCol, setSortCol] = useState(defaultSort?.col ?? null);
+  const [sortDir, setSortDir] = useState(defaultSort?.dir ?? "desc");
+
+  const handleSort = (colIndex) => {
+    if (!sortable) return;
+    const col = columns[colIndex];
+    if (!col.sortKey && !col.key && !col.sortValue) return;
+    if (sortCol === colIndex) {
+      setSortDir(sortDir === "asc" ? "desc" : "asc");
+    } else {
+      setSortCol(colIndex);
+      setSortDir("desc");
+    }
+  };
+
+  const sortedData = useMemo(() => {
+    if (sortCol == null || !sortable) return data;
+    const col = columns[sortCol];
+    const getValue = (row) => {
+      if (col.sortValue) return col.sortValue(row);
+      if (col.key) return row[col.key];
+      return null;
+    };
+    return [...data].sort((a, b) => {
+      let va = getValue(a), vb = getValue(b);
+      if (va == null) return 1;
+      if (vb == null) return -1;
+      if (typeof va === "string") { va = va.toLowerCase(); vb = (vb || "").toLowerCase(); }
+      if (va < vb) return sortDir === "asc" ? -1 : 1;
+      if (va > vb) return sortDir === "asc" ? 1 : -1;
+      return 0;
+    });
+  }, [data, sortCol, sortDir, sortable, columns]);
+
   return (
     <div style={{ overflowX: "auto", borderRadius: "8px", border: `1px solid ${colors.border}` }}>
       <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
         <thead>
           <tr style={{ background: colors.greenDark }}>
-            {columns.map((col, i) => (
-              <th key={i} style={{ padding: "10px 14px", textAlign: col.align || "left", color: "white", fontWeight: 600, whiteSpace: "nowrap", fontSize: "13px" }}>
-                {col.header}
-              </th>
-            ))}
+            {columns.map((col, i) => {
+              const isSortable = sortable && (col.sortKey || col.key || col.sortValue);
+              const isActive = sortCol === i;
+              return (
+                <th key={i} onClick={() => isSortable && handleSort(i)} style={{ padding: "10px 14px", textAlign: col.align || "left", color: "white", fontWeight: 600, whiteSpace: "nowrap", fontSize: "13px", cursor: isSortable ? "pointer" : "default", userSelect: "none" }}>
+                  {col.header}{isActive ? (sortDir === "asc" ? " ▲" : " ▼") : isSortable ? " ⇅" : ""}
+                </th>
+              );
+            })}
           </tr>
         </thead>
         <tbody>
-          {data.map((row, ri) => (
+          {sortedData.map((row, ri) => (
             <tr
               key={ri}
               onClick={onRowClick ? () => onRowClick(row) : undefined}
@@ -1155,17 +1193,17 @@ function TournamentDetailPage({ year, defaultTab, setPage }) {
                 Round 1 &middot; {t.round1Format} &middot; {t.round1Course} Course &middot; Individual Scores
               </div>
               <Table
+                sortable
+                defaultSort={{ col: 5, dir: "asc" }}
                 columns={[
                   { header: "#", align: "center", render: (_, i) => i + 1 },
-                  { header: "Player", key: "name", bold: true, render: (r) => r.name === t.lowGross.player ? <span>{r.name} <span style={{ color: colors.gold }}>&#9733;</span></span> : r.name },
+                  { header: "Player", bold: true, render: (r) => r.name === t.lowGross.player ? <span>{r.name} <span style={{ color: colors.gold }}>&#9733;</span></span> : r.name, sortValue: (r) => r.name },
                   { header: "Hdcp", key: "hdcp", align: "center" },
                   { header: "Front", key: "front", align: "center" },
                   { header: "Back", key: "back", align: "center" },
                   { header: "Gross", key: "gross", align: "center", bold: true },
                   { header: "Net", key: "net", align: "center" },
-                  { header: "To Par", align: "center", render: (r) => formatScore(r.toPar), bold: true, color: (r) => r.toPar <= 0 ? "#dc2626" : colors.text },
-                  { header: "Birdies", key: "birdies", align: "center" },
-                  { header: "Eagles", key: "eagles", align: "center" },
+                  { header: "To Par", align: "center", render: (r) => formatScore(r.toPar), bold: true, color: (r) => r.toPar <= 0 ? "#dc2626" : colors.text, sortValue: (r) => r.toPar },
                 ]}
                 data={t.individualScores}
                 onRowClick={(r) => setPage({ id: "player-detail", name: r.name })}
@@ -1365,12 +1403,13 @@ function ParimutuelYearView({ t }) {
 
       <SectionTitle icon={DollarSign}>Full Betting Results</SectionTitle>
       <Table
+        sortable
         columns={[
-          { header: "Bettor", key: "fullName", bold: true, render: (r) => r.bettor },
-          { header: "Total Wagered", align: "right", render: (r) => `$${r.wagered}` },
-          { header: "On Winner", align: "right", render: (r) => r.onWinner > 0 ? `$${r.onWinner}` : "—" },
-          { header: "Payout", align: "right", render: (r) => r.payout > 0 ? `$${r.payout}` : "—" },
-          { header: "Net P/L", align: "right", render: (r) => formatMoney(r.net), bold: true, color: (r) => r.net >= 0 ? "#16a34a" : "#dc2626" },
+          { header: "Bettor", bold: true, render: (r) => r.bettor, sortValue: (r) => r.bettor },
+          { header: "Total Wagered", align: "right", render: (r) => `$${r.wagered}`, sortValue: (r) => r.wagered },
+          { header: "On Winner", align: "right", render: (r) => r.onWinner > 0 ? `$${r.onWinner}` : "—", sortValue: (r) => r.onWinner || 0 },
+          { header: "Payout", align: "right", render: (r) => r.payout > 0 ? `$${r.payout}` : "—", sortValue: (r) => r.payout || 0 },
+          { header: "Net P/L", align: "right", render: (r) => formatMoney(r.net), bold: true, color: (r) => r.net >= 0 ? "#16a34a" : "#dc2626", sortValue: (r) => r.net },
         ]}
         data={t.parimutuel.results}
       />
@@ -1381,16 +1420,28 @@ function ParimutuelYearView({ t }) {
 function PlayersPage({ setPage }) {
   const allPlayers = useMemo(() => {
     const players = {};
-    // First pass: register all players from team rosters
+    // First pass: register all players from team rosters and calculate earnings
     Object.values(TOURNAMENTS).forEach((t) => {
       t.teams.forEach((team) => {
         [team.p1, team.p2].forEach((pName) => {
           if (!players[pName]) {
-            players[pName] = { name: pName, years: 0, bestGross: Infinity, totalBirdies: 0, avgGross: 0, grossScores: [], appearances: [], championCount: 0 };
+            players[pName] = { name: pName, years: 0, bestGross: Infinity, totalBirdies: 0, avgGross: 0, grossScores: [], appearances: [], championCount: 0, podiums: 0, lifetimeEarnings: 0, lifetimePariNet: 0 };
           }
           players[pName].years++;
           const isChampion = team.num === t.leaderboard[0].teamNum;
           if (isChampion) players[pName].championCount++;
+          // Prize pool earnings (split between partners) and podium count
+          const teamResult = t.leaderboard.find((l) => l.teamNum === team.num);
+          if (teamResult) {
+            const posNum = typeof teamResult.pos === "string" ? parseInt(teamResult.pos.replace(/\D/g, "")) : teamResult.pos;
+            if (posNum >= 1 && posNum <= 3) players[pName].podiums++;
+            if (teamResult.prize) players[pName].lifetimeEarnings += teamResult.prize / 2;
+          }
+          // Parimutuel net
+          if (t.parimutuel) {
+            const pariResult = t.parimutuel.results.find((r) => r.bettor === pName);
+            if (pariResult) players[pName].lifetimePariNet += pariResult.net;
+          }
         });
       });
     });
@@ -1411,25 +1462,24 @@ function PlayersPage({ setPage }) {
       if (p.bestGross === Infinity) p.bestGross = null;
       if (p.grossScores.length === 0) p.avgGross = null;
     });
-    return Object.values(players).sort((a, b) => {
-      if (a.avgGross == null && b.avgGross == null) return b.years - a.years;
-      if (a.avgGross == null) return 1;
-      if (b.avgGross == null) return -1;
-      return a.avgGross - b.avgGross;
-    });
+    return Object.values(players).sort((a, b) => b.years - a.years);
   }, []);
 
   return (
     <div>
       <SectionTitle icon={Users}>Player Roster</SectionTitle>
-      <p style={{ color: colors.textMuted, marginBottom: "24px", fontSize: "15px" }}>Click on any player to see their full profile and career stats.</p>
+      <p style={{ color: colors.textMuted, marginBottom: "24px", fontSize: "15px" }}>Click on any player to see their full profile and career stats. Click column headers to sort.</p>
       <Table
+        sortable
+        defaultSort={{ col: 1, dir: "desc" }}
         columns={[
-          { header: "Player", bold: true, render: (r) => <span>{r.name}<ChampionIcon count={r.championCount} /></span> },
+          { header: "Player", bold: true, render: (r) => <span>{r.name}<ChampionIcon count={r.championCount} /></span>, sortValue: (r) => r.name },
           { header: "Years", key: "years", align: "center" },
-          { header: "Avg Gross", align: "center", render: (r) => r.avgGross != null ? r.avgGross : "—" },
-          { header: "Best Gross", align: "center", render: (r) => r.bestGross != null ? r.bestGross : "—", color: () => colors.green },
-          { header: "Total Birdies", align: "center", render: (r) => r.totalBirdies > 0 ? r.totalBirdies : "—" },
+          { header: "Podiums", key: "podiums", align: "center", render: (r) => r.podiums > 0 ? r.podiums : "—", sortValue: (r) => r.podiums > 0 ? r.podiums : null },
+          { header: "Avg Gross", align: "center", render: (r) => r.avgGross != null ? r.avgGross : "—", sortValue: (r) => r.avgGross },
+          { header: "Best Gross", align: "center", render: (r) => r.bestGross != null ? r.bestGross : "—", sortValue: (r) => r.bestGross, color: () => colors.green },
+          { header: "Prize $", align: "center", render: (r) => r.lifetimeEarnings > 0 ? `$${Math.round(r.lifetimeEarnings).toLocaleString()}` : "—", sortValue: (r) => r.lifetimeEarnings },
+          { header: "Pari Net", align: "center", render: (r) => r.lifetimePariNet !== 0 ? `${r.lifetimePariNet >= 0 ? "+" : ""}$${Math.round(r.lifetimePariNet).toLocaleString()}` : "—", sortValue: (r) => r.lifetimePariNet !== 0 ? r.lifetimePariNet : null, color: (r) => r.lifetimePariNet > 0 ? "#16a34a" : r.lifetimePariNet < 0 ? "#dc2626" : colors.text },
         ]}
         data={allPlayers}
         onRowClick={(r) => setPage({ id: "player-detail", name: r.name })}
@@ -1560,7 +1610,9 @@ function ParimutuelPage({ setPage }) {
         bettors[r.bettor].years++;
       });
     });
-    return Object.values(bettors).sort((a, b) => b.totalNet - a.totalNet);
+    const result = Object.values(bettors);
+    result.forEach((b) => { b.avgWagered = b.years > 0 ? b.totalWagered / b.years : 0; });
+    return result.sort((a, b) => b.totalNet - a.totalNet);
   }, []);
 
   const chartData = allTimeData.map((b) => ({
@@ -1633,13 +1685,16 @@ function ParimutuelPage({ setPage }) {
 
       <SectionTitle icon={TrendingUp}>All-Time Standings</SectionTitle>
       <Table
+        sortable
+        defaultSort={{ col: 5, dir: "desc" }}
         columns={[
-          { header: "Rank", align: "center", render: (_, i) => i + 1 },
-          { header: "Bettor", bold: true, render: (r) => r.name },
+          { header: "#", align: "center", render: (_, i) => i + 1 },
+          { header: "Bettor", bold: true, render: (r) => r.name, sortValue: (r) => r.name },
           { header: "Years", key: "years", align: "center" },
-          { header: "Total Wagered", align: "right", render: (r) => `$${r.totalWagered.toLocaleString()}` },
-          { header: "Total Payout", align: "right", render: (r) => `$${r.totalPayout.toLocaleString()}` },
-          { header: "Net P/L", align: "right", render: (r) => formatMoney(r.totalNet), bold: true, color: (r) => r.totalNet >= 0 ? "#16a34a" : "#dc2626" },
+          { header: "Total Wagered", align: "right", render: (r) => `$${r.totalWagered.toLocaleString()}`, sortValue: (r) => r.totalWagered },
+          { header: "Avg Wagered", align: "right", render: (r) => `$${Math.round(r.avgWagered).toLocaleString()}`, sortValue: (r) => r.avgWagered },
+          { header: "Total Payout", align: "right", render: (r) => `$${r.totalPayout.toLocaleString()}`, sortValue: (r) => r.totalPayout },
+          { header: "Net P/L", align: "right", render: (r) => formatMoney(r.totalNet), bold: true, color: (r) => r.totalNet >= 0 ? "#16a34a" : "#dc2626", sortValue: (r) => r.totalNet },
         ]}
         data={allTimeData}
       />
