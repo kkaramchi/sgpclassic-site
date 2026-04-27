@@ -967,7 +967,7 @@ function Nav({ active, setPage }) {
       <>
         <nav style={{ background: colors.greenDark, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "56px", position: "relative", zIndex: 100 }}>
           <div style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }} onClick={() => handleNav("home")}>
-            
+            <img src={process.env.PUBLIC_URL + "/SGP logo(letters).png"} alt="SGP Classic" style={{ height: "28px", objectFit: "contain" }} />
             <span style={{ color: "white", fontSize: "16px", fontFamily: "'Oswald', sans-serif", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>SGP CLASSIC</span>
           </div>
           <button onClick={() => setMenuOpen(!menuOpen)} style={{ background: "none", border: "none", cursor: "pointer", padding: "8px", display: "flex", flexDirection: "column", gap: "4px" }}>
@@ -1018,7 +1018,7 @@ function Nav({ active, setPage }) {
   return (
     <nav style={{ background: colors.greenDark, padding: "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "56px", position: "relative", zIndex: 100, overflow: "visible" }}>
       <div style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer" }} onClick={() => handleNav("home")}>
-        
+        <img src={process.env.PUBLIC_URL + "/SGP logo(letters).png"} alt="SGP Classic" style={{ height: "36px", objectFit: "contain" }} />
         <span style={{ color: "white", fontSize: "20px", fontFamily: "'Oswald', sans-serif", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>SGP CLASSIC</span>
       </div>
       <div style={{ display: "flex", gap: "2px", alignItems: "center" }}>
@@ -1094,7 +1094,7 @@ function HomePage({ setPage }) {
         <div style={{ position: "absolute", top: "-40px", right: "-20px", opacity: 0.08, fontSize: "200px", fontWeight: 900 }}>9</div>
         <div style={{ position: "relative" }}>
           <div style={{ fontSize: mobile ? "12px" : "14px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", opacity: 0.8, marginBottom: "8px", fontFamily: "'Oswald', sans-serif" }}>Year 9</div>
-          
+          <img src={process.env.PUBLIC_URL + "/SGP_classic_1 (2).png"} alt="SGP Classic" style={{ height: mobile ? "50px" : "80px", objectFit: "contain", marginBottom: "8px" }} />
           <h1 style={{ fontSize: mobile ? "28px" : "42px", fontWeight: 700, margin: "0 0 8px 0", letterSpacing: "1px", fontFamily: "'Oswald', sans-serif", textTransform: "uppercase" }}>SGP Classic 2026</h1>
           <p style={{ fontSize: mobile ? "15px" : "18px", opacity: 0.85, margin: "0 0 28px 0" }}>Woodington Lake Golf Club &middot; Tottenham, ON</p>
           <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3, auto)", gap: mobile ? "10px" : "16px" }}>
