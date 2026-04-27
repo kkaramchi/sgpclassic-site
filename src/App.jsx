@@ -923,67 +923,107 @@ function Table({ columns, data, onRowClick, defaultSort, sortable, rowStyle }) {
   );
 }
 
-function NavButton({ id, label, icon: Icon, isActive, mobile, onClick }) {
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        background: isActive ? "rgba(255,255,255,0.15)" : "transparent",
-        border: "none", color: "white",
-        padding: mobile ? "8px 10px" : "8px 18px",
-        borderRadius: "8px", cursor: "pointer",
-        display: "flex", alignItems: "center",
-        gap: mobile ? "4px" : "8px",
-        fontSize: mobile ? "12px" : "14px",
-        fontWeight: isActive ? 600 : 400,
-        transition: "background 0.15s", whiteSpace: "nowrap",
-      }}
-      onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
-      onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.background = "transparent"; }}
-    >
-      {Icon && <Icon size={mobile ? 14 : 16} />}
-      {label}
-    </button>
-  );
-}
-
 function Nav({ active, setPage }) {
   const mobile = useIsMobile();
+  const [menuOpen, setMenuOpen] = useState(false);
   const [rulesOpen, setRulesOpen] = useState(false);
   const isRulesActive = active === "rules" || active === "course-legend" || active === "course-legacy";
 
+  const navItems = [
+    { id: "home", label: "Home", icon: Home },
+    { id: "tournaments", label: "Tournaments", icon: Trophy },
+    { id: "players", label: "Players", icon: Users },
+    { id: "parimutuel", label: "Parimutuel", icon: DollarSign },
+  ];
+
+  const rulesItems = [
+    { id: "rules", label: "Competition Rules", icon: Flag },
+    { id: "course-legend", label: "Legend Course Guide", icon: MapPin },
+    { id: "course-legacy", label: "Legacy Course Guide", icon: MapPin },
+  ];
+
+  const handleNav = (id) => { setPage({ id }); setMenuOpen(false); setRulesOpen(false); };
+
+  // Mobile: hamburger menu
+  if (mobile) {
+    return (
+      <>
+        <nav style={{ background: colors.greenDark, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "56px", position: "relative", zIndex: 100 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }} onClick={() => handleNav("home")}>
+            
+            <span style={{ color: "white", fontSize: "16px", fontFamily: "'Oswald', sans-serif", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>SGP CLASSIC</span>
+          </div>
+          <button onClick={() => setMenuOpen(!menuOpen)} style={{ background: "none", border: "none", cursor: "pointer", padding: "8px", display: "flex", flexDirection: "column", gap: "4px" }}>
+            <span style={{ display: "block", width: "22px", height: "2px", background: "white", borderRadius: "1px", transition: "transform 0.2s", transform: menuOpen ? "rotate(45deg) translate(4px, 4px)" : "none" }} />
+            <span style={{ display: "block", width: "22px", height: "2px", background: "white", borderRadius: "1px", transition: "opacity 0.2s", opacity: menuOpen ? 0 : 1 }} />
+            <span style={{ display: "block", width: "22px", height: "2px", background: "white", borderRadius: "1px", transition: "transform 0.2s", transform: menuOpen ? "rotate(-45deg) translate(4px, -4px)" : "none" }} />
+          </button>
+        </nav>
+        {menuOpen && (
+          <>
+            <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 90, background: "rgba(0,0,0,0.3)" }} onClick={() => { setMenuOpen(false); setRulesOpen(false); }} />
+            <div style={{ position: "fixed", top: "56px", left: 0, right: 0, zIndex: 100, background: colors.greenDark, borderBottom: "2px solid rgba(255,255,255,0.1)", boxShadow: "0 8px 24px rgba(0,0,0,0.2)" }}>
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = active === item.id;
+                return (
+                  <div key={item.id} onClick={() => handleNav(item.id)} style={{ display: "flex", alignItems: "center", gap: "12px", padding: "14px 20px", cursor: "pointer", background: isActive ? "rgba(255,255,255,0.1)" : "transparent", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                    <Icon size={18} color="white" />
+                    <span style={{ color: "white", fontSize: "15px", fontWeight: isActive ? 700 : 400 }}>{item.label}</span>
+                  </div>
+                );
+              })}
+              {/* Rules section */}
+              <div onClick={() => setRulesOpen(!rulesOpen)} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 20px", cursor: "pointer", background: isRulesActive ? "rgba(255,255,255,0.1)" : "transparent", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                  <Flag size={18} color="white" />
+                  <span style={{ color: "white", fontSize: "15px", fontWeight: isRulesActive ? 700 : 400 }}>Rules</span>
+                </div>
+                <span style={{ color: "white", fontSize: "10px", transform: rulesOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}>&#9660;</span>
+              </div>
+              {rulesOpen && rulesItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div key={item.id} onClick={() => handleNav(item.id)} style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px 20px 12px 48px", cursor: "pointer", background: active === item.id ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)", borderBottom: "1px solid rgba(255,255,255,0.03)" }}>
+                    <Icon size={16} color={colors.goldLight} />
+                    <span style={{ color: "white", fontSize: "14px", fontWeight: active === item.id ? 600 : 400 }}>{item.label}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )}
+      </>
+    );
+  }
+
+  // Desktop: horizontal nav with Rules dropdown
   return (
-    <nav style={{ background: colors.greenDark, padding: mobile ? "0 12px" : "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "56px", position: "relative", zIndex: 100, overflow: "visible" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer", flexShrink: 0 }} onClick={() => setPage({ id: "home" })}>
+    <nav style={{ background: colors.greenDark, padding: "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "56px", position: "relative", zIndex: 100, overflow: "visible" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer" }} onClick={() => handleNav("home")}>
         
-        {!mobile && <span style={{ color: "white", fontSize: "20px", fontFamily: "'Oswald', sans-serif", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>SGP CLASSIC</span>}
+        <span style={{ color: "white", fontSize: "20px", fontFamily: "'Oswald', sans-serif", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>SGP CLASSIC</span>
       </div>
       <div style={{ display: "flex", gap: "2px", alignItems: "center" }}>
-        <NavButton id="home" label="Home" icon={Home} isActive={active === "home"} mobile={mobile} onClick={() => setPage({ id: "home" })} />
-        <NavButton id="tournaments" label="Tournaments" icon={Trophy} isActive={active === "tournaments"} mobile={mobile} onClick={() => setPage({ id: "tournaments" })} />
-        <NavButton id="players" label="Players" icon={Users} isActive={active === "players"} mobile={mobile} onClick={() => setPage({ id: "players" })} />
-        <NavButton id="parimutuel" label="Parimutuel" icon={DollarSign} isActive={active === "parimutuel"} mobile={mobile} onClick={() => setPage({ id: "parimutuel" })} />
-        {/* Rules dropdown — click to toggle */}
-        <div style={{ position: "relative" }} ref={(el) => { if (el) el.__rulesRef = el; }}>
-          <button
-            id="rules-dropdown-btn"
-            onClick={() => setRulesOpen(!rulesOpen)}
-            style={{
-              background: isRulesActive ? "rgba(255,255,255,0.15)" : "transparent",
-              border: "none", color: "white",
-              padding: mobile ? "8px 10px" : "8px 18px",
-              borderRadius: "8px", cursor: "pointer",
-              display: "flex", alignItems: "center",
-              gap: mobile ? "4px" : "8px",
-              fontSize: mobile ? "12px" : "14px",
-              fontWeight: isRulesActive ? 600 : 400,
-              transition: "background 0.15s", whiteSpace: "nowrap",
-            }}
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = active === item.id;
+          return (
+            <button key={item.id} onClick={() => handleNav(item.id)} style={{ background: isActive ? "rgba(255,255,255,0.15)" : "transparent", border: "none", color: "white", padding: "8px 18px", borderRadius: "8px", cursor: "pointer", display: "flex", alignItems: "center", gap: "8px", fontSize: "14px", fontWeight: isActive ? 600 : 400, transition: "background 0.15s", whiteSpace: "nowrap" }}
+              onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
+              onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.background = "transparent"; }}
+            >
+              <Icon size={16} />{item.label}
+            </button>
+          );
+        })}
+        {/* Rules dropdown */}
+        <div style={{ position: "relative" }}>
+          <button onClick={() => setRulesOpen(!rulesOpen)} style={{ background: isRulesActive ? "rgba(255,255,255,0.15)" : "transparent", border: "none", color: "white", padding: "8px 18px", borderRadius: "8px", cursor: "pointer", display: "flex", alignItems: "center", gap: "8px", fontSize: "14px", fontWeight: isRulesActive ? 600 : 400, transition: "background 0.15s", whiteSpace: "nowrap" }}
             onMouseEnter={(e) => { if (!isRulesActive) e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
             onMouseLeave={(e) => { if (!isRulesActive) e.currentTarget.style.background = "transparent"; }}
           >
-            <Flag size={mobile ? 14 : 16} />
-            Rules
+            <Flag size={16} />Rules
             <span style={{ fontSize: "10px", marginLeft: "2px", transition: "transform 0.2s", display: "inline-block", transform: rulesOpen ? "rotate(180deg)" : "rotate(0deg)" }}>&#9660;</span>
           </button>
         </div>
@@ -991,31 +1031,13 @@ function Nav({ active, setPage }) {
       {rulesOpen && (
         <>
           <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 150 }} onClick={() => setRulesOpen(false)} />
-          <div style={{
-            position: "fixed", top: "56px", right: mobile ? "12px" : "32px",
-            background: "white", borderRadius: "8px", boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
-            minWidth: "230px", zIndex: 200, border: `1px solid ${colors.border}`,
-          }}>
-            {[
-              { id: "rules", label: "Competition Rules", icon: Flag },
-              { id: "course-legend", label: "Legend Course Guide", icon: MapPin },
-              { id: "course-legacy", label: "Legacy Course Guide", icon: MapPin },
-            ].map((item, i, arr) => (
-              <div
-                key={item.id}
-                onClick={() => { setPage({ id: item.id }); setRulesOpen(false); }}
-                style={{
-                  padding: "12px 16px", cursor: "pointer", display: "flex", alignItems: "center", gap: "10px",
-                  fontSize: "14px", fontWeight: 500, color: colors.text,
-                  background: active === item.id ? "#ecfdf5" : "white",
-                  borderBottom: i < arr.length - 1 ? `1px solid ${colors.border}` : "none",
-                  borderRadius: i === 0 ? "8px 8px 0 0" : i === arr.length - 1 ? "0 0 8px 8px" : "0",
-                }}
+          <div style={{ position: "fixed", top: "56px", right: "32px", background: "white", borderRadius: "8px", boxShadow: "0 8px 24px rgba(0,0,0,0.15)", minWidth: "230px", zIndex: 200, border: `1px solid ${colors.border}` }}>
+            {rulesItems.map((item, i, arr) => (
+              <div key={item.id} onClick={() => handleNav(item.id)} style={{ padding: "12px 16px", cursor: "pointer", display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", fontWeight: 500, color: colors.text, background: active === item.id ? "#ecfdf5" : "white", borderBottom: i < arr.length - 1 ? `1px solid ${colors.border}` : "none", borderRadius: i === 0 ? "8px 8px 0 0" : i === arr.length - 1 ? "0 0 8px 8px" : "0" }}
                 onMouseEnter={(e) => e.currentTarget.style.background = "#f0fdf4"}
                 onMouseLeave={(e) => e.currentTarget.style.background = active === item.id ? "#ecfdf5" : "white"}
               >
-                <item.icon size={16} color={colors.green} />
-                {item.label}
+                <item.icon size={16} color={colors.green} />{item.label}
               </div>
             ))}
           </div>
