@@ -953,19 +953,20 @@ function Nav({ active, setPage }) {
   const isRulesActive = active === "rules" || active === "course-legend" || active === "course-legacy";
 
   return (
-    <nav style={{ background: colors.greenDark, padding: mobile ? "0 12px" : "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "56px", position: "relative", zIndex: 100 }}>
+    <nav style={{ background: colors.greenDark, padding: mobile ? "0 12px" : "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "56px", position: "relative", zIndex: 100, overflow: "visible" }}>
       <div style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer", flexShrink: 0 }} onClick={() => setPage({ id: "home" })}>
         
         {!mobile && <span style={{ color: "white", fontSize: "20px", fontFamily: "'Oswald', sans-serif", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>SGP CLASSIC</span>}
       </div>
-      <div style={{ display: "flex", gap: "2px", overflowX: "auto", alignItems: "center" }}>
+      <div style={{ display: "flex", gap: "2px", alignItems: "center" }}>
         <NavButton id="home" label="Home" icon={Home} isActive={active === "home"} mobile={mobile} onClick={() => setPage({ id: "home" })} />
         <NavButton id="tournaments" label="Tournaments" icon={Trophy} isActive={active === "tournaments"} mobile={mobile} onClick={() => setPage({ id: "tournaments" })} />
         <NavButton id="players" label="Players" icon={Users} isActive={active === "players"} mobile={mobile} onClick={() => setPage({ id: "players" })} />
         <NavButton id="parimutuel" label="Parimutuel" icon={DollarSign} isActive={active === "parimutuel"} mobile={mobile} onClick={() => setPage({ id: "parimutuel" })} />
         {/* Rules dropdown — click to toggle */}
-        <div style={{ position: "relative" }}>
+        <div style={{ position: "relative" }} ref={(el) => { if (el) el.__rulesRef = el; }}>
           <button
+            id="rules-dropdown-btn"
             onClick={() => setRulesOpen(!rulesOpen)}
             style={{
               background: isRulesActive ? "rgba(255,255,255,0.15)" : "transparent",
@@ -985,40 +986,41 @@ function Nav({ active, setPage }) {
             Rules
             <span style={{ fontSize: "10px", marginLeft: "2px", transition: "transform 0.2s", display: "inline-block", transform: rulesOpen ? "rotate(180deg)" : "rotate(0deg)" }}>&#9660;</span>
           </button>
-          {rulesOpen && (
-            <>
-              <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 150 }} onClick={() => setRulesOpen(false)} />
-              <div style={{
-                position: "absolute", top: "100%", right: 0, marginTop: "8px",
-                background: "white", borderRadius: "8px", boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
-                minWidth: "230px", overflow: "hidden", zIndex: 200, border: `1px solid ${colors.border}`,
-              }}>
-                {[
-                  { id: "rules", label: "Competition Rules", icon: Flag },
-                  { id: "course-legend", label: "Legend Course Guide", icon: MapPin },
-                  { id: "course-legacy", label: "Legacy Course Guide", icon: MapPin },
-                ].map((item, i, arr) => (
-                  <div
-                    key={item.id}
-                    onClick={() => { setPage({ id: item.id }); setRulesOpen(false); }}
-                    style={{
-                      padding: "12px 16px", cursor: "pointer", display: "flex", alignItems: "center", gap: "10px",
-                      fontSize: "14px", fontWeight: 500, color: colors.text,
-                      background: active === item.id ? "#ecfdf5" : "white",
-                      borderBottom: i < arr.length - 1 ? `1px solid ${colors.border}` : "none",
-                    }}
-                    onMouseEnter={(e) => e.currentTarget.style.background = "#f0fdf4"}
-                    onMouseLeave={(e) => e.currentTarget.style.background = active === item.id ? "#ecfdf5" : "white"}
-                  >
-                    <item.icon size={16} color={colors.green} />
-                    {item.label}
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
         </div>
       </div>
+      {rulesOpen && (
+        <>
+          <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 150 }} onClick={() => setRulesOpen(false)} />
+          <div style={{
+            position: "fixed", top: "56px", right: mobile ? "12px" : "32px",
+            background: "white", borderRadius: "8px", boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
+            minWidth: "230px", zIndex: 200, border: `1px solid ${colors.border}`,
+          }}>
+            {[
+              { id: "rules", label: "Competition Rules", icon: Flag },
+              { id: "course-legend", label: "Legend Course Guide", icon: MapPin },
+              { id: "course-legacy", label: "Legacy Course Guide", icon: MapPin },
+            ].map((item, i, arr) => (
+              <div
+                key={item.id}
+                onClick={() => { setPage({ id: item.id }); setRulesOpen(false); }}
+                style={{
+                  padding: "12px 16px", cursor: "pointer", display: "flex", alignItems: "center", gap: "10px",
+                  fontSize: "14px", fontWeight: 500, color: colors.text,
+                  background: active === item.id ? "#ecfdf5" : "white",
+                  borderBottom: i < arr.length - 1 ? `1px solid ${colors.border}` : "none",
+                  borderRadius: i === 0 ? "8px 8px 0 0" : i === arr.length - 1 ? "0 0 8px 8px" : "0",
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.background = "#f0fdf4"}
+                onMouseLeave={(e) => e.currentTarget.style.background = active === item.id ? "#ecfdf5" : "white"}
+              >
+                <item.icon size={16} color={colors.green} />
+                {item.label}
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </nav>
   );
 }
