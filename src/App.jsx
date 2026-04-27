@@ -963,41 +963,59 @@ function Nav({ active, setPage }) {
         <NavButton id="tournaments" label="Tournaments" icon={Trophy} isActive={active === "tournaments"} mobile={mobile} onClick={() => setPage({ id: "tournaments" })} />
         <NavButton id="players" label="Players" icon={Users} isActive={active === "players"} mobile={mobile} onClick={() => setPage({ id: "players" })} />
         <NavButton id="parimutuel" label="Parimutuel" icon={DollarSign} isActive={active === "parimutuel"} mobile={mobile} onClick={() => setPage({ id: "parimutuel" })} />
-        {/* Rules dropdown */}
-        <div
-          style={{ position: "relative" }}
-          onMouseEnter={() => !mobile && setRulesOpen(true)}
-          onMouseLeave={() => !mobile && setRulesOpen(false)}
-        >
-          <NavButton id="rules" label="Rules" icon={Flag} isActive={isRulesActive} mobile={mobile} onClick={() => mobile ? setRulesOpen(!rulesOpen) : setPage({ id: "rules" })} />
+        {/* Rules dropdown — click to toggle */}
+        <div style={{ position: "relative" }}>
+          <button
+            onClick={() => setRulesOpen(!rulesOpen)}
+            style={{
+              background: isRulesActive ? "rgba(255,255,255,0.15)" : "transparent",
+              border: "none", color: "white",
+              padding: mobile ? "8px 10px" : "8px 18px",
+              borderRadius: "8px", cursor: "pointer",
+              display: "flex", alignItems: "center",
+              gap: mobile ? "4px" : "8px",
+              fontSize: mobile ? "12px" : "14px",
+              fontWeight: isRulesActive ? 600 : 400,
+              transition: "background 0.15s", whiteSpace: "nowrap",
+            }}
+            onMouseEnter={(e) => { if (!isRulesActive) e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
+            onMouseLeave={(e) => { if (!isRulesActive) e.currentTarget.style.background = "transparent"; }}
+          >
+            <Flag size={mobile ? 14 : 16} />
+            Rules
+            <span style={{ fontSize: "10px", marginLeft: "2px", transition: "transform 0.2s", display: "inline-block", transform: rulesOpen ? "rotate(180deg)" : "rotate(0deg)" }}>&#9660;</span>
+          </button>
           {rulesOpen && (
-            <div style={{
-              position: "absolute", top: "100%", right: 0, marginTop: "4px",
-              background: "white", borderRadius: "8px", boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
-              minWidth: "220px", overflow: "hidden", zIndex: 200,
-            }}>
-              {[
-                { id: "rules", label: "Competition Rules", icon: Flag },
-                { id: "course-legend", label: "Legend Course Guide", icon: MapPin },
-                { id: "course-legacy", label: "Legacy Course Guide", icon: MapPin },
-              ].map((item) => (
-                <div
-                  key={item.id}
-                  onClick={() => { setPage({ id: item.id }); setRulesOpen(false); }}
-                  style={{
-                    padding: "12px 16px", cursor: "pointer", display: "flex", alignItems: "center", gap: "10px",
-                    fontSize: "14px", fontWeight: 500, color: colors.text,
-                    background: active === item.id ? "#ecfdf5" : "white",
-                    borderBottom: `1px solid ${colors.border}`,
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.background = "#f0fdf4"}
-                  onMouseLeave={(e) => e.currentTarget.style.background = active === item.id ? "#ecfdf5" : "white"}
-                >
-                  <item.icon size={16} color={colors.green} />
-                  {item.label}
-                </div>
-              ))}
-            </div>
+            <>
+              <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 150 }} onClick={() => setRulesOpen(false)} />
+              <div style={{
+                position: "absolute", top: "100%", right: 0, marginTop: "8px",
+                background: "white", borderRadius: "8px", boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
+                minWidth: "230px", overflow: "hidden", zIndex: 200, border: `1px solid ${colors.border}`,
+              }}>
+                {[
+                  { id: "rules", label: "Competition Rules", icon: Flag },
+                  { id: "course-legend", label: "Legend Course Guide", icon: MapPin },
+                  { id: "course-legacy", label: "Legacy Course Guide", icon: MapPin },
+                ].map((item, i, arr) => (
+                  <div
+                    key={item.id}
+                    onClick={() => { setPage({ id: item.id }); setRulesOpen(false); }}
+                    style={{
+                      padding: "12px 16px", cursor: "pointer", display: "flex", alignItems: "center", gap: "10px",
+                      fontSize: "14px", fontWeight: 500, color: colors.text,
+                      background: active === item.id ? "#ecfdf5" : "white",
+                      borderBottom: i < arr.length - 1 ? `1px solid ${colors.border}` : "none",
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = "#f0fdf4"}
+                    onMouseLeave={(e) => e.currentTarget.style.background = active === item.id ? "#ecfdf5" : "white"}
+                  >
+                    <item.icon size={16} color={colors.green} />
+                    {item.label}
+                  </div>
+                ))}
+              </div>
+            </>
           )}
         </div>
       </div>
