@@ -136,7 +136,11 @@ const TOURNAMENTS = {
       { pos: "Last", team: "Crain/Statchuk", teamNum: 4, totalNet: null, toPar: null, prize: 0 },
     ],
     lowGross: { player: "Reid Hartley", score: 76, toPar: 4, course: "Legend" },
-    individualScores: [],
+    individualScores: [
+      { name: "Reid Hartley", gross: 76, toPar: 4 },
+      { name: "Chris Statchuk", gross: 76, toPar: 4 },
+      { name: "Tyler Perry", gross: 77, toPar: 5 },
+    ],
     parimutuel: null,
   },
   2019: {
@@ -170,7 +174,12 @@ const TOURNAMENTS = {
       { pos: "Last", team: "Crain/Karamchi", teamNum: 4, totalNet: null, toPar: null, prize: 0 },
     ],
     lowGross: { player: "Chris Statchuk", score: 76, toPar: 4, course: "Legend" },
-    individualScores: [],
+    individualScores: [
+      { name: "Chris Statchuk", gross: 76, toPar: 4 },
+      { name: "Geoff Crain", gross: 80, toPar: 8 },
+      { name: "Anthony Laud", gross: 81, toPar: 9 },
+      { name: "Paul Statchuk", gross: 81, toPar: 9 },
+    ],
     parimutuel: null,
   },
   2020: {
@@ -208,7 +217,11 @@ const TOURNAMENTS = {
       { pos: "Last", team: "Mullholand/Rundle", teamNum: 8, totalNet: null, toPar: null, prize: 0 },
     ],
     lowGross: { player: "Patrick Forbes", score: 69, toPar: -3, course: "Legend" },
-    individualScores: [],
+    individualScores: [
+      { name: "Patrick Forbes", gross: 69, toPar: -3 },
+      { name: "Chris Statchuk", gross: 74, toPar: 2 },
+      { name: "Geoff Crain", gross: 76, toPar: 4 },
+    ],
     parimutuel: null,
   },
   2021: {
@@ -246,7 +259,11 @@ const TOURNAMENTS = {
       { pos: 8, team: "Rundle/Statchuk", teamNum: 6, totalNet: null, toPar: 1, prize: 0 },
     ],
     lowGross: { player: "Patrick Forbes", score: 76, toPar: 4, course: "Legend" },
-    individualScores: [],
+    individualScores: [
+      { name: "Patrick Forbes", gross: 76, toPar: 4 },
+      { name: "Anthony Laud", gross: 80, toPar: 8 },
+      { name: "Reid Hartley", gross: 81, toPar: 9 },
+    ],
     parimutuel: {
       totalPool: 2030,
       winningTeam: 8,
