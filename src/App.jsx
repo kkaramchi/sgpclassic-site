@@ -767,8 +767,8 @@ const colors = {
   green: "#15803d",
   greenLight: "#22c55e",
   greenDark: "#14532d",
-  gold: "#d97706",
-  goldLight: "#fbbf24",
+  gold: "#a68700",
+  goldLight: "#a68700",
   bg: "#fafaf9",
   card: "#ffffff",
   text: "#1c1917",
@@ -856,7 +856,7 @@ function SectionTitle({ icon: Icon, children }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
       {Icon && <Icon size={22} color={colors.green} />}
-      <h2 style={{ fontSize: "22px", fontWeight: 600, color: colors.text, margin: 0, fontFamily: "'Oswald', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>{children}</h2>
+      <h2 style={{ fontSize: "22px", fontWeight: 600, color: colors.text, margin: 0, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>{children}</h2>
     </div>
   );
 }
@@ -971,7 +971,7 @@ function Nav({ active, setPage }) {
         <nav style={{ background: colors.greenDark, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "56px", position: "relative", zIndex: 100 }}>
           <div style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }} onClick={() => handleNav("home")}>
             <img src={process.env.PUBLIC_URL + "/logo-small-white.png"} alt="SGP Classic" style={{ height: "28px", objectFit: "contain" }} />
-            <span style={{ color: "white", fontSize: "16px", fontFamily: "'Oswald', sans-serif", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>SGP CLASSIC</span>
+            <span style={{ color: "white", fontSize: "16px", fontFamily: "'DM Sans', sans-serif", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>SGP CLASSIC</span>
           </div>
           <button onClick={() => setMenuOpen(!menuOpen)} style={{ background: "none", border: "none", cursor: "pointer", padding: "8px", display: "flex", flexDirection: "column", gap: "4px" }}>
             <span style={{ display: "block", width: "22px", height: "2px", background: "white", borderRadius: "1px", transition: "transform 0.2s", transform: menuOpen ? "rotate(45deg) translate(4px, 4px)" : "none" }} />
@@ -1022,7 +1022,7 @@ function Nav({ active, setPage }) {
     <nav style={{ background: colors.greenDark, padding: "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "56px", position: "relative", zIndex: 100, overflow: "visible" }}>
       <div style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer" }} onClick={() => handleNav("home")}>
         <img src={process.env.PUBLIC_URL + "/logo-small-white.png"} alt="SGP Classic" style={{ height: "36px", objectFit: "contain" }} />
-        <span style={{ color: "white", fontSize: "20px", fontFamily: "'Oswald', sans-serif", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>SGP CLASSIC</span>
+        <span style={{ color: "white", fontSize: "20px", fontFamily: "'DM Sans', sans-serif", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>SGP CLASSIC</span>
       </div>
       <div style={{ display: "flex", gap: "2px", alignItems: "center" }}>
         {navItems.map((item) => {
@@ -1096,9 +1096,9 @@ function HomePage({ setPage }) {
       <div style={{ background: `linear-gradient(135deg, ${colors.greenDark} 0%, #166534 100%)`, borderRadius: mobile ? "12px" : "16px", padding: mobile ? "28px 20px" : "48px 40px", marginBottom: "32px", color: "white", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: "-40px", right: "-20px", opacity: 0.08, fontSize: "200px", fontWeight: 900 }}>9</div>
         <div style={{ position: "relative" }}>
-          <div style={{ fontSize: mobile ? "12px" : "14px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", opacity: 0.8, marginBottom: "8px", fontFamily: "'Oswald', sans-serif" }}>Year 9</div>
+          <div style={{ fontSize: mobile ? "12px" : "14px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", opacity: 0.8, marginBottom: "8px", fontFamily: "'DM Sans', sans-serif" }}>Year 9</div>
           <img src={process.env.PUBLIC_URL + "/logo-white.png"} alt="SGP Classic" style={{ height: mobile ? "50px" : "80px", objectFit: "contain", marginBottom: "8px" }} />
-          <h1 style={{ fontSize: mobile ? "28px" : "42px", fontWeight: 700, margin: "0 0 8px 0", letterSpacing: "1px", fontFamily: "'Oswald', sans-serif", textTransform: "uppercase" }}>SGP Classic 2026</h1>
+          <h1 style={{ fontSize: mobile ? "28px" : "42px", fontWeight: 700, margin: "0 0 8px 0", letterSpacing: "1px", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase" }}>SGP Classic 2026</h1>
           <p style={{ fontSize: mobile ? "15px" : "18px", opacity: 0.85, margin: "0 0 28px 0" }}>Woodington Lake Golf Club &middot; Tottenham, ON</p>
           <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3, auto)", gap: mobile ? "10px" : "16px" }}>
             <div style={{ background: "rgba(255,255,255,0.12)", borderRadius: "10px", padding: "14px 20px" }}>
@@ -1124,7 +1124,7 @@ function HomePage({ setPage }) {
 
       {/* Tournament Sponsor */}
       <div style={{ marginBottom: "32px", textAlign: "center" }}>
-        <div style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", color: colors.textMuted, marginBottom: "10px", fontFamily: "'Oswald', sans-serif" }}>Tournament Sponsor</div>
+        <div style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", color: colors.textMuted, marginBottom: "10px", fontFamily: "'DM Sans', sans-serif" }}>Tournament Sponsor</div>
         <div style={{ background: "white", borderRadius: "12px", border: `1px solid ${colors.border}`, padding: mobile ? "16px 20px" : "20px 40px", display: "inline-block" }}>
           <img src={process.env.PUBLIC_URL + "/sponsor-logo.svg"} alt="Alpha Bull Canada — Private Wealth Management" style={{ height: mobile ? "50px" : "80px", maxWidth: "100%", objectFit: "contain" }} />
         </div>
@@ -1143,14 +1143,14 @@ function HomePage({ setPage }) {
           return (
             <div key={i} style={{ display: "flex", alignItems: "center", gap: "16px", padding: "16px 20px", background: evt.past ? "#f0fdf4" : "white", borderBottom: i < arr.length - 1 ? `1px solid ${colors.border}` : "none" }}>
               <div style={{ width: "72px", flexShrink: 0, textAlign: "center" }}>
-                <div style={{ fontSize: "16px", fontWeight: 700, fontFamily: "'Oswald', sans-serif", color: evt.past ? colors.green : colors.greenDark }}>{evt.date}</div>
+                <div style={{ fontSize: "16px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", color: evt.past ? colors.green : colors.greenDark }}>{evt.date}</div>
                 {evt.detail && <div style={{ fontSize: "12px", color: colors.textMuted }}>{evt.detail}</div>}
               </div>
               <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: evt.past ? colors.green : colors.greenDark, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                 {evt.past ? <span style={{ color: "white", fontSize: "16px", fontWeight: 700 }}>&#10003;</span> : <Icon size={16} color="white" />}
               </div>
               <div>
-                <div style={{ fontSize: "15px", fontWeight: 700, fontFamily: "'Oswald', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>{evt.label}</div>
+                <div style={{ fontSize: "15px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>{evt.label}</div>
                 <div style={{ fontSize: "13px", color: colors.textMuted }}>{evt.desc}</div>
               </div>
             </div>
@@ -1175,8 +1175,8 @@ function HomePage({ setPage }) {
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
           <thead>
             <tr style={{ background: colors.greenDark }}>
-              <th style={{ padding: "10px 20px", textAlign: "left", color: "white", fontWeight: 600, fontFamily: "'Oswald', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Item</th>
-              <th style={{ padding: "10px 20px", textAlign: "right", color: "white", fontWeight: 600, fontFamily: "'Oswald', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Cost</th>
+              <th style={{ padding: "10px 20px", textAlign: "left", color: "white", fontWeight: 600, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Item</th>
+              <th style={{ padding: "10px 20px", textAlign: "right", color: "white", fontWeight: 600, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Cost</th>
             </tr>
           </thead>
           <tbody>
@@ -1194,8 +1194,8 @@ function HomePage({ setPage }) {
               </tr>
             ))}
             <tr style={{ background: colors.greenDark }}>
-              <td style={{ padding: "12px 20px", fontWeight: 700, fontSize: "15px", color: "white", fontFamily: "'Oswald', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Total</td>
-              <td style={{ padding: "12px 20px", textAlign: "right", fontWeight: 700, fontSize: "18px", color: colors.goldLight, fontFamily: "'Oswald', sans-serif" }}>$360.55</td>
+              <td style={{ padding: "12px 20px", fontWeight: 700, fontSize: "15px", color: "white", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Total</td>
+              <td style={{ padding: "12px 20px", textAlign: "right", fontWeight: 700, fontSize: "18px", color: colors.goldLight, fontFamily: "'DM Sans', sans-serif" }}>$360.55</td>
             </tr>
           </tbody>
         </table>
@@ -1270,8 +1270,8 @@ function TournamentDetailPage({ year, defaultTab, setPage }) {
 
       {/* Header */}
       <div style={{ background: `linear-gradient(135deg, ${colors.greenDark} 0%, #166534 100%)`, borderRadius: "12px", padding: mobile ? "20px 16px" : "28px 32px", marginBottom: "24px", color: "white" }}>
-        <div style={{ fontSize: "13px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", opacity: 0.7, fontFamily: "'Oswald', sans-serif" }}>Year {t.yearNum}</div>
-        <h1 style={{ fontSize: mobile ? "24px" : "32px", fontWeight: 700, margin: "4px 0 6px 0", fontFamily: "'Oswald', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>SGP Classic {t.year}</h1>
+        <div style={{ fontSize: "13px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", opacity: 0.7, fontFamily: "'DM Sans', sans-serif" }}>Year {t.yearNum}</div>
+        <h1 style={{ fontSize: mobile ? "24px" : "32px", fontWeight: 700, margin: "4px 0 6px 0", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>SGP Classic {t.year}</h1>
         <p style={{ margin: 0, opacity: 0.8, fontSize: mobile ? "14px" : "16px" }}>{t.venue} &middot; {t.location}</p>
       </div>
 
@@ -1534,7 +1534,7 @@ function ParimutuelYearView({ t }) {
 
       <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: "24px", marginBottom: "24px" }}>
         <Card>
-          <h3 style={{ margin: "0 0 16px 0", fontSize: "16px", fontFamily: "'Oswald', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Amount Wagered by Team</h3>
+          <h3 style={{ margin: "0 0 16px 0", fontSize: "16px", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Amount Wagered by Team</h3>
           <ResponsiveContainer width="100%" height={250}>
             <BarChart data={teamPoolData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e5e5" />
@@ -1550,7 +1550,7 @@ function ParimutuelYearView({ t }) {
           </ResponsiveContainer>
         </Card>
         <Card>
-          <h3 style={{ margin: "0 0 16px 0", fontSize: "16px", fontFamily: "'Oswald', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Net Profit/Loss by Bettor</h3>
+          <h3 style={{ margin: "0 0 16px 0", fontSize: "16px", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Net Profit/Loss by Bettor</h3>
           <ResponsiveContainer width="100%" height={250}>
             <BarChart data={bettorData} layout="vertical">
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e5e5" />
@@ -1716,7 +1716,7 @@ function PlayerDetailPage({ name, setPage }) {
           {playerData.name.split(" ").map((n) => n[0]).join("")}
         </div>
         <div>
-          <h1 style={{ fontSize: "28px", fontWeight: 700, margin: "0 0 6px 0", fontFamily: "'Oswald', sans-serif", letterSpacing: "0.5px" }}>
+          <h1 style={{ fontSize: "28px", fontWeight: 700, margin: "0 0 6px 0", fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.5px" }}>
             {playerData.name}
             <ChampionIcon count={playerData.championCount} size={22} />
           </h1>
@@ -1809,7 +1809,7 @@ function ParimutuelPage({ setPage }) {
       {/* Live Betting Banner */}
       <div onClick={() => setPage({ id: "live-betting" })} style={{ background: `linear-gradient(135deg, ${colors.greenDark} 0%, #166534 100%)`, borderRadius: "12px", padding: mobile ? "20px" : "24px 32px", marginBottom: "28px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between", color: "white", transition: "transform 0.15s", }} onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-2px)"} onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}>
         <div>
-          <div style={{ fontSize: mobile ? "18px" : "22px", fontWeight: 700, fontFamily: "'Oswald', sans-serif", textTransform: "uppercase", letterSpacing: "1px" }}>2026 Live Betting</div>
+          <div style={{ fontSize: mobile ? "18px" : "22px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "1px" }}>2026 Live Betting</div>
           <div style={{ fontSize: "14px", opacity: 0.8, marginTop: "4px" }}>Place your bets and watch the odds update in real time</div>
         </div>
         <ChevronRight size={24} />
@@ -1841,7 +1841,7 @@ function ParimutuelPage({ setPage }) {
       </div>
 
       <Card style={{ marginBottom: "24px" }}>
-        <h3 style={{ margin: "0 0 16px 0", fontSize: "16px", fontFamily: "'Oswald', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Net Profit/Loss by Bettor (All-Time)</h3>
+        <h3 style={{ margin: "0 0 16px 0", fontSize: "16px", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Net Profit/Loss by Bettor (All-Time)</h3>
         <ResponsiveContainer width="100%" height={400}>
           <BarChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e5e5" />
@@ -1932,7 +1932,7 @@ function RulesPage() {
       <div style={{ display: "grid", gap: "16px" }}>
         {rules.map((section, i) => (
           <Card key={i} style={{ padding: mobile ? "16px" : "24px", borderLeft: section.alert ? "4px solid #dc2626" : `4px solid ${colors.green}` }}>
-            <h3 style={{ margin: "0 0 12px 0", fontSize: "17px", fontFamily: "'Oswald', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px", color: section.alert ? "#dc2626" : colors.greenDark }}>{section.title}</h3>
+            <h3 style={{ margin: "0 0 12px 0", fontSize: "17px", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px", color: section.alert ? "#dc2626" : colors.greenDark }}>{section.title}</h3>
             {section.content && <p style={{ margin: 0, fontSize: "14px", lineHeight: 1.6, color: colors.text }}>{section.content}</p>}
             {section.items && (
               <div style={{ display: "grid", gap: "8px" }}>
@@ -1999,7 +1999,7 @@ function CourseGuidePage({ course, setPage }) {
                 padding: "8px 14px", borderRadius: "8px", border: "none", cursor: "pointer",
                 background: selectedHole === null ? colors.greenDark : "#e5e5e5",
                 color: selectedHole === null ? "white" : colors.text,
-                fontWeight: 600, fontSize: "13px", fontFamily: "'Oswald', sans-serif", textTransform: "uppercase",
+                fontWeight: 600, fontSize: "13px", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase",
               }}
             >All Holes</button>
             {Array.from({ length: totalHoles }, (_, i) => i + 1).map((h) => (
@@ -2023,7 +2023,7 @@ function CourseGuidePage({ course, setPage }) {
               .map((h) => (
                 <Card key={h} style={{ padding: 0, overflow: "hidden" }}>
                   <div style={{ background: colors.greenDark, padding: mobile ? "12px 16px" : "14px 20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span style={{ color: "white", fontWeight: 700, fontSize: mobile ? "16px" : "18px", fontFamily: "'Oswald', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Hole #{h}</span>
+                    <span style={{ color: "white", fontWeight: 700, fontSize: mobile ? "16px" : "18px", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Hole #{h}</span>
                     <span style={{ color: colors.goldLight, fontSize: "13px", fontWeight: 600 }}>
                       {COURSES.legend.holes[h - 1] ? `Par ${COURSES.legend.holes[h - 1].par} · ${COURSES.legend.holes[h - 1].yards} yds` : ""}
                     </span>
@@ -2140,7 +2140,7 @@ function LiveBettingPage() {
       <div style={{ display: "flex", gap: "16px", marginBottom: "24px", flexWrap: "wrap" }}>
         <Card style={{ flex: 1, textAlign: "center", minWidth: mobile ? "100%" : "auto" }}>
           <div style={{ fontSize: "12px", color: colors.textMuted, marginBottom: "4px" }}>Status</div>
-          <div style={{ fontSize: "18px", fontWeight: 700, color: isOpen ? "#16a34a" : "#dc2626", fontFamily: "'Oswald', sans-serif", textTransform: "uppercase" }}>{isOpen ? "Open" : "Closed"}</div>
+          <div style={{ fontSize: "18px", fontWeight: 700, color: isOpen ? "#16a34a" : "#dc2626", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase" }}>{isOpen ? "Open" : "Closed"}</div>
         </Card>
         <Card style={{ flex: 1, textAlign: "center", minWidth: mobile ? "45%" : "auto" }}>
           <div style={{ fontSize: "12px", color: colors.textMuted, marginBottom: "4px" }}>Total Pool</div>
@@ -2158,10 +2158,10 @@ function LiveBettingPage() {
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
           <thead>
             <tr style={{ background: colors.greenDark }}>
-              <th style={{ padding: "12px 16px", textAlign: "left", color: "white", fontWeight: 600, fontFamily: "'Oswald', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Team</th>
-              <th style={{ padding: "12px 16px", textAlign: "right", color: "white", fontWeight: 600, fontFamily: "'Oswald', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Pool</th>
-              <th style={{ padding: "12px 16px", textAlign: "right", color: "white", fontWeight: 600, fontFamily: "'Oswald', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>% of Pool</th>
-              <th style={{ padding: "12px 16px", textAlign: "right", color: "white", fontWeight: 600, fontFamily: "'Oswald', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Odds</th>
+              <th style={{ padding: "12px 16px", textAlign: "left", color: "white", fontWeight: 600, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Team</th>
+              <th style={{ padding: "12px 16px", textAlign: "right", color: "white", fontWeight: 600, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Pool</th>
+              <th style={{ padding: "12px 16px", textAlign: "right", color: "white", fontWeight: 600, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>% of Pool</th>
+              <th style={{ padding: "12px 16px", textAlign: "right", color: "white", fontWeight: 600, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Odds</th>
             </tr>
           </thead>
           <tbody>
@@ -2178,7 +2178,7 @@ function LiveBettingPage() {
                   </td>
                   <td style={{ padding: "12px 16px", textAlign: "right", fontWeight: 600 }}>{teamPool > 0 ? `$${teamPool.toLocaleString()}` : "—"}</td>
                   <td style={{ padding: "12px 16px", textAlign: "right", color: colors.textMuted }}>{teamPool > 0 ? `${pct}%` : "—"}</td>
-                  <td style={{ padding: "12px 16px", textAlign: "right", fontWeight: 700, fontSize: "16px", color: colors.greenDark, fontFamily: "'Oswald', sans-serif" }}>{odds > 0 ? `${odds.toFixed(2)}x` : "—"}</td>
+                  <td style={{ padding: "12px 16px", textAlign: "right", fontWeight: 700, fontSize: "16px", color: colors.greenDark, fontFamily: "'DM Sans', sans-serif" }}>{odds > 0 ? `${odds.toFixed(2)}x` : "—"}</td>
                 </tr>
               );
             })}
@@ -2194,7 +2194,7 @@ function LiveBettingPage() {
             style={{
               background: colors.greenDark, color: "white", border: "none",
               padding: "16px 48px", borderRadius: "12px", cursor: "pointer",
-              fontSize: "18px", fontWeight: 700, fontFamily: "'Oswald', sans-serif",
+              fontSize: "18px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif",
               textTransform: "uppercase", letterSpacing: "1px",
               boxShadow: "0 4px 14px rgba(22,101,52,0.3)",
               transition: "transform 0.15s, box-shadow 0.15s",
@@ -2210,7 +2210,7 @@ function LiveBettingPage() {
 
       {isOpen && showForm && (
         <Card style={{ marginBottom: "24px", borderTop: `4px solid ${colors.green}` }}>
-          <h3 style={{ margin: "0 0 20px 0", fontSize: "18px", fontFamily: "'Oswald', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px", color: colors.greenDark }}>Place Your Bet</h3>
+          <h3 style={{ margin: "0 0 20px 0", fontSize: "18px", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px", color: colors.greenDark }}>Place Your Bet</h3>
           <div style={{ display: "grid", gap: "16px", maxWidth: "400px" }}>
             <div>
               <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: colors.textMuted, marginBottom: "6px" }}>Your Name</label>
@@ -2253,7 +2253,7 @@ function LiveBettingPage() {
                 style={{
                   background: colors.greenDark, color: "white", border: "none",
                   padding: "12px 32px", borderRadius: "8px", cursor: submitting ? "not-allowed" : "pointer",
-                  fontSize: "15px", fontWeight: 700, fontFamily: "'Oswald', sans-serif",
+                  fontSize: "15px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif",
                   textTransform: "uppercase", letterSpacing: "0.5px",
                   opacity: submitting ? 0.6 : 1,
                 }}
@@ -2349,13 +2349,13 @@ export default function App() {
   const mobile = useIsMobile();
 
   return (
-    <div style={{ background: colors.bg, minHeight: "100vh", fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
+    <div style={{ background: colors.bg, minHeight: "100vh", fontFamily: "'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
       <Nav active={getActiveNav()} setPage={setPage} />
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: mobile ? "16px 12px" : "32px 24px" }}>
         {renderPage()}
       </div>
       <footer style={{ textAlign: "center", padding: "32px", color: colors.textMuted, fontSize: "13px", borderTop: `1px solid ${colors.border}` }}>
-        <span style={{ fontFamily: "'Oswald', sans-serif", fontWeight: 600, textTransform: "uppercase", letterSpacing: "1px" }}>SGP Classic</span> &middot; Est. 2018 &middot; Woodington Lake Golf Club
+        <span style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, textTransform: "uppercase", letterSpacing: "1px" }}>SGP Classic</span> &middot; Est. 2018 &middot; Woodington Lake Golf Club
       </footer>
     </div>
   );
