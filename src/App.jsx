@@ -1126,7 +1126,7 @@ function HomePage({ setPage }) {
       <div style={{ marginBottom: "32px", textAlign: "center" }}>
         <div style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", color: colors.textMuted, marginBottom: "10px", fontFamily: "'Oswald', sans-serif" }}>Tournament Sponsor</div>
         <div style={{ background: "white", borderRadius: "12px", border: `1px solid ${colors.border}`, padding: mobile ? "16px 20px" : "20px 40px", display: "inline-block" }}>
-          <img src={process.env.PUBLIC_URL + "/sponsor-logo.svg"} alt="Alpha Bull Canada — Private Wealth Management" style={{ height: mobile ? "40px" : "60px", objectFit: "contain" }} />
+          <img src={process.env.PUBLIC_URL + "/sponsor-logo.svg"} alt="Alpha Bull Canada — Private Wealth Management" style={{ height: mobile ? "50px" : "80px", maxWidth: "100%", objectFit: "contain" }} />
         </div>
       </div>
 
