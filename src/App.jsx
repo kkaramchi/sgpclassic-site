@@ -1122,6 +1122,14 @@ function HomePage({ setPage }) {
         </div>
       </div>
 
+      {/* Tournament Sponsor */}
+      <div style={{ marginBottom: "32px", textAlign: "center" }}>
+        <div style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", color: colors.textMuted, marginBottom: "10px", fontFamily: "'Oswald', sans-serif" }}>Tournament Sponsor</div>
+        <div style={{ background: "white", borderRadius: "12px", border: `1px solid ${colors.border}`, padding: mobile ? "16px 20px" : "20px 40px", display: "inline-block" }}>
+          <img src={process.env.PUBLIC_URL + "/sponsor-logo.svg"} alt="Alpha Bull Canada — Private Wealth Management" style={{ height: mobile ? "40px" : "60px", objectFit: "contain" }} />
+        </div>
+      </div>
+
       {/* Upcoming Events Timeline */}
       <SectionTitle icon={Calendar}>Upcoming Dates</SectionTitle>
       <div style={{ display: "grid", gap: "0", marginBottom: "32px", borderRadius: "12px", border: `1px solid ${colors.border}`, overflow: "hidden" }}>
@@ -1798,6 +1806,15 @@ function ParimutuelPage({ setPage }) {
 
   return (
     <div>
+      {/* Live Betting Banner */}
+      <div onClick={() => setPage({ id: "live-betting" })} style={{ background: `linear-gradient(135deg, ${colors.greenDark} 0%, #166534 100%)`, borderRadius: "12px", padding: mobile ? "20px" : "24px 32px", marginBottom: "28px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between", color: "white", transition: "transform 0.15s", }} onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-2px)"} onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}>
+        <div>
+          <div style={{ fontSize: mobile ? "18px" : "22px", fontWeight: 700, fontFamily: "'Oswald', sans-serif", textTransform: "uppercase", letterSpacing: "1px" }}>2026 Live Betting</div>
+          <div style={{ fontSize: "14px", opacity: 0.8, marginTop: "4px" }}>Place your bets and watch the odds update in real time</div>
+        </div>
+        <ChevronRight size={24} />
+      </div>
+
       <SectionTitle icon={DollarSign}>All-Time Parimutuel</SectionTitle>
 
       <div style={{ display: "grid", gridTemplateColumns: mobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: "16px", marginBottom: "28px" }}>
@@ -2026,6 +2043,266 @@ function CourseGuidePage({ course, setPage }) {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// LIVE BETTING PAGE
+// ═══════════════════════════════════════════════════════════════
+
+// IMPORTANT: Replace this URL with your deployed Google Apps Script URL
+const GOOGLE_SCRIPT_URL = "";
+
+function LiveBettingPage() {
+  const mobile = useIsMobile();
+  const [poolData, setPoolData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [formName, setFormName] = useState("");
+  const [formTeam, setFormTeam] = useState("");
+  const [formAmount, setFormAmount] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [message, setMessage] = useState(null);
+
+  const fetchPool = () => {
+    if (!GOOGLE_SCRIPT_URL) {
+      setLoading(false);
+      return;
+    }
+    fetch(GOOGLE_SCRIPT_URL)
+      .then((r) => r.json())
+      .then((data) => { setPoolData(data); setLoading(false); })
+      .catch(() => setLoading(false));
+  };
+
+  useEffect(() => { fetchPool(); }, []);
+
+  const handleSubmit = () => {
+    if (!formName.trim()) { setMessage({ type: "error", text: "Please enter your name." }); return; }
+    if (!formTeam) { setMessage({ type: "error", text: "Please select a team." }); return; }
+    if (!formAmount || parseFloat(formAmount) < 1) { setMessage({ type: "error", text: "Please enter a valid bet amount ($1 minimum)." }); return; }
+
+    setSubmitting(true);
+    setMessage(null);
+
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify({ name: formName.trim(), team: parseInt(formTeam), amount: parseFloat(formAmount) }),
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.status === "ok") {
+          setMessage({ type: "success", text: "Bet placed! " + formName.trim() + " — $" + parseFloat(formAmount).toLocaleString() + " on Team " + formTeam });
+          setFormTeam("");
+          setFormAmount("");
+          setShowForm(false);
+          fetchPool(); // Refresh odds
+        } else {
+          setMessage({ type: "error", text: data.message || "Something went wrong." });
+        }
+        setSubmitting(false);
+      })
+      .catch(() => { setMessage({ type: "error", text: "Connection error. Please try again." }); setSubmitting(false); });
+  };
+
+  // Teams placeholder — update after draft
+  const teams = poolData?.numTeams
+    ? Array.from({ length: poolData.numTeams }, (_, i) => ({ num: i + 1, label: `Team ${i + 1}` }))
+    : [];
+
+  // If no Google Script URL is set yet
+  if (!GOOGLE_SCRIPT_URL) {
+    return (
+      <div>
+        <SectionTitle icon={DollarSign}>2026 Parimutuel — Live Betting</SectionTitle>
+        <Card style={{ padding: "40px", textAlign: "center" }}>
+          <DollarSign size={40} color={colors.textMuted} style={{ marginBottom: "12px" }} />
+          <p style={{ fontSize: "16px", fontWeight: 600, color: colors.text, margin: "0 0 8px 0" }}>Betting Opens June 11, 2026</p>
+          <p style={{ fontSize: "14px", color: colors.textMuted, margin: 0 }}>The parimutuel pool will open after the live draft. Check back to place your bets and watch the odds update in real time.</p>
+        </Card>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div style={{ textAlign: "center", padding: "60px 20px" }}>
+        <div style={{ fontSize: "16px", color: colors.textMuted }}>Loading pool data...</div>
+      </div>
+    );
+  }
+
+  const isOpen = poolData?.isOpen;
+  const totalPool = poolData?.totalPool || 0;
+  const totalBets = poolData?.totalBets || 0;
+
+  return (
+    <div>
+      <SectionTitle icon={DollarSign}>2026 Parimutuel — Live Betting</SectionTitle>
+
+      {/* Status bar */}
+      <div style={{ display: "flex", gap: "16px", marginBottom: "24px", flexWrap: "wrap" }}>
+        <Card style={{ flex: 1, textAlign: "center", minWidth: mobile ? "100%" : "auto" }}>
+          <div style={{ fontSize: "12px", color: colors.textMuted, marginBottom: "4px" }}>Status</div>
+          <div style={{ fontSize: "18px", fontWeight: 700, color: isOpen ? "#16a34a" : "#dc2626", fontFamily: "'Oswald', sans-serif", textTransform: "uppercase" }}>{isOpen ? "Open" : "Closed"}</div>
+        </Card>
+        <Card style={{ flex: 1, textAlign: "center", minWidth: mobile ? "45%" : "auto" }}>
+          <div style={{ fontSize: "12px", color: colors.textMuted, marginBottom: "4px" }}>Total Pool</div>
+          <div style={{ fontSize: "28px", fontWeight: 800, color: colors.greenDark }}>${totalPool.toLocaleString()}</div>
+        </Card>
+        <Card style={{ flex: 1, textAlign: "center", minWidth: mobile ? "45%" : "auto" }}>
+          <div style={{ fontSize: "12px", color: colors.textMuted, marginBottom: "4px" }}>Total Bets</div>
+          <div style={{ fontSize: "28px", fontWeight: 800, color: colors.greenDark }}>{totalBets}</div>
+        </Card>
+      </div>
+
+      {/* Tote Board — Live Odds */}
+      <SectionTitle icon={TrendingUp}>Live Odds</SectionTitle>
+      <Card style={{ padding: 0, overflow: "hidden", marginBottom: "24px" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
+          <thead>
+            <tr style={{ background: colors.greenDark }}>
+              <th style={{ padding: "12px 16px", textAlign: "left", color: "white", fontWeight: 600, fontFamily: "'Oswald', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Team</th>
+              <th style={{ padding: "12px 16px", textAlign: "right", color: "white", fontWeight: 600, fontFamily: "'Oswald', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Pool</th>
+              <th style={{ padding: "12px 16px", textAlign: "right", color: "white", fontWeight: 600, fontFamily: "'Oswald', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>% of Pool</th>
+              <th style={{ padding: "12px 16px", textAlign: "right", color: "white", fontWeight: 600, fontFamily: "'Oswald', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Odds</th>
+            </tr>
+          </thead>
+          <tbody>
+            {teams.map((team, i) => {
+              const teamPool = poolData?.pools?.[team.num] || 0;
+              const pct = totalPool > 0 ? ((teamPool / totalPool) * 100).toFixed(1) : "0.0";
+              const odds = poolData?.odds?.[team.num] || 0;
+              const barWidth = totalPool > 0 ? Math.max((teamPool / totalPool) * 100, 0) : 0;
+              return (
+                <tr key={team.num} style={{ background: i % 2 === 0 ? "#ffffff" : "#fafaf9", borderBottom: `1px solid ${colors.border}` }}>
+                  <td style={{ padding: "12px 16px", fontWeight: 700, position: "relative" }}>
+                    <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: `${barWidth}%`, background: "rgba(22,101,52,0.08)", transition: "width 0.5s" }} />
+                    <span style={{ position: "relative" }}>Team {team.num}</span>
+                  </td>
+                  <td style={{ padding: "12px 16px", textAlign: "right", fontWeight: 600 }}>{teamPool > 0 ? `$${teamPool.toLocaleString()}` : "—"}</td>
+                  <td style={{ padding: "12px 16px", textAlign: "right", color: colors.textMuted }}>{teamPool > 0 ? `${pct}%` : "—"}</td>
+                  <td style={{ padding: "12px 16px", textAlign: "right", fontWeight: 700, fontSize: "16px", color: colors.greenDark, fontFamily: "'Oswald', sans-serif" }}>{odds > 0 ? `${odds.toFixed(2)}x` : "—"}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </Card>
+
+      {/* Place Bet Button / Form */}
+      {isOpen && !showForm && (
+        <div style={{ textAlign: "center", marginBottom: "24px" }}>
+          <button
+            onClick={() => setShowForm(true)}
+            style={{
+              background: colors.greenDark, color: "white", border: "none",
+              padding: "16px 48px", borderRadius: "12px", cursor: "pointer",
+              fontSize: "18px", fontWeight: 700, fontFamily: "'Oswald', sans-serif",
+              textTransform: "uppercase", letterSpacing: "1px",
+              boxShadow: "0 4px 14px rgba(22,101,52,0.3)",
+              transition: "transform 0.15s, box-shadow 0.15s",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 6px 20px rgba(22,101,52,0.4)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 14px rgba(22,101,52,0.3)"; }}
+          >
+            <DollarSign size={20} style={{ verticalAlign: "middle", marginRight: "8px", marginTop: "-2px" }} />
+            Place a Bet
+          </button>
+        </div>
+      )}
+
+      {isOpen && showForm && (
+        <Card style={{ marginBottom: "24px", borderTop: `4px solid ${colors.green}` }}>
+          <h3 style={{ margin: "0 0 20px 0", fontSize: "18px", fontFamily: "'Oswald', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px", color: colors.greenDark }}>Place Your Bet</h3>
+          <div style={{ display: "grid", gap: "16px", maxWidth: "400px" }}>
+            <div>
+              <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: colors.textMuted, marginBottom: "6px" }}>Your Name</label>
+              <input
+                type="text"
+                placeholder="e.g. John Smith"
+                value={formName}
+                onChange={(e) => setFormName(e.target.value)}
+                style={{ width: "100%", padding: "10px 14px", borderRadius: "8px", border: `1px solid ${colors.border}`, fontSize: "15px", outline: "none", boxSizing: "border-box" }}
+              />
+            </div>
+            <div>
+              <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: colors.textMuted, marginBottom: "6px" }}>Team</label>
+              <select
+                value={formTeam}
+                onChange={(e) => setFormTeam(e.target.value)}
+                style={{ width: "100%", padding: "10px 14px", borderRadius: "8px", border: `1px solid ${colors.border}`, fontSize: "15px", outline: "none", background: "white", boxSizing: "border-box" }}
+              >
+                <option value="">Select a team...</option>
+                {teams.map((t) => (
+                  <option key={t.num} value={t.num}>Team {t.num}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: colors.textMuted, marginBottom: "6px" }}>Bet Amount ($)</label>
+              <input
+                type="number"
+                min="1"
+                placeholder="e.g. 50"
+                value={formAmount}
+                onChange={(e) => setFormAmount(e.target.value)}
+                style={{ width: "100%", padding: "10px 14px", borderRadius: "8px", border: `1px solid ${colors.border}`, fontSize: "15px", outline: "none", boxSizing: "border-box" }}
+              />
+            </div>
+            <div style={{ display: "flex", gap: "12px", marginTop: "4px" }}>
+              <button
+                onClick={handleSubmit}
+                disabled={submitting}
+                style={{
+                  background: colors.greenDark, color: "white", border: "none",
+                  padding: "12px 32px", borderRadius: "8px", cursor: submitting ? "not-allowed" : "pointer",
+                  fontSize: "15px", fontWeight: 700, fontFamily: "'Oswald', sans-serif",
+                  textTransform: "uppercase", letterSpacing: "0.5px",
+                  opacity: submitting ? 0.6 : 1,
+                }}
+              >
+                {submitting ? "Placing..." : "Submit Bet"}
+              </button>
+              <button
+                onClick={() => { setShowForm(false); setMessage(null); }}
+                style={{
+                  background: "transparent", color: colors.textMuted, border: `1px solid ${colors.border}`,
+                  padding: "12px 24px", borderRadius: "8px", cursor: "pointer",
+                  fontSize: "15px", fontWeight: 500,
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </Card>
+      )}
+
+      {!isOpen && (
+        <Card style={{ textAlign: "center", padding: "24px", marginBottom: "24px" }}>
+          <p style={{ margin: 0, fontSize: "15px", fontWeight: 600, color: colors.text }}>Betting is currently closed.</p>
+        </Card>
+      )}
+
+      {/* Success/Error Messages */}
+      {message && (
+        <div style={{
+          padding: "14px 20px", borderRadius: "8px", marginBottom: "24px",
+          background: message.type === "success" ? "#f0fdf4" : "#fef2f2",
+          border: `1px solid ${message.type === "success" ? "#86efac" : "#fecaca"}`,
+          color: message.type === "success" ? "#166534" : "#991b1b",
+          fontSize: "14px", fontWeight: 500,
+        }}>
+          {message.text}
+        </div>
+      )}
+
+      {/* Info */}
+      <div style={{ padding: "20px", background: "#f5f5f4", borderRadius: "12px", fontSize: "13px", color: colors.textMuted, lineHeight: 1.6 }}>
+        <strong style={{ color: colors.text }}>How it works:</strong> Place your bets on any team. The odds update live based on the total pool. After the tournament, the entire pool is divided among bettors who picked the winning team, proportional to their bet size. All payments are collected and distributed by the SGP Classic committee outside of this website.
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
 // APP
 // ═══════════════════════════════════════════════════════════════
 
@@ -2056,6 +2333,8 @@ export default function App() {
         return <PlayerDetailPage name={page.name} setPage={setPage} />;
       case "parimutuel":
         return <ParimutuelPage setPage={setPage} />;
+      case "live-betting":
+        return <LiveBettingPage />;
       case "rules":
         return <RulesPage />;
       case "course-legend":
