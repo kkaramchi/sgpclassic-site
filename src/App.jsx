@@ -1090,12 +1090,47 @@ function Breadcrumb({ items, onNavigate }) {
 
 function HomePage({ setPage }) {
   const mobile = useIsMobile();
+
+  // Compute top 5 career earners from prize pool
+  const moneyList = useMemo(() => {
+    const earnings = {};
+    Object.values(TOURNAMENTS).forEach((t) => {
+      t.teams.forEach((team) => {
+        const result = t.leaderboard.find((l) => l.teamNum === team.num);
+        if (result && result.prize) {
+          const share = result.prize / 2;
+          [team.p1, team.p2].forEach((name) => {
+            earnings[name] = (earnings[name] || 0) + share;
+          });
+        }
+      });
+    });
+    return Object.entries(earnings)
+      .map(([name, total]) => ({ name, total }))
+      .sort((a, b) => b.total - a.total)
+      .slice(0, 5);
+  }, []);
+
   return (
     <div>
       {/* Hero — Upcoming Tournament */}
       <div style={{ background: `linear-gradient(135deg, ${colors.greenDark} 0%, #166534 100%)`, borderRadius: mobile ? "12px" : "16px", padding: mobile ? "28px 20px" : "48px 40px", marginBottom: "32px", color: "white", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", top: "-40px", right: "-20px", opacity: 0.08, fontSize: "200px", fontWeight: 900 }}>9</div>
-        <div style={{ position: "relative" }}>
+        {/* Top 5 Money List — top right */}
+        {!mobile && (
+          <div style={{ position: "absolute", top: "20px", right: "24px", width: "240px" }}>
+            <div style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "1.5px", opacity: 0.6, marginBottom: "8px", fontFamily: "'DM Sans', sans-serif" }}>Career Money List</div>
+            {moneyList.map((p, i) => (
+              <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "5px 0", borderBottom: i < moneyList.length - 1 ? "1px solid rgba(255,255,255,0.1)" : "none" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <span style={{ fontSize: "12px", fontWeight: 700, color: i === 0 ? colors.goldLight : "rgba(255,255,255,0.5)", width: "18px" }}>{i + 1}.</span>
+                  <span style={{ fontSize: "13px", fontWeight: i === 0 ? 700 : 400, color: i === 0 ? "white" : "rgba(255,255,255,0.8)" }}>{p.name.split(" ")[0][0] + ". " + p.name.split(" ").pop()}</span>
+                </div>
+                <span style={{ fontSize: "13px", fontWeight: 700, color: i === 0 ? colors.goldLight : "rgba(255,255,255,0.7)" }}>${p.total.toLocaleString()}</span>
+              </div>
+            ))}
+          </div>
+        )}
+        <div style={{ position: "relative", maxWidth: mobile ? "100%" : "calc(100% - 280px)" }}>
           <div style={{ fontSize: mobile ? "12px" : "14px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", opacity: 0.8, marginBottom: "8px", fontFamily: "'DM Sans', sans-serif" }}>Year 9</div>
           <img src={process.env.PUBLIC_URL + "/logo-white.png"} alt="SGP Classic" style={{ height: mobile ? "50px" : "80px", objectFit: "contain", marginBottom: "8px" }} />
           <h1 style={{ fontSize: mobile ? "28px" : "42px", fontWeight: 700, margin: "0 0 8px 0", letterSpacing: "1px", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase" }}>SGP Classic 2026</h1>
@@ -1119,6 +1154,20 @@ function HomePage({ setPage }) {
               <div style={{ fontSize: "14px", color: colors.goldLight, fontWeight: 600 }}>Legend Course &middot; Tee Times Every 10 Min</div>
             </div>
           </div>
+          {mobile && (
+            <div style={{ marginTop: "20px", background: "rgba(255,255,255,0.08)", borderRadius: "10px", padding: "14px 16px" }}>
+              <div style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "1.5px", opacity: 0.6, marginBottom: "8px", fontFamily: "'DM Sans', sans-serif" }}>Career Money List</div>
+              {moneyList.map((p, i) => (
+                <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "4px 0", borderBottom: i < moneyList.length - 1 ? "1px solid rgba(255,255,255,0.1)" : "none" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <span style={{ fontSize: "12px", fontWeight: 700, color: i === 0 ? colors.goldLight : "rgba(255,255,255,0.5)", width: "18px" }}>{i + 1}.</span>
+                    <span style={{ fontSize: "13px", fontWeight: i === 0 ? 700 : 400, color: i === 0 ? "white" : "rgba(255,255,255,0.8)" }}>{p.name.split(" ")[0][0] + ". " + p.name.split(" ").pop()}</span>
+                  </div>
+                  <span style={{ fontSize: "13px", fontWeight: 700, color: i === 0 ? colors.goldLight : "rgba(255,255,255,0.7)" }}>${p.total.toLocaleString()}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
