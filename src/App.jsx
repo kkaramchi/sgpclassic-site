@@ -1123,7 +1123,7 @@ function HomePage({ setPage }) {
             {moneyList.map((p, i) => (
               <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "5px 0", borderBottom: i < moneyList.length - 1 ? "1px solid rgba(255,255,255,0.1)" : "none" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                  <span style={{ fontSize: "12px", fontWeight: 700, color: i === 0 ? colors.goldLight : "rgba(255,255,255,0.5)", width: "24px" }}>{(() => { let rank = i + 1; while (rank > 1 && moneyList[rank - 2].total === p.total) rank--; return (rank !== i + 1 ? "T" : "") + rank; })()}.</span>
+                  <span style={{ fontSize: "12px", fontWeight: 700, color: i === 0 ? colors.goldLight : "rgba(255,255,255,0.5)", width: "24px" }}>{(() => { let rank = i + 1; while (rank > 1 && moneyList[rank - 2].total === p.total) rank--; const tied = (i > 0 && moneyList[i - 1].total === p.total) || (i < moneyList.length - 1 && moneyList[i + 1].total === p.total); return (tied ? "T" : "") + rank; })()}.</span>
                   <span style={{ fontSize: "13px", fontWeight: i === 0 ? 700 : 400, color: i === 0 ? "white" : "rgba(255,255,255,0.8)" }}>{p.name.split(" ")[0][0] + ". " + p.name.split(" ").pop()}</span>
                 </div>
                 <span style={{ fontSize: "13px", fontWeight: 700, color: i === 0 ? colors.goldLight : "rgba(255,255,255,0.7)" }}>${p.total.toLocaleString()}</span>
@@ -1161,7 +1161,7 @@ function HomePage({ setPage }) {
               {moneyList.map((p, i) => (
                 <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "4px 0", borderBottom: i < moneyList.length - 1 ? "1px solid rgba(255,255,255,0.1)" : "none" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                    <span style={{ fontSize: "12px", fontWeight: 700, color: i === 0 ? colors.goldLight : "rgba(255,255,255,0.5)", width: "24px" }}>{(() => { let rank = i + 1; while (rank > 1 && moneyList[rank - 2].total === p.total) rank--; return (rank !== i + 1 ? "T" : "") + rank; })()}.</span>
+                    <span style={{ fontSize: "12px", fontWeight: 700, color: i === 0 ? colors.goldLight : "rgba(255,255,255,0.5)", width: "24px" }}>{(() => { let rank = i + 1; while (rank > 1 && moneyList[rank - 2].total === p.total) rank--; const tied = (i > 0 && moneyList[i - 1].total === p.total) || (i < moneyList.length - 1 && moneyList[i + 1].total === p.total); return (tied ? "T" : "") + rank; })()}.</span>
                     <span style={{ fontSize: "13px", fontWeight: i === 0 ? 700 : 400, color: i === 0 ? "white" : "rgba(255,255,255,0.8)" }}>{p.name.split(" ")[0][0] + ". " + p.name.split(" ").pop()}</span>
                   </div>
                   <span style={{ fontSize: "13px", fontWeight: 700, color: i === 0 ? colors.goldLight : "rgba(255,255,255,0.7)" }}>${p.total.toLocaleString()}</span>
