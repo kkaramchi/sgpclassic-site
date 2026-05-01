@@ -1105,10 +1105,11 @@ function HomePage({ setPage }) {
         }
       });
     });
-    return Object.entries(earnings)
+    const sorted = Object.entries(earnings)
       .map(([name, total]) => ({ name, total }))
-      .sort((a, b) => b.total - a.total)
-      .slice(0, 10);
+      .sort((a, b) => b.total - a.total);
+    const cutoff = sorted[9]?.total || 0;
+    return sorted.filter((p, i) => i < 10 || p.total === cutoff);
   }, []);
 
   return (
