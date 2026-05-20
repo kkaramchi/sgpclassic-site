@@ -1190,23 +1190,23 @@ function HomePage({ setPage }) {
       <SectionTitle icon={Calendar}>Upcoming Dates</SectionTitle>
       <div style={{ display: "grid", gap: "0", marginBottom: "32px", borderRadius: "12px", border: `1px solid ${colors.border}`, overflow: "hidden" }}>
         {[
-          { date: "May 20", detail: "9:00 PM", label: "Live Draft", desc: "Random draw to select teams", icon: Users, past: new Date("2026-05-20T21:00:00") < new Date(), link: "live-draft" },
+          { date: "May 20", detail: "9:00 PM", label: "Live Draft — TONIGHT!", desc: "Click here to watch the live draft", icon: Users, past: new Date("2026-05-20T21:00:00") < new Date(), link: "live-draft", highlight: true },
           { date: "Jun 11", detail: "", label: "Parimutuel Opens", desc: "Betting window opens for all participants", icon: DollarSign, past: new Date("2026-06-11") < new Date() },
           { date: "Jun 28", detail: "", label: "Handicaps Lock", desc: "Final handicap index recorded for tournament play", icon: Flag, past: new Date("2026-06-28") < new Date() },
           { date: "Jul 11", detail: "", label: "Tournament Day", desc: "SGP Classic Year 9 at Woodington Lake Golf Club", icon: Trophy, past: new Date("2026-07-11") < new Date() },
         ].map((evt, i, arr) => {
           const Icon = evt.icon;
           return (
-            <div key={i} onClick={evt.link ? () => setPage({ id: evt.link }) : undefined} style={{ display: "flex", alignItems: "center", gap: "16px", padding: "16px 20px", background: evt.past ? "#f0fdf4" : "white", borderBottom: i < arr.length - 1 ? `1px solid ${colors.border}` : "none", cursor: evt.link ? "pointer" : "default" }}>
+            <div key={i} onClick={evt.link ? () => setPage({ id: evt.link }) : undefined} style={{ display: "flex", alignItems: "center", gap: "16px", padding: "16px 20px", background: evt.highlight ? "#fef2f2" : evt.past ? "#f0fdf4" : "white", borderBottom: i < arr.length - 1 ? `1px solid ${colors.border}` : "none", cursor: evt.link ? "pointer" : "default", borderLeft: evt.highlight ? "4px solid #dc2626" : "none" }}>
               <div style={{ width: "72px", flexShrink: 0, textAlign: "center" }}>
-                <div style={{ fontSize: "16px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", color: evt.past ? colors.green : colors.greenDark }}>{evt.date}</div>
+                <div style={{ fontSize: "16px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", color: evt.highlight ? "#dc2626" : evt.past ? colors.green : colors.greenDark }}>{evt.date}</div>
                 {evt.detail && <div style={{ fontSize: "12px", color: colors.textMuted }}>{evt.detail}</div>}
               </div>
-              <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: evt.past ? colors.green : colors.greenDark, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: evt.highlight ? "#dc2626" : evt.past ? colors.green : colors.greenDark, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                 {evt.past ? <span style={{ color: "white", fontSize: "16px", fontWeight: 700 }}>&#10003;</span> : <Icon size={16} color="white" />}
               </div>
-              <div>
-                <div style={{ fontSize: "15px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>{evt.label}</div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: "15px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px", color: evt.highlight ? "#dc2626" : colors.text }}>{evt.label}</div>
                 <div style={{ fontSize: "13px", color: colors.textMuted }}>{evt.desc}</div>
               </div>
             </div>
@@ -2205,9 +2205,10 @@ function LiveDraftPage() {
       <div style={{ background: `linear-gradient(135deg, ${colors.greenDark} 0%, #166534 100%)`, borderRadius: "12px", padding: mobile ? "20px 16px" : "28px 32px", marginBottom: "24px", color: "white", textAlign: "center" }}>
         <div style={{ fontSize: "12px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", opacity: 0.7, marginBottom: "6px", fontFamily: "'DM Sans', sans-serif" }}>SGP Classic 2026</div>
         <h1 style={{ fontSize: mobile ? "28px" : "36px", fontWeight: 700, margin: "0 0 8px 0", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "1px" }}>Live Draft</h1>
+        <a href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_NWExNGI1M2MtMDVmNy00MDI0LWEzZTktMDk5Nzc5N2FkYTA1%40thread.v2/0?context=%7b%22Tid%22%3a%2276faa95d-4afc-49ed-aac9-3dda68a2a082%22%2c%22Oid%22%3a%225e5682d5-5a82-400b-ac1a-5b40875592c6%22%7d" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", background: colors.goldLight, color: colors.greenDark, padding: "10px 24px", borderRadius: "8px", fontWeight: 700, fontSize: "14px", textDecoration: "none", marginBottom: "12px", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Join the Live Teams Call</a>
         {!draftComplete ? (
           <div style={{ fontSize: "16px", opacity: 0.85 }}>
-            Pick #{nextPickNum} of 20 &mdash; <span style={{ color: colors.goldLight, fontWeight: 700 }}>Team {nextTeam}</span> is on the clock
+            Pick {nextPickNum} of 20
           </div>
         ) : (
           <div style={{ fontSize: "18px", color: colors.goldLight, fontWeight: 700 }}>Draft Complete!</div>
