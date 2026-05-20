@@ -1,4 +1,10 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  "https://bamerxmzzlolqzqnzidr.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJhbWVyeG16emxvbHF6cW56aWRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzMDc4OTAsImV4cCI6MjA5NDg4Mzg5MH0.smf-SL5q9oFqKv2JoNtIzl3a4zMWENGyrYCkze3RC3Q"
+);
 
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(typeof window !== "undefined" ? window.innerWidth < breakpoint : false);
@@ -1184,14 +1190,14 @@ function HomePage({ setPage }) {
       <SectionTitle icon={Calendar}>Upcoming Dates</SectionTitle>
       <div style={{ display: "grid", gap: "0", marginBottom: "32px", borderRadius: "12px", border: `1px solid ${colors.border}`, overflow: "hidden" }}>
         {[
-          { date: "May 20", detail: "9:00 PM", label: "Live Draft", desc: "Random draw to select teams", icon: Users, past: new Date("2026-05-20T21:00:00") < new Date() },
+          { date: "May 20", detail: "9:00 PM", label: "Live Draft", desc: "Random draw to select teams", icon: Users, past: new Date("2026-05-20T21:00:00") < new Date(), link: "live-draft" },
           { date: "Jun 11", detail: "", label: "Parimutuel Opens", desc: "Betting window opens for all participants", icon: DollarSign, past: new Date("2026-06-11") < new Date() },
           { date: "Jun 28", detail: "", label: "Handicaps Lock", desc: "Final handicap index recorded for tournament play", icon: Flag, past: new Date("2026-06-28") < new Date() },
           { date: "Jul 11", detail: "", label: "Tournament Day", desc: "SGP Classic Year 9 at Woodington Lake Golf Club", icon: Trophy, past: new Date("2026-07-11") < new Date() },
         ].map((evt, i, arr) => {
           const Icon = evt.icon;
           return (
-            <div key={i} style={{ display: "flex", alignItems: "center", gap: "16px", padding: "16px 20px", background: evt.past ? "#f0fdf4" : "white", borderBottom: i < arr.length - 1 ? `1px solid ${colors.border}` : "none" }}>
+            <div key={i} onClick={evt.link ? () => setPage({ id: evt.link }) : undefined} style={{ display: "flex", alignItems: "center", gap: "16px", padding: "16px 20px", background: evt.past ? "#f0fdf4" : "white", borderBottom: i < arr.length - 1 ? `1px solid ${colors.border}` : "none", cursor: evt.link ? "pointer" : "default" }}>
               <div style={{ width: "72px", flexShrink: 0, textAlign: "center" }}>
                 <div style={{ fontSize: "16px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", color: evt.past ? colors.green : colors.greenDark }}>{evt.date}</div>
                 {evt.detail && <div style={{ fontSize: "12px", color: colors.textMuted }}>{evt.detail}</div>}
@@ -1252,9 +1258,9 @@ function HomePage({ setPage }) {
       </Card>
 
       {/* Draft & Teams */}
-      <div style={{ padding: "24px", background: "#f5f5f4", borderRadius: "12px", textAlign: "center", color: colors.textMuted }}>
-        <p style={{ margin: "0 0 4px 0", fontSize: "15px", fontWeight: 600, color: colors.text }}>Live Draft — May 20th at 9:00 PM</p>
-        <p style={{ margin: 0, fontSize: "14px" }}>Teams will be selected via random draw. Link to join the live draft will be posted here.</p>
+      <div onClick={() => setPage({ id: "live-draft" })} style={{ padding: "24px", background: `linear-gradient(135deg, ${colors.greenDark} 0%, #166534 100%)`, borderRadius: "12px", textAlign: "center", color: "white", cursor: "pointer", transition: "transform 0.15s" }} onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-2px)"} onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}>
+        <p style={{ margin: "0 0 4px 0", fontSize: "18px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Live Draft — May 20th at 9:00 PM</p>
+        <p style={{ margin: 0, fontSize: "14px", opacity: 0.8 }}>Click here to watch the live draft board</p>
       </div>
     </div>
   );
@@ -2093,6 +2099,258 @@ function CourseGuidePage({ course, setPage }) {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// LIVE DRAFT PAGE
+
+const DRAFT_PLAYERS = [
+  "Reid Hartley", "Brendan Black", "Chris Williams", "Keon Karamchi",
+  "Chris Statchuk", "Paul Statchuk", "Anthony Laud", "Andrew Carlson",
+  "David Carlson", "Dave MacDougall", "Nolan Rundle", "Kevin Kernohan",
+  "Geoff Crain", "Mark Johnson", "Nick Crain", "Patrick Forbes",
+  "Joel Greaves", "Graham Booth", "Johnny D'Amato", "Trevor Williams",
+];
+
+// Round robin: picks 1-10 go Team 1-10, picks 11-20 go Team 1-10 again
+function getTeamForPick(pickNumber) {
+  return ((pickNumber - 1) % 10) + 1;
+}
+
+function LiveDraftPage() {
+  const mobile = useIsMobile();
+  const [picks, setPicks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [adminMode, setAdminMode] = useState(false);
+  const [adminCode, setAdminCode] = useState("");
+  const [lastPick, setLastPick] = useState(null);
+
+  const fetchPicks = useCallback(async () => {
+    const { data } = await supabase
+      .from("draft_picks")
+      .select("*")
+      .order("pick_number", { ascending: true });
+    if (data) setPicks(data);
+    setLoading(false);
+  }, []);
+
+  // Initial load + real-time subscription
+  useEffect(() => {
+    fetchPicks();
+    const channel = supabase
+      .channel("draft-live")
+      .on("postgres_changes", { event: "*", schema: "public", table: "draft_picks" }, () => {
+        fetchPicks();
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, [fetchPicks]);
+
+  // Track last pick for animation
+  useEffect(() => {
+    if (picks.length > 0) {
+      const latest = picks[picks.length - 1];
+      setLastPick(latest.player_name);
+      const timer = setTimeout(() => setLastPick(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [picks.length]);
+
+  const draftedNames = picks.map((p) => p.player_name);
+  const undrafted = DRAFT_PLAYERS.filter((n) => !draftedNames.includes(n));
+  const nextPickNum = picks.length + 1;
+  const nextTeam = nextPickNum <= 20 ? getTeamForPick(nextPickNum) : null;
+  const draftComplete = picks.length >= 20;
+
+  // Build teams from picks
+  const teams = {};
+  for (let t = 1; t <= 10; t++) teams[t] = { p1: null, p2: null };
+  picks.forEach((p) => {
+    const t = teams[p.team_number];
+    if (t) {
+      if (!t.p1) t.p1 = p.player_name;
+      else if (!t.p2) t.p2 = p.player_name;
+    }
+  });
+
+  const handleDraft = async (playerName) => {
+    if (!adminMode || !nextTeam) return;
+    await supabase.from("draft_picks").insert({
+      pick_number: nextPickNum,
+      player_name: playerName,
+      team_number: nextTeam,
+    });
+  };
+
+  const handleUndo = async () => {
+    if (!adminMode || picks.length === 0) return;
+    const lastPick = picks[picks.length - 1];
+    await supabase.from("draft_picks").delete().eq("id", lastPick.id);
+  };
+
+  const handleReset = async () => {
+    if (!adminMode) return;
+    if (!window.confirm("Are you sure you want to reset the entire draft?")) return;
+    await supabase.from("draft_picks").delete().neq("id", 0);
+  };
+
+  if (loading) {
+    return (
+      <div style={{ textAlign: "center", padding: "60px 20px" }}>
+        <div style={{ fontSize: "16px", color: colors.textMuted }}>Loading draft board...</div>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      {/* Draft Header */}
+      <div style={{ background: `linear-gradient(135deg, ${colors.greenDark} 0%, #166534 100%)`, borderRadius: "12px", padding: mobile ? "20px 16px" : "28px 32px", marginBottom: "24px", color: "white", textAlign: "center" }}>
+        <div style={{ fontSize: "12px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", opacity: 0.7, marginBottom: "6px", fontFamily: "'DM Sans', sans-serif" }}>SGP Classic 2026</div>
+        <h1 style={{ fontSize: mobile ? "28px" : "36px", fontWeight: 700, margin: "0 0 8px 0", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "1px" }}>Live Draft</h1>
+        {!draftComplete ? (
+          <div style={{ fontSize: "16px", opacity: 0.85 }}>
+            Pick #{nextPickNum} of 20 &mdash; <span style={{ color: colors.goldLight, fontWeight: 700 }}>Team {nextTeam}</span> is on the clock
+          </div>
+        ) : (
+          <div style={{ fontSize: "18px", color: colors.goldLight, fontWeight: 700 }}>Draft Complete!</div>
+        )}
+      </div>
+
+      {/* Admin Controls */}
+      {!adminMode ? (
+        <div style={{ marginBottom: "20px", textAlign: "right" }}>
+          <div style={{ display: "inline-flex", gap: "8px", alignItems: "center" }}>
+            <input
+              type="password"
+              placeholder="Admin code"
+              value={adminCode}
+              onChange={(e) => setAdminCode(e.target.value)}
+              style={{ padding: "6px 12px", borderRadius: "6px", border: `1px solid ${colors.border}`, fontSize: "13px", width: "120px" }}
+            />
+            <button
+              onClick={() => { if (adminCode === "sgp2026") setAdminMode(true); }}
+              style={{ padding: "6px 14px", borderRadius: "6px", border: "none", background: colors.greenDark, color: "white", fontSize: "13px", cursor: "pointer", fontWeight: 600 }}
+            >Enter</button>
+          </div>
+        </div>
+      ) : (
+        <div style={{ marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "8px" }}>
+          <div style={{ fontSize: "13px", color: colors.green, fontWeight: 600 }}>Admin Mode Active</div>
+          <div style={{ display: "flex", gap: "8px" }}>
+            <button onClick={handleUndo} disabled={picks.length === 0} style={{ padding: "6px 14px", borderRadius: "6px", border: `1px solid ${colors.border}`, background: "white", fontSize: "13px", cursor: "pointer", fontWeight: 500, opacity: picks.length === 0 ? 0.4 : 1 }}>Undo Last Pick</button>
+            <button onClick={handleReset} style={{ padding: "6px 14px", borderRadius: "6px", border: "1px solid #dc2626", background: "white", color: "#dc2626", fontSize: "13px", cursor: "pointer", fontWeight: 500 }}>Reset Draft</button>
+          </div>
+        </div>
+      )}
+
+      {/* Undrafted Pool — only show if draft not complete */}
+      {!draftComplete && undrafted.length > 0 && (
+        <div style={{ marginBottom: "28px" }}>
+          <div style={{ fontSize: "14px", fontWeight: 600, color: colors.textMuted, marginBottom: "10px", textTransform: "uppercase", letterSpacing: "1px", fontFamily: "'DM Sans', sans-serif" }}>
+            Available Players ({undrafted.length})
+          </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+            {undrafted.map((name) => (
+              <button
+                key={name}
+                onClick={() => adminMode && handleDraft(name)}
+                style={{
+                  padding: "10px 16px", borderRadius: "8px",
+                  border: `2px solid ${adminMode ? colors.greenDark : colors.border}`,
+                  background: adminMode ? "white" : "#f5f5f4",
+                  cursor: adminMode ? "pointer" : "default",
+                  fontSize: "14px", fontWeight: 600,
+                  color: adminMode ? colors.greenDark : colors.text,
+                  transition: "all 0.15s",
+                }}
+                onMouseEnter={(e) => { if (adminMode) { e.currentTarget.style.background = colors.greenDark; e.currentTarget.style.color = "white"; } }}
+                onMouseLeave={(e) => { if (adminMode) { e.currentTarget.style.background = "white"; e.currentTarget.style.color = colors.greenDark; } }}
+              >
+                {name}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Last Pick Animation */}
+      {lastPick && (
+        <div style={{
+          textAlign: "center", padding: "16px", marginBottom: "20px",
+          background: `linear-gradient(135deg, ${colors.greenDark}, #166534)`,
+          borderRadius: "10px", color: "white",
+          animation: "fadeIn 0.3s ease-in",
+        }}>
+          <div style={{ fontSize: "13px", textTransform: "uppercase", letterSpacing: "1px", opacity: 0.7, marginBottom: "4px" }}>Pick #{picks.length}</div>
+          <div style={{ fontSize: mobile ? "22px" : "28px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif" }}>{lastPick}</div>
+          <div style={{ fontSize: "14px", color: colors.goldLight, fontWeight: 600, marginTop: "2px" }}>Team {picks[picks.length - 1]?.team_number}</div>
+        </div>
+      )}
+
+      {/* Teams Grid */}
+      <div style={{ fontSize: "14px", fontWeight: 600, color: colors.textMuted, marginBottom: "10px", textTransform: "uppercase", letterSpacing: "1px", fontFamily: "'DM Sans', sans-serif" }}>
+        Teams
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: mobile ? "repeat(2, 1fr)" : "repeat(5, 1fr)", gap: "12px", marginBottom: "28px" }}>
+        {Array.from({ length: 10 }, (_, i) => i + 1).map((tNum) => {
+          const team = teams[tNum];
+          const isOnClock = nextTeam === tNum && !draftComplete;
+          return (
+            <div key={tNum} style={{
+              borderRadius: "10px", overflow: "hidden",
+              border: isOnClock ? `2px solid ${colors.goldLight}` : `1px solid ${colors.border}`,
+              boxShadow: isOnClock ? `0 0 12px rgba(166,135,0,0.3)` : "none",
+              transition: "all 0.3s",
+            }}>
+              <div style={{
+                background: isOnClock ? colors.goldLight : colors.greenDark,
+                color: isOnClock ? colors.greenDark : "white",
+                padding: "8px 12px", textAlign: "center",
+                fontWeight: 700, fontSize: "14px", fontFamily: "'DM Sans', sans-serif",
+              }}>
+                Team {tNum}
+              </div>
+              <div style={{ background: "white", padding: "10px 12px", minHeight: "64px" }}>
+                <div style={{
+                  fontSize: "14px", fontWeight: 600, color: team.p1 ? colors.text : colors.textMuted,
+                  padding: "4px 0", borderBottom: `1px solid ${colors.border}`,
+                  opacity: team.p1 ? 1 : 0.4,
+                }}>
+                  {team.p1 || "—"}
+                </div>
+                <div style={{
+                  fontSize: "14px", fontWeight: 600, color: team.p2 ? colors.text : colors.textMuted,
+                  padding: "4px 0",
+                  opacity: team.p2 ? 1 : 0.4,
+                }}>
+                  {team.p2 || "—"}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Pick History */}
+      {picks.length > 0 && (
+        <div>
+          <div style={{ fontSize: "14px", fontWeight: 600, color: colors.textMuted, marginBottom: "10px", textTransform: "uppercase", letterSpacing: "1px", fontFamily: "'DM Sans', sans-serif" }}>
+            Pick History
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: "6px" }}>
+            {picks.map((p) => (
+              <div key={p.pick_number} style={{ display: "flex", alignItems: "center", gap: "8px", padding: "8px 12px", background: "#f5f5f4", borderRadius: "6px", fontSize: "13px" }}>
+                <span style={{ fontWeight: 700, color: colors.greenDark, minWidth: "28px" }}>#{p.pick_number}</span>
+                <span style={{ fontWeight: 500 }}>{p.player_name}</span>
+                <span style={{ marginLeft: "auto", color: colors.textMuted, fontSize: "12px" }}>T{p.team_number}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
 // LIVE BETTING PAGE
 // ═══════════════════════════════════════════════════════════════
 
@@ -2385,6 +2643,8 @@ export default function App() {
         return <ParimutuelPage setPage={setPage} />;
       case "live-betting":
         return <LiveBettingPage />;
+      case "live-draft":
+        return <LiveDraftPage />;
       case "rules":
         return <RulesPage />;
       case "course-legend":
