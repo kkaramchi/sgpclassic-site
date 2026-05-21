@@ -1190,7 +1190,7 @@ function HomePage({ setPage }) {
       <SectionTitle icon={Calendar}>Upcoming Dates</SectionTitle>
       <div style={{ display: "grid", gap: "0", marginBottom: "32px", borderRadius: "12px", border: `1px solid ${colors.border}`, overflow: "hidden" }}>
         {[
-          { date: "May 20", detail: "9:00 PM", label: "Live Draft — TONIGHT!", desc: "Click here to watch the live draft", icon: Users, past: new Date("2026-05-20T21:00:00") < new Date(), link: "live-draft", highlight: true },
+          { date: "May 20", detail: "9:00 PM", label: "Live Draft — Complete", desc: "View the draft results and team rosters", icon: Users, past: true, link: "live-draft" },
           { date: "Jun 11", detail: "", label: "Parimutuel Opens", desc: "Betting window opens for all participants", icon: DollarSign, past: new Date("2026-06-11") < new Date() },
           { date: "Jun 28", detail: "", label: "Handicaps Lock", desc: "Final handicap index recorded for tournament play", icon: Flag, past: new Date("2026-06-28") < new Date() },
           { date: "Jul 11", detail: "", label: "Tournament Day", desc: "SGP Classic Year 9 at Woodington Lake Golf Club", icon: Trophy, past: new Date("2026-07-11") < new Date() },
@@ -1214,13 +1214,27 @@ function HomePage({ setPage }) {
         })}
       </div>
 
-      {/* The Field */}
-      <SectionTitle icon={Users}>The Field — 20 Players</SectionTitle>
-      <div style={{ display: "grid", gridTemplateColumns: mobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: "8px", marginBottom: "32px" }}>
-        {["Reid Hartley", "Brendan Black", "Chris Williams", "Keon Karamchi", "Chris Statchuk", "Paul Statchuk", "Anthony Laud", "Andrew Carlson", "David Carlson", "Dave MacDougall", "Nolan Rundle", "Kevin Kernohan", "Geoff Crain", "Mark Johnson", "Nick Crain", "Patrick Forbes", "Joel Greaves", "Graham Booth", "Johnny D'Amato", "Trevor Williams"].map((name, i) => (
-          <div key={i} style={{ background: "#f5f5f4", borderRadius: "10px", padding: "12px 14px", display: "flex", alignItems: "center", gap: "10px" }}>
-            <User size={16} color={colors.green} />
-            <span style={{ fontSize: "14px", fontWeight: 600 }}>{name}</span>
+      {/* Teams */}
+      <SectionTitle icon={Users}>2026 Teams</SectionTitle>
+      <div style={{ display: "grid", gridTemplateColumns: mobile ? "repeat(2, 1fr)" : "repeat(5, 1fr)", gap: "10px", marginBottom: "32px" }}>
+        {[
+          { num: 1, p1: "Reid Hartley", p2: "Joel Greaves" },
+          { num: 2, p1: "Anthony Laud", p2: "Trevor Williams" },
+          { num: 3, p1: "Mark Johnson", p2: "Graham Booth" },
+          { num: 4, p1: "Geoff Crain", p2: "David Carlson" },
+          { num: 5, p1: "Nolan Rundle", p2: "Keon Karamchi" },
+          { num: 6, p1: "Andrew Carlson", p2: "Nick Crain" },
+          { num: 7, p1: "Brendan Black", p2: "Paul Statchuk" },
+          { num: 8, p1: "Patrick Forbes", p2: "Dave MacDougall" },
+          { num: 9, p1: "Chris Williams", p2: "Chris Statchuk" },
+          { num: 10, p1: "Johnny D'Amato", p2: "Kevin Kernohan" },
+        ].map((team) => (
+          <div key={team.num} style={{ background: "white", borderRadius: "10px", overflow: "hidden", border: `1px solid ${colors.border}` }}>
+            <div style={{ background: colors.greenDark, color: "white", padding: "8px 12px", fontSize: "13px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px", textAlign: "center" }}>Team {team.num}</div>
+            <div style={{ padding: "10px 12px" }}>
+              <div style={{ fontSize: "13px", fontWeight: 600, marginBottom: "4px" }}>{team.p1}</div>
+              <div style={{ fontSize: "13px", fontWeight: 600, color: colors.textMuted }}>{team.p2}</div>
+            </div>
           </div>
         ))}
       </div>
@@ -1257,10 +1271,10 @@ function HomePage({ setPage }) {
         </table>
       </Card>
 
-      {/* Draft & Teams */}
-      <div onClick={() => setPage({ id: "live-draft" })} style={{ padding: "24px", background: `linear-gradient(135deg, ${colors.greenDark} 0%, #166534 100%)`, borderRadius: "12px", textAlign: "center", color: "white", cursor: "pointer", transition: "transform 0.15s" }} onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-2px)"} onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}>
-        <p style={{ margin: "0 0 4px 0", fontSize: "18px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Live Draft — May 20th at 9:00 PM</p>
-        <p style={{ margin: 0, fontSize: "14px", opacity: 0.8 }}>Click here to watch the live draft board</p>
+      {/* Draft Results Link */}
+      <div onClick={() => setPage({ id: "live-draft" })} style={{ padding: "20px 24px", background: `linear-gradient(135deg, ${colors.greenDark} 0%, #166534 100%)`, borderRadius: "12px", textAlign: "center", color: "white", cursor: "pointer", transition: "transform 0.15s" }} onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-2px)"} onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}>
+        <p style={{ margin: "0 0 4px 0", fontSize: "16px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>&#10003; Draft Complete — View Full Draft Board</p>
+        <p style={{ margin: 0, fontSize: "13px", opacity: 0.8 }}>See the pick-by-pick results from May 20th</p>
       </div>
     </div>
   );
@@ -2118,7 +2132,7 @@ function LiveDraftPage() {
   const mobile = useIsMobile();
   const [picks, setPicks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [adminMode, setAdminMode] = useState(false);
+  const [adminMode, setAdminMode] = useState(() => typeof window !== "undefined" && sessionStorage.getItem("sgp-draft-admin") === "true");
   const [adminCode, setAdminCode] = useState("");
   const [lastPick, setLastPick] = useState(null);
 
@@ -2227,7 +2241,7 @@ function LiveDraftPage() {
               style={{ padding: "6px 12px", borderRadius: "6px", border: `1px solid ${colors.border}`, fontSize: "13px", width: "120px" }}
             />
             <button
-              onClick={() => { if (adminCode === "sgp2026") setAdminMode(true); }}
+              onClick={() => { if (adminCode === "sgp2026") { setAdminMode(true); try { sessionStorage.setItem("sgp-draft-admin", "true"); } catch(e) {} } }}
               style={{ padding: "6px 14px", borderRadius: "6px", border: "none", background: colors.greenDark, color: "white", fontSize: "13px", cursor: "pointer", fontWeight: 600 }}
             >Enter</button>
           </div>
