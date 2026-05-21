@@ -1141,7 +1141,10 @@ function HomePage({ setPage }) {
           <div style={{ fontSize: mobile ? "12px" : "14px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", opacity: 0.8, marginBottom: "8px", fontFamily: "'DM Sans', sans-serif" }}>Year 9</div>
           <img src={process.env.PUBLIC_URL + "/logo-white.png"} alt="SGP Classic" style={{ height: mobile ? "50px" : "80px", objectFit: "contain", marginBottom: "8px" }} />
           <h1 style={{ fontSize: mobile ? "28px" : "42px", fontWeight: 700, margin: "0 0 8px 0", letterSpacing: "1px", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase" }}>SGP Classic 2026</h1>
-          <p style={{ fontSize: mobile ? "15px" : "18px", opacity: 0.85, margin: "0 0 28px 0" }}>Woodington Lake Golf Club &middot; Tottenham, ON</p>
+          <p style={{ fontSize: mobile ? "15px" : "18px", opacity: 0.85, margin: "0 0 16px 0" }}>Woodington Lake Golf Club &middot; Tottenham, ON</p>
+          <div onClick={() => setPage({ id: "live-betting" })} style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: colors.goldLight, color: colors.greenDark, padding: mobile ? "10px 20px" : "12px 28px", borderRadius: "8px", fontSize: mobile ? "14px" : "16px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "1px", cursor: "pointer", marginBottom: "20px", transition: "transform 0.15s, box-shadow 0.15s", boxShadow: "0 4px 12px rgba(0,0,0,0.3)" }} onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 6px 16px rgba(0,0,0,0.4)"; }} onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.3)"; }}>
+            <DollarSign size={18} /> Place Your Bets — Live Parimutuel
+          </div>
           <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3, auto)", gap: mobile ? "10px" : "16px" }}>
             <div style={{ background: "rgba(255,255,255,0.12)", borderRadius: "10px", padding: "14px 20px" }}>
               <Calendar size={18} style={{ marginBottom: "6px", opacity: 0.8 }} />
@@ -1233,7 +1236,7 @@ function HomePage({ setPage }) {
             <div style={{ background: colors.greenDark, color: "white", padding: "8px 12px", fontSize: "13px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px", textAlign: "center" }}>Team {team.num}</div>
             <div style={{ padding: "10px 12px" }}>
               <div style={{ fontSize: "13px", fontWeight: 600, marginBottom: "4px" }}>{team.p1}</div>
-              <div style={{ fontSize: "13px", fontWeight: 600, color: colors.textMuted }}>{team.p2}</div>
+              <div style={{ fontSize: "13px", fontWeight: 600 }}>{team.p2}</div>
             </div>
           </div>
         ))}
@@ -1251,9 +1254,9 @@ function HomePage({ setPage }) {
           </thead>
           <tbody>
             {[
-              { item: "Round 1", cost: "$120.00" },
-              { item: "Round 2", cost: "$115.00" },
-              { item: "HST", cost: "$30.55" },
+              { item: "Round 1", cost: "$132.87" },
+              { item: "Round 2", cost: "$112.27" },
+              { item: "HST", cost: "$31.87" },
               { item: "Golfify Fee", cost: "$5.00" },
               { item: "After Party", cost: "$30.00" },
               { item: "Prize Pool", cost: "$60.00" },
@@ -1265,7 +1268,7 @@ function HomePage({ setPage }) {
             ))}
             <tr style={{ background: colors.greenDark }}>
               <td style={{ padding: "12px 20px", fontWeight: 700, fontSize: "15px", color: "white", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Total</td>
-              <td style={{ padding: "12px 20px", textAlign: "right", fontWeight: 700, fontSize: "18px", color: colors.goldLight, fontFamily: "'DM Sans', sans-serif" }}>$360.55</td>
+              <td style={{ padding: "12px 20px", textAlign: "right", fontWeight: 700, fontSize: "18px", color: colors.goldLight, fontFamily: "'DM Sans', sans-serif" }}>$372.01</td>
             </tr>
           </tbody>
         </table>
