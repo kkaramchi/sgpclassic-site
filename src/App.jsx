@@ -2456,6 +2456,7 @@ function LiveBettingPage() {
       name: formName.trim(),
       team: parseInt(formTeam),
       amount: amt,
+      user_agent: navigator.userAgent,
     });
 
     if (error) {
