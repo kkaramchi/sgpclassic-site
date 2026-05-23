@@ -2452,11 +2452,15 @@ function LiveBettingPage() {
     setSubmitting(true);
     setMessage(null);
 
+    let ip = "";
+    try { const ipRes = await fetch("https://api.ipify.org?format=json"); const ipData = await ipRes.json(); ip = ipData.ip; } catch (e) {}
+
     const { error } = await supabase.from('bets_2026').insert({
       name: formName.trim(),
       team: parseInt(formTeam),
       amount: amt,
       user_agent: navigator.userAgent,
+      ip_address: ip,
     });
 
     if (error) {
