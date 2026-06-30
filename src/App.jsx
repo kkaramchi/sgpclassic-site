@@ -2377,7 +2377,7 @@ const BETTING_TEAMS = [
   { num: 1, p1: "Reid Hartley", p2: "Joel Greaves", h1: 3, h2: 20, scramble: 4 },
   { num: 2, p1: "Anthony Laud", p2: "Trevor Williams", h1: 10, h2: 14, scramble: 6 },
   { num: 3, p1: "Mark Johnson", p2: "Graham Booth", h1: 22, h2: 13, scramble: 8 },
-  { num: 4, p1: "Geoff Crain", p2: "David Carlson", h1: 4, h2: 16, scramble: 4 },
+  { num: 4, p1: "Geoff Crain", p2: "David Carlson", h1: 4, h2: 23, scramble: 5 },
   { num: 5, p1: "Nolan Rundle", p2: "Keon Karamchi", h1: 22, h2: 14, scramble: 9 },
   { num: 6, p1: "Andrew Carlson", p2: "Nick Crain", h1: 25, h2: 11, scramble: 8 },
   { num: 7, p1: "Brendan Black", p2: "Paul Statchuk", h1: 5, h2: 8, scramble: 3 },
@@ -2510,62 +2510,6 @@ function LiveBettingPage() {
         </div>
       </div>
 
-      {/* Odds Board */}
-      <SectionTitle icon={TrendingUp}>Live Odds Board</SectionTitle>
-      <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(2, 1fr)", gap: "10px", marginBottom: "24px" }}>
-        {BETTING_TEAMS.map((team) => {
-          const teamPool = pools[team.num] || 0;
-          const odds = getOdds(team.num);
-          const pct = totalPool > 0 ? ((teamPool / totalPool) * 100).toFixed(1) : "0.0";
-          const isFlashing = flashTeam === team.num;
-          const lastName1 = team.p1.split(" ").pop().toUpperCase();
-          const lastName2 = team.p2.split(" ").pop().toUpperCase();
-          return (
-            <div key={team.num} style={{
-              background: isFlashing ? "#f0fdf4" : "white",
-              borderRadius: "10px",
-              border: `1px solid ${isFlashing ? colors.green : colors.border}`,
-              overflow: "hidden",
-              transition: "all 0.4s ease",
-              boxShadow: isFlashing ? `0 0 12px rgba(22,101,52,0.15)` : "none",
-            }}>
-              {/* Header */}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: mobile ? "8px 12px" : "10px 14px", background: colors.greenDark, color: "white" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                  <div style={{ fontSize: "20px", fontWeight: 800, fontFamily: "'DM Sans', sans-serif" }}>{team.num}</div>
-                  <div style={{ fontSize: "13px", fontWeight: 600 }}>{team.p1.split(" ").pop()} / {team.p2.split(" ").pop()}</div>
-                </div>
-                <div style={{ fontSize: mobile ? "20px" : "22px", fontWeight: 800, fontFamily: "'DM Sans', sans-serif", transition: "all 0.4s ease" }}>
-                  {odds > 0 ? `${odds.toFixed(1)}x` : "—"}
-                </div>
-              </div>
-              {/* Scorecard */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", textAlign: "center" }}>
-                <div style={{ padding: mobile ? "8px 6px" : "10px 8px", borderRight: `1px solid ${colors.border}` }}>
-                  <div style={{ fontSize: "10px", color: colors.textMuted, letterSpacing: "0.5px", marginBottom: "4px", fontWeight: 600 }}>{lastName1}</div>
-                  <div style={{ fontSize: "18px", fontWeight: 800, color: colors.greenDark, fontFamily: "'DM Sans', sans-serif" }}>{team.h1}</div>
-                  <div style={{ fontSize: "9px", color: colors.textMuted, letterSpacing: "0.3px", marginTop: "2px" }}>RD 1 CAP</div>
-                </div>
-                <div style={{ padding: mobile ? "8px 6px" : "10px 8px", borderRight: `1px solid ${colors.border}` }}>
-                  <div style={{ fontSize: "10px", color: colors.textMuted, letterSpacing: "0.5px", marginBottom: "4px", fontWeight: 600 }}>{lastName2}</div>
-                  <div style={{ fontSize: "18px", fontWeight: 800, color: colors.greenDark, fontFamily: "'DM Sans', sans-serif" }}>{team.h2}</div>
-                  <div style={{ fontSize: "9px", color: colors.textMuted, letterSpacing: "0.3px", marginTop: "2px" }}>RD 1 CAP</div>
-                </div>
-                <div style={{ padding: mobile ? "8px 6px" : "10px 8px", background: "#fff8e1" }}>
-                  <div style={{ fontSize: "9px", color: colors.goldLight, letterSpacing: "0.3px", marginBottom: "2px" }}>RD 2 CAP</div>
-                  <div style={{ fontSize: "22px", fontWeight: 800, color: "#7a6200", fontFamily: "'DM Sans', sans-serif", lineHeight: 1 }}>{team.scramble}</div>
-                  <div style={{ fontSize: "9px", color: colors.goldLight, letterSpacing: "0.3px", marginTop: "4px" }}>SCRAMBLE</div>
-                </div>
-              </div>
-              {/* Footer */}
-              <div style={{ fontSize: "12px", color: colors.textMuted, padding: "8px 14px", borderTop: `1px solid ${colors.border}` }}>
-                {teamPool > 0 ? `$${teamPool.toLocaleString()} wagered · ${pct}% of pool` : "No bets yet"}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
       {/* Place Bet Form */}
       {isOpen && (
         <div style={{ marginBottom: "24px" }}>
@@ -2641,6 +2585,69 @@ function LiveBettingPage() {
           <p style={{ margin: 0, fontSize: "16px", fontWeight: 700, color: "#991b1b", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Betting is currently closed</p>
         </Card>
       )}
+
+      {/* Odds Board */}
+      <SectionTitle icon={TrendingUp}>Live Odds Board</SectionTitle>
+      <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(2, 1fr)", gap: "10px", marginBottom: "24px" }}>
+        {[...BETTING_TEAMS].sort((a, b) => {
+          const oddsA = getOdds(a.num);
+          const oddsB = getOdds(b.num);
+          if (oddsA === 0 && oddsB === 0) return a.num - b.num;
+          if (oddsA === 0) return 1;
+          if (oddsB === 0) return -1;
+          return oddsA - oddsB;
+        }).map((team) => {
+          const teamPool = pools[team.num] || 0;
+          const odds = getOdds(team.num);
+          const pct = totalPool > 0 ? ((teamPool / totalPool) * 100).toFixed(1) : "0.0";
+          const isFlashing = flashTeam === team.num;
+          const lastName1 = team.p1.split(" ").pop().toUpperCase();
+          const lastName2 = team.p2.split(" ").pop().toUpperCase();
+          return (
+            <div key={team.num} style={{
+              background: isFlashing ? "#f0fdf4" : "white",
+              borderRadius: "10px",
+              border: `1px solid ${isFlashing ? colors.green : colors.border}`,
+              overflow: "hidden",
+              transition: "all 0.4s ease",
+              boxShadow: isFlashing ? `0 0 12px rgba(22,101,52,0.15)` : "none",
+            }}>
+              {/* Header */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: mobile ? "8px 12px" : "10px 14px", background: colors.greenDark, color: "white" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <div style={{ fontSize: "20px", fontWeight: 800, fontFamily: "'DM Sans', sans-serif" }}>{team.num}</div>
+                  <div style={{ fontSize: "13px", fontWeight: 600 }}>{team.p1.split(" ").pop()} / {team.p2.split(" ").pop()}</div>
+                </div>
+                <div style={{ fontSize: mobile ? "20px" : "22px", fontWeight: 800, fontFamily: "'DM Sans', sans-serif", transition: "all 0.4s ease" }}>
+                  {odds > 0 ? `${odds.toFixed(1)}x` : "—"}
+                </div>
+              </div>
+              {/* Scorecard */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", textAlign: "center" }}>
+                <div style={{ padding: mobile ? "8px 6px" : "10px 8px", borderRight: `1px solid ${colors.border}` }}>
+                  <div style={{ fontSize: "10px", color: colors.textMuted, letterSpacing: "0.5px", marginBottom: "4px", fontWeight: 600 }}>{lastName1}</div>
+                  <div style={{ fontSize: "18px", fontWeight: 800, color: colors.greenDark, fontFamily: "'DM Sans', sans-serif" }}>{team.h1}</div>
+                  <div style={{ fontSize: "9px", color: colors.textMuted, letterSpacing: "0.3px", marginTop: "2px" }}>RD 1 CAP</div>
+                </div>
+                <div style={{ padding: mobile ? "8px 6px" : "10px 8px", borderRight: `1px solid ${colors.border}` }}>
+                  <div style={{ fontSize: "10px", color: colors.textMuted, letterSpacing: "0.5px", marginBottom: "4px", fontWeight: 600 }}>{lastName2}</div>
+                  <div style={{ fontSize: "18px", fontWeight: 800, color: colors.greenDark, fontFamily: "'DM Sans', sans-serif" }}>{team.h2}</div>
+                  <div style={{ fontSize: "9px", color: colors.textMuted, letterSpacing: "0.3px", marginTop: "2px" }}>RD 1 CAP</div>
+                </div>
+                <div style={{ padding: mobile ? "8px 6px" : "10px 8px", background: "#fff8e1" }}>
+                  <div style={{ fontSize: "9px", color: colors.goldLight, letterSpacing: "0.3px", marginBottom: "2px" }}>RD 2 CAP</div>
+                  <div style={{ fontSize: "22px", fontWeight: 800, color: "#7a6200", fontFamily: "'DM Sans', sans-serif", lineHeight: 1 }}>{team.scramble}</div>
+                  <div style={{ fontSize: "9px", color: colors.goldLight, letterSpacing: "0.3px", marginTop: "4px" }}>SCRAMBLE</div>
+                </div>
+              </div>
+              {/* Footer */}
+              <div style={{ fontSize: "12px", color: colors.textMuted, padding: "8px 14px", borderTop: `1px solid ${colors.border}` }}>
+                {teamPool > 0 ? `$${teamPool.toLocaleString()} wagered · ${pct}% of pool` : "No bets yet"}
+              </div>
+            </div>
+          );
+        })}
+      </div>
 
       {/* How it works */}
       <div style={{ padding: "20px", background: "#f5f5f4", borderRadius: "12px", fontSize: "13px", color: colors.textMuted, lineHeight: 1.6 }}>
