@@ -2490,23 +2490,15 @@ function LiveBettingPage() {
   return (
     <div>
       {/* Header */}
-      <div style={{ background: `linear-gradient(135deg, ${colors.greenDark} 0%, #166534 100%)`, borderRadius: mobile ? "12px" : "16px", padding: mobile ? "24px 16px" : "36px 32px", marginBottom: "24px", color: "white", textAlign: "center" }}>
-        <div style={{ fontSize: "12px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", opacity: 0.7, marginBottom: "8px", fontFamily: "'DM Sans', sans-serif" }}>SGP Classic 2026</div>
-        <h1 style={{ fontSize: mobile ? "24px" : "36px", fontWeight: 800, margin: "0 0 8px 0", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "1px" }}>Live Parimutuel</h1>
-        <p style={{ margin: "0 0 20px 0", fontSize: "14px", opacity: 0.8 }}>Odds update in real time as bets come in</p>
-        <div style={{ display: "flex", justifyContent: "center", gap: mobile ? "12px" : "24px", flexWrap: "wrap" }}>
-          <div style={{ background: "rgba(255,255,255,0.12)", borderRadius: "10px", padding: "12px 20px", minWidth: mobile ? "90px" : "120px" }}>
-            <div style={{ fontSize: "11px", opacity: 0.6, marginBottom: "4px" }}>Status</div>
-            <div style={{ fontSize: "18px", fontWeight: 700, color: isOpen ? "#4ade80" : "#fca5a5" }}>{isOpen ? "OPEN" : "CLOSED"}</div>
-          </div>
-          <div style={{ background: "rgba(255,255,255,0.12)", borderRadius: "10px", padding: "12px 20px", minWidth: mobile ? "90px" : "120px" }}>
-            <div style={{ fontSize: "11px", opacity: 0.6, marginBottom: "4px" }}>Total Pool</div>
-            <div style={{ fontSize: "24px", fontWeight: 800, color: colors.goldLight }}>${totalPool.toLocaleString()}</div>
-          </div>
-          <div style={{ background: "rgba(255,255,255,0.12)", borderRadius: "10px", padding: "12px 20px", minWidth: mobile ? "90px" : "120px" }}>
-            <div style={{ fontSize: "11px", opacity: 0.6, marginBottom: "4px" }}>Total Bets</div>
-            <div style={{ fontSize: "24px", fontWeight: 800 }}>{bets.length}</div>
-          </div>
+      <div style={{ background: `linear-gradient(135deg, ${colors.greenDark} 0%, #166534 100%)`, borderRadius: "12px", padding: mobile ? "16px" : "20px 24px", marginBottom: "16px", color: "white", textAlign: "center" }}>
+        <div style={{ fontSize: "10px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", opacity: 0.7, marginBottom: "4px", fontFamily: "'DM Sans', sans-serif" }}>SGP Classic 2026</div>
+        <h1 style={{ fontSize: mobile ? "22px" : "28px", fontWeight: 800, margin: "0 0 8px 0", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "1px" }}>Live Parimutuel</h1>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "16px", fontSize: "13px" }}>
+          <span style={{ color: isOpen ? "#4ade80" : "#fca5a5", fontWeight: 700 }}>{isOpen ? "OPEN" : "CLOSED"}</span>
+          <span style={{ opacity: 0.4 }}>|</span>
+          <span><span style={{ opacity: 0.6 }}>Pool:</span> <span style={{ color: colors.goldLight, fontWeight: 800 }}>${totalPool.toLocaleString()}</span></span>
+          <span style={{ opacity: 0.4 }}>|</span>
+          <span><span style={{ opacity: 0.6 }}>Bets:</span> <span style={{ fontWeight: 700 }}>{bets.length}</span></span>
         </div>
       </div>
 
