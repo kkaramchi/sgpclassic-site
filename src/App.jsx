@@ -2532,8 +2532,8 @@ function LiveBettingPage() {
             }}>
               <div style={{ width: "44px", height: "44px", borderRadius: "10px", background: colors.greenDark, color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px", fontWeight: 800, flexShrink: 0, fontFamily: "'DM Sans', sans-serif" }}>{team.num}</div>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: "14px", fontWeight: 700, marginBottom: "2px" }}>{team.p1} <span style={{ fontSize: "11px", fontWeight: 500, color: colors.textMuted }}>({team.h1})</span> & {team.p2} <span style={{ fontSize: "11px", fontWeight: 500, color: colors.textMuted }}>({team.h2})</span></div>
-                <div style={{ fontSize: "11px", color: colors.goldLight, fontWeight: 600, marginBottom: "2px" }}>Scramble Cap: {team.scramble}</div>
+                <div style={{ fontSize: "14px", fontWeight: 700, marginBottom: "3px" }}>{team.p1} <span style={{ fontSize: "10px", fontWeight: 400, color: colors.textMuted, letterSpacing: "0.5px", textTransform: "uppercase" }}>RD 1 CAP: {team.h1}</span> & {team.p2} <span style={{ fontSize: "10px", fontWeight: 400, color: colors.textMuted, letterSpacing: "0.5px", textTransform: "uppercase" }}>RD 1 CAP: {team.h2}</span></div>
+                <div style={{ fontSize: "11px", color: colors.goldLight, fontWeight: 600, letterSpacing: "0.5px", textTransform: "uppercase", marginBottom: "3px" }}>SCRAMBLE CAP: {team.scramble}</div>
                 <div style={{ fontSize: "12px", color: colors.textMuted }}>
                   {teamPool > 0 ? `$${teamPool.toLocaleString()} wagered · ${pct}% of pool` : "No bets yet"}
                 </div>
