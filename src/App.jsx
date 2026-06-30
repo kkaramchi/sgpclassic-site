@@ -2518,31 +2518,48 @@ function LiveBettingPage() {
           const odds = getOdds(team.num);
           const pct = totalPool > 0 ? ((teamPool / totalPool) * 100).toFixed(1) : "0.0";
           const isFlashing = flashTeam === team.num;
+          const lastName1 = team.p1.split(" ").pop().toUpperCase();
+          const lastName2 = team.p2.split(" ").pop().toUpperCase();
           return (
             <div key={team.num} style={{
               background: isFlashing ? "#f0fdf4" : "white",
               borderRadius: "10px",
               border: `1px solid ${isFlashing ? colors.green : colors.border}`,
-              padding: mobile ? "12px" : "14px 16px",
-              display: "flex",
-              alignItems: "center",
-              gap: "12px",
+              overflow: "hidden",
               transition: "all 0.4s ease",
               boxShadow: isFlashing ? `0 0 12px rgba(22,101,52,0.15)` : "none",
             }}>
-              <div style={{ width: "44px", height: "44px", borderRadius: "10px", background: colors.greenDark, color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px", fontWeight: 800, flexShrink: 0, fontFamily: "'DM Sans', sans-serif" }}>{team.num}</div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: "14px", fontWeight: 700, marginBottom: "3px" }}>{team.p1} <span style={{ fontSize: "10px", fontWeight: 400, color: colors.textMuted, letterSpacing: "0.5px", textTransform: "uppercase" }}>RD 1 CAP: {team.h1}</span> & {team.p2} <span style={{ fontSize: "10px", fontWeight: 400, color: colors.textMuted, letterSpacing: "0.5px", textTransform: "uppercase" }}>RD 1 CAP: {team.h2}</span></div>
-                <div style={{ fontSize: "11px", color: colors.goldLight, fontWeight: 600, letterSpacing: "0.5px", textTransform: "uppercase", marginBottom: "3px" }}>SCRAMBLE CAP: {team.scramble}</div>
-                <div style={{ fontSize: "12px", color: colors.textMuted }}>
-                  {teamPool > 0 ? `$${teamPool.toLocaleString()} wagered · ${pct}% of pool` : "No bets yet"}
+              {/* Header */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: mobile ? "8px 12px" : "10px 14px", background: colors.greenDark, color: "white" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <div style={{ fontSize: "20px", fontWeight: 800, fontFamily: "'DM Sans', sans-serif" }}>{team.num}</div>
+                  <div style={{ fontSize: "13px", fontWeight: 600 }}>{team.p1.split(" ").pop()} / {team.p2.split(" ").pop()}</div>
                 </div>
-              </div>
-              <div style={{ textAlign: "right", flexShrink: 0 }}>
-                <div style={{ fontSize: mobile ? "20px" : "24px", fontWeight: 800, color: odds > 0 ? colors.greenDark : colors.textMuted, fontFamily: "'DM Sans', sans-serif", transition: "all 0.4s ease" }}>
+                <div style={{ fontSize: mobile ? "20px" : "22px", fontWeight: 800, fontFamily: "'DM Sans', sans-serif", transition: "all 0.4s ease" }}>
                   {odds > 0 ? `${odds.toFixed(1)}x` : "—"}
                 </div>
-                {odds > 0 && <div style={{ fontSize: "11px", color: colors.textMuted }}>payout</div>}
+              </div>
+              {/* Scorecard */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", textAlign: "center" }}>
+                <div style={{ padding: mobile ? "8px 6px" : "10px 8px", borderRight: `1px solid ${colors.border}` }}>
+                  <div style={{ fontSize: "10px", color: colors.textMuted, letterSpacing: "0.5px", marginBottom: "4px", fontWeight: 600 }}>{lastName1}</div>
+                  <div style={{ fontSize: "18px", fontWeight: 800, color: colors.greenDark, fontFamily: "'DM Sans', sans-serif" }}>{team.h1}</div>
+                  <div style={{ fontSize: "9px", color: colors.textMuted, letterSpacing: "0.3px", marginTop: "2px" }}>RD 1 CAP</div>
+                </div>
+                <div style={{ padding: mobile ? "8px 6px" : "10px 8px", borderRight: `1px solid ${colors.border}` }}>
+                  <div style={{ fontSize: "10px", color: colors.textMuted, letterSpacing: "0.5px", marginBottom: "4px", fontWeight: 600 }}>{lastName2}</div>
+                  <div style={{ fontSize: "18px", fontWeight: 800, color: colors.greenDark, fontFamily: "'DM Sans', sans-serif" }}>{team.h2}</div>
+                  <div style={{ fontSize: "9px", color: colors.textMuted, letterSpacing: "0.3px", marginTop: "2px" }}>RD 1 CAP</div>
+                </div>
+                <div style={{ padding: mobile ? "8px 6px" : "10px 8px", background: "#fff8e1" }}>
+                  <div style={{ fontSize: "9px", color: colors.goldLight, letterSpacing: "0.3px", marginBottom: "2px" }}>RD 2 CAP</div>
+                  <div style={{ fontSize: "22px", fontWeight: 800, color: "#7a6200", fontFamily: "'DM Sans', sans-serif", lineHeight: 1 }}>{team.scramble}</div>
+                  <div style={{ fontSize: "9px", color: colors.goldLight, letterSpacing: "0.3px", marginTop: "4px" }}>SCRAMBLE</div>
+                </div>
+              </div>
+              {/* Footer */}
+              <div style={{ fontSize: "12px", color: colors.textMuted, padding: "8px 14px", borderTop: `1px solid ${colors.border}` }}>
+                {teamPool > 0 ? `$${teamPool.toLocaleString()} wagered · ${pct}% of pool` : "No bets yet"}
               </div>
             </div>
           );
