@@ -2494,7 +2494,10 @@ function LiveBettingPage() {
         <div style={{ fontSize: "10px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", opacity: 0.7, marginBottom: "4px", fontFamily: "'DM Sans', sans-serif" }}>SGP Classic 2026</div>
         <h1 style={{ fontSize: mobile ? "22px" : "28px", fontWeight: 800, margin: "0 0 8px 0", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "1px" }}>Live Parimutuel</h1>
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: mobile ? "14px" : "20px", marginTop: "4px" }}>
-          <span style={{ color: isOpen ? "#4ade80" : "#fca5a5", fontWeight: 700, fontSize: "13px" }}>{isOpen ? "OPEN" : "CLOSED"}</span>
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontSize: "10px", opacity: 0.5, letterSpacing: "0.5px", textTransform: "uppercase" }}>Status</div>
+            <div style={{ fontSize: mobile ? "20px" : "24px", fontWeight: 800, color: isOpen ? "#4ade80" : "#fca5a5", fontFamily: "'DM Sans', sans-serif" }}>{isOpen ? "OPEN" : "CLOSED"}</div>
+          </div>
           <span style={{ opacity: 0.3 }}>|</span>
           <div style={{ textAlign: "center" }}>
             <div style={{ fontSize: "10px", opacity: 0.5, letterSpacing: "0.5px", textTransform: "uppercase" }}>Pool</div>
