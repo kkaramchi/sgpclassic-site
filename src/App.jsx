@@ -2601,8 +2601,8 @@ function LiveBettingPage() {
           const odds = getOdds(team.num);
           const pct = totalPool > 0 ? ((teamPool / totalPool) * 100).toFixed(1) : "0.0";
           const isFlashing = flashTeam === team.num;
-          const lastName1 = team.p1.split(" ").pop().toUpperCase();
-          const lastName2 = team.p2.split(" ").pop().toUpperCase();
+          const displayName1 = team.p1.toUpperCase();
+          const displayName2 = team.p2.toUpperCase();
           return (
             <div key={team.num} style={{
               background: isFlashing ? "#f0fdf4" : "white",
@@ -2616,7 +2616,7 @@ function LiveBettingPage() {
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: mobile ? "8px 12px" : "10px 14px", background: colors.greenDark, color: "white" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                   <div style={{ fontSize: "20px", fontWeight: 800, fontFamily: "'DM Sans', sans-serif" }}>{team.num}</div>
-                  <div style={{ fontSize: "13px", fontWeight: 600 }}>{team.p1.split(" ").pop()} / {team.p2.split(" ").pop()}</div>
+                  <div style={{ fontSize: "13px", fontWeight: 600 }}>{team.p1} / {team.p2}</div>
                 </div>
                 <div style={{ fontSize: mobile ? "20px" : "22px", fontWeight: 800, fontFamily: "'DM Sans', sans-serif", transition: "all 0.4s ease" }}>
                   {odds > 0 ? `${odds.toFixed(1)}x` : "—"}
@@ -2625,12 +2625,12 @@ function LiveBettingPage() {
               {/* Scorecard */}
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", textAlign: "center" }}>
                 <div style={{ padding: mobile ? "8px 6px" : "10px 8px", borderRight: `1px solid ${colors.border}` }}>
-                  <div style={{ fontSize: "10px", color: colors.textMuted, letterSpacing: "0.5px", marginBottom: "4px", fontWeight: 600 }}>{lastName1}</div>
+                  <div style={{ fontSize: "10px", color: colors.textMuted, letterSpacing: "0.5px", marginBottom: "4px", fontWeight: 600 }}>{displayName1}</div>
                   <div style={{ fontSize: "18px", fontWeight: 800, color: colors.greenDark, fontFamily: "'DM Sans', sans-serif" }}>{team.h1}</div>
                   <div style={{ fontSize: "9px", color: colors.textMuted, letterSpacing: "0.3px", marginTop: "2px" }}>RD 1 CAP</div>
                 </div>
                 <div style={{ padding: mobile ? "8px 6px" : "10px 8px", borderRight: `1px solid ${colors.border}` }}>
-                  <div style={{ fontSize: "10px", color: colors.textMuted, letterSpacing: "0.5px", marginBottom: "4px", fontWeight: 600 }}>{lastName2}</div>
+                  <div style={{ fontSize: "10px", color: colors.textMuted, letterSpacing: "0.5px", marginBottom: "4px", fontWeight: 600 }}>{displayName2}</div>
                   <div style={{ fontSize: "18px", fontWeight: 800, color: colors.greenDark, fontFamily: "'DM Sans', sans-serif" }}>{team.h2}</div>
                   <div style={{ fontSize: "9px", color: colors.textMuted, letterSpacing: "0.3px", marginTop: "2px" }}>RD 1 CAP</div>
                 </div>
