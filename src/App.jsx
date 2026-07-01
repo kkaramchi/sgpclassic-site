@@ -1234,8 +1234,9 @@ function HomePage({ setPage }) {
 
       {/* Teams */}
       <SectionTitle icon={Users}>2026 Teams</SectionTitle>
-      <div style={{ display: "grid", gridTemplateColumns: mobile ? "repeat(2, 1fr)" : "repeat(5, 1fr)", gap: "10px", marginBottom: "32px" }}>
-        {[
+      {(() => {
+        const paid = new Set(["Anthony Laud", "Mark Johnson", "Paul Statchuk", "Joel Greaves", "Graham Booth", "Geoff Crain", "Chris Statchuk", "Patrick Forbes", "Reid Hartley"]);
+        const teams2026 = [
           { num: 1, p1: "Reid Hartley", p2: "Joel Greaves" },
           { num: 2, p1: "Anthony Laud", p2: "Trevor Williams" },
           { num: 3, p1: "Mark Johnson", p2: "Graham Booth" },
@@ -1246,16 +1247,33 @@ function HomePage({ setPage }) {
           { num: 8, p1: "Patrick Forbes", p2: "Dave MacDougall" },
           { num: 9, p1: "Chris Williams", p2: "Chris Statchuk" },
           { num: 10, p1: "Johnny D'Amato", p2: "Kevin Kernohan" },
-        ].map((team) => (
-          <div key={team.num} style={{ background: "white", borderRadius: "10px", overflow: "hidden", border: `1px solid ${colors.border}` }}>
-            <div style={{ background: colors.greenDark, color: "white", padding: "8px 12px", fontSize: "13px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px", textAlign: "center" }}>Team {team.num}</div>
-            <div style={{ padding: "10px 12px" }}>
-              <div style={{ fontSize: "13px", fontWeight: 600, marginBottom: "4px" }}>{team.p1}</div>
-              <div style={{ fontSize: "13px", fontWeight: 600 }}>{team.p2}</div>
-            </div>
+        ];
+        const totalPaid = teams2026.reduce((c, t) => c + (paid.has(t.p1) ? 1 : 0) + (paid.has(t.p2) ? 1 : 0), 0);
+        const PlayerName = ({ name }) => (
+          <div style={{ fontSize: "13px", fontWeight: 600, display: "flex", alignItems: "center", gap: "6px" }}>
+            {paid.has(name) && <span style={{ color: colors.green, fontSize: "14px", fontWeight: 700 }}>&#10003;</span>}
+            <span style={{ color: paid.has(name) ? colors.text : colors.textMuted }}>{name}</span>
           </div>
-        ))}
-      </div>
+        );
+        return (
+          <>
+            <div style={{ fontSize: "13px", color: colors.textMuted, marginBottom: "10px" }}>
+              <span style={{ color: colors.green, fontWeight: 700 }}>&#10003;</span> = Paid &middot; <span style={{ fontWeight: 600 }}>{totalPaid}/20</span> collected
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: mobile ? "repeat(2, 1fr)" : "repeat(5, 1fr)", gap: "10px", marginBottom: "32px" }}>
+              {teams2026.map((team) => (
+                <div key={team.num} style={{ background: "white", borderRadius: "10px", overflow: "hidden", border: `1px solid ${colors.border}` }}>
+                  <div style={{ background: colors.greenDark, color: "white", padding: "8px 12px", fontSize: "13px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px", textAlign: "center" }}>Team {team.num}</div>
+                  <div style={{ padding: "10px 12px" }}>
+                    <div style={{ marginBottom: "4px" }}><PlayerName name={team.p1} /></div>
+                    <PlayerName name={team.p2} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        );
+      })()}
 
       {/* Entry Fee Details */}
       <SectionTitle icon={DollarSign}>Entry Fee Details</SectionTitle>
