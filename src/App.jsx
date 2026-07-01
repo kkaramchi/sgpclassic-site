@@ -1170,13 +1170,13 @@ function HomePage({ setPage }) {
               <Flag size={18} style={{ marginBottom: "6px", opacity: 0.8 }} />
               <div style={{ fontSize: "12px", opacity: 0.7, marginBottom: "4px" }}>Round 1 — Morning</div>
               <div style={{ fontSize: "18px", fontWeight: 700 }}>2-Man Net Best Ball</div>
-              <div style={{ fontSize: "14px", color: colors.goldLight, fontWeight: 600 }}>Legacy Course &middot; Shotgun 9:00 AM</div>
+              <div style={{ fontSize: "14px", color: colors.goldLight, fontWeight: 600 }}>Spire Course &middot; Shotgun 8:30 AM</div>
             </div>
             <div style={{ background: "rgba(255,255,255,0.12)", borderRadius: "10px", padding: "14px 20px" }}>
               <Flag size={18} style={{ marginBottom: "6px", opacity: 0.8 }} />
               <div style={{ fontSize: "12px", opacity: 0.7, marginBottom: "4px" }}>Round 2 — Afternoon</div>
               <div style={{ fontSize: "18px", fontWeight: 700 }}>2-Man Scramble</div>
-              <div style={{ fontSize: "14px", color: colors.goldLight, fontWeight: 600 }}>Legend Course &middot; Tee Times Every 10 Min</div>
+              <div style={{ fontSize: "14px", color: colors.goldLight, fontWeight: 600 }}>Lake Course &middot; Tee Times Every 10 Min</div>
             </div>
           </div>
           {mobile && (
