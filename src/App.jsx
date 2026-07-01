@@ -960,6 +960,7 @@ function Nav({ active, setPage }) {
     { id: "tournaments", label: "Tournaments", icon: Trophy },
     { id: "players", label: "Players", icon: Users },
     { id: "parimutuel", label: "Parimutuel", icon: DollarSign },
+    { id: "sgp-tees", label: "SGP Tees", icon: MapPin },
   ];
 
   const rulesItems = [
@@ -1144,6 +1145,20 @@ function HomePage({ setPage }) {
           <p style={{ fontSize: mobile ? "15px" : "18px", opacity: 0.85, margin: "0 0 16px 0" }}>Woodington Lake Golf Club &middot; Tottenham, ON</p>
           <div onClick={() => setPage({ id: "live-betting" })} style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: colors.goldLight, color: colors.greenDark, padding: mobile ? "10px 20px" : "12px 28px", borderRadius: "8px", fontSize: mobile ? "14px" : "16px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "1px", cursor: "pointer", marginBottom: "20px", transition: "transform 0.15s, box-shadow 0.15s", boxShadow: "0 4px 12px rgba(0,0,0,0.3)" }} onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 6px 16px rgba(0,0,0,0.4)"; }} onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.3)"; }}>
             <DollarSign size={18} /> Place Your Bets — Live Parimutuel
+          </div>
+          <div style={{ display: "flex", gap: "10px", marginBottom: "20px", justifyContent: "flex-start", flexWrap: "wrap" }}>
+            <div onClick={() => setPage({ id: "sgp-tees-spire" })} style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "rgba(255,255,255,0.15)", color: "white", padding: "8px 16px", borderRadius: "8px", fontSize: "13px", fontWeight: 600, fontFamily: "'DM Sans', sans-serif", cursor: "pointer", transition: "background 0.15s" }}
+              onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.25)"}
+              onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.15)"}
+            >
+              <MapPin size={14} /> Spire Tees (AM)
+            </div>
+            <div onClick={() => setPage({ id: "sgp-tees-lake" })} style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "rgba(255,255,255,0.15)", color: "white", padding: "8px 16px", borderRadius: "8px", fontSize: "13px", fontWeight: 600, fontFamily: "'DM Sans', sans-serif", cursor: "pointer", transition: "background 0.15s" }}
+              onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.25)"}
+              onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.15)"}
+            >
+              <MapPin size={14} /> Lake Tees (PM)
+            </div>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3, auto)", gap: mobile ? "10px" : "16px" }}>
             <div style={{ background: "rgba(255,255,255,0.12)", borderRadius: "10px", padding: "14px 20px" }}>
@@ -2659,6 +2674,174 @@ function LiveBettingPage() {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// SGP TEES
+// ═══════════════════════════════════════════════════════════════
+
+const SGP_TEES_SPIRE = [
+  { hole: 1, par: 4, tee: "Gold", yards: 410, hcp: 7 },
+  { hole: 2, par: 5, tee: "Gold", yards: 524, hcp: 9 },
+  { hole: 3, par: 4, tee: "Green", yards: 445, hcp: 3 },
+  { hole: 4, par: 5, tee: "Green", yards: 550, hcp: 5 },
+  { hole: 5, par: 3, tee: "Green", yards: 171, hcp: 15 },
+  { hole: 6, par: 4, tee: "Green", yards: 387, hcp: 17 },
+  { hole: 7, par: 5, tee: "Green", yards: 481, hcp: 13 },
+  { hole: 8, par: 4, tee: "Green", yards: 412, hcp: 1 },
+  { hole: 9, par: 4, tee: "Green", yards: 398, hcp: 11 },
+  { hole: 10, par: 3, tee: "White", yards: 176, hcp: 4 },
+  { hole: 11, par: 4, tee: "Green", yards: 390, hcp: 6 },
+  { hole: 12, par: 3, tee: "Gold", yards: 182, hcp: 16 },
+  { hole: 13, par: 5, tee: "Gold", yards: 534, hcp: 10 },
+  { hole: 14, par: 4, tee: "Gold", yards: 407, hcp: 2 },
+  { hole: 15, par: 3, tee: "Green", yards: 189, hcp: 14 },
+  { hole: 16, par: 4, tee: "Green", yards: 293, hcp: 18 },
+  { hole: 17, par: 4, tee: "Gold", yards: 415, hcp: 8 },
+  { hole: 18, par: 4, tee: "Gold", yards: 413, hcp: 12 },
+];
+
+const SGP_TEES_LAKE = [
+  { hole: 1, par: 4, tee: "Gold", yards: 416, hcp: 11 },
+  { hole: 2, par: 3, tee: "Gold", yards: 200, hcp: 9 },
+  { hole: 3, par: 5, tee: "Green", yards: 540, hcp: 3 },
+  { hole: 4, par: 4, tee: "Green", yards: 402, hcp: 5 },
+  { hole: 5, par: 4, tee: "Green", yards: 361, hcp: 7 },
+  { hole: 6, par: 4, tee: "Green", yards: 419, hcp: 1 },
+  { hole: 7, par: 3, tee: "Green", yards: 118, hcp: 17 },
+  { hole: 8, par: 4, tee: "Green", yards: 388, hcp: 13 },
+  { hole: 9, par: 4, tee: "Green", yards: 377, hcp: 15 },
+  { hole: 10, par: 5, tee: "Green", yards: 505, hcp: 6 },
+  { hole: 11, par: 4, tee: "Green", yards: 430, hcp: 10 },
+  { hole: 12, par: 4, tee: "Green", yards: 410, hcp: 12 },
+  { hole: 13, par: 3, tee: "Light Blue", yards: 166, hcp: 16 },
+  { hole: 14, par: 4, tee: "Green", yards: 412, hcp: 8 },
+  { hole: 15, par: 5, tee: "Green", yards: 527, hcp: 2 },
+  { hole: 16, par: 3, tee: "Gold", yards: 179, hcp: 18 },
+  { hole: 17, par: 5, tee: "Gold", yards: 544, hcp: 4 },
+  { hole: 18, par: 4, tee: "Gold", yards: 410, hcp: 14 },
+];
+
+const TEE_COLORS = {
+  Gold: { bg: "#d4a800", text: "#fff" },
+  Green: { bg: "#166534", text: "#fff" },
+  "Light Blue": { bg: "#7ec8e3", text: "#1a3a4a" },
+  White: { bg: "#ffffff", text: "#333" },
+};
+
+function SgpTeesPickerPage({ setPage }) {
+  const mobile = useIsMobile();
+  return (
+    <div>
+      <div style={{ textAlign: "center", marginBottom: "32px" }}>
+        <div style={{ fontSize: "12px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", color: colors.textMuted, marginBottom: "8px", fontFamily: "'DM Sans', sans-serif" }}>Woodington Lake Golf Club</div>
+        <h1 style={{ fontSize: mobile ? "24px" : "32px", fontWeight: 800, margin: "0 0 8px 0", fontFamily: "'DM Sans', sans-serif", color: colors.text }}>SGP Tees</h1>
+        <p style={{ fontSize: "14px", color: colors.textMuted, margin: 0 }}>Select your course to see which tee boxes to play from each hole</p>
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: "16px", maxWidth: "600px", margin: "0 auto" }}>
+        <div onClick={() => setPage({ id: "sgp-tees-spire" })} style={{ background: `linear-gradient(135deg, ${colors.greenDark} 0%, #166534 100%)`, borderRadius: "16px", padding: mobile ? "28px 20px" : "36px 28px", color: "white", textAlign: "center", cursor: "pointer", transition: "transform 0.15s, box-shadow 0.15s", boxShadow: "0 4px 12px rgba(0,0,0,0.15)" }}
+          onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.25)"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)"; }}
+        >
+          <div style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", opacity: 0.7, marginBottom: "6px" }}>AM Round</div>
+          <div style={{ fontSize: mobile ? "22px" : "28px", fontWeight: 800, fontFamily: "'DM Sans', sans-serif", marginBottom: "4px" }}>The Spire Course</div>
+          <div style={{ fontSize: "13px", opacity: 0.7 }}>2-Man Net Best Ball</div>
+          <div style={{ fontSize: "14px", fontWeight: 700, color: colors.goldLight, marginTop: "8px" }}>6,777 Yards · Par 72</div>
+        </div>
+        <div onClick={() => setPage({ id: "sgp-tees-lake" })} style={{ background: `linear-gradient(135deg, ${colors.greenDark} 0%, #166534 100%)`, borderRadius: "16px", padding: mobile ? "28px 20px" : "36px 28px", color: "white", textAlign: "center", cursor: "pointer", transition: "transform 0.15s, box-shadow 0.15s", boxShadow: "0 4px 12px rgba(0,0,0,0.15)" }}
+          onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.25)"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)"; }}
+        >
+          <div style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", opacity: 0.7, marginBottom: "6px" }}>PM Round</div>
+          <div style={{ fontSize: mobile ? "22px" : "28px", fontWeight: 800, fontFamily: "'DM Sans', sans-serif", marginBottom: "4px" }}>The Lake Course</div>
+          <div style={{ fontSize: "13px", opacity: 0.7 }}>2-Man Scramble</div>
+          <div style={{ fontSize: "14px", fontWeight: 700, color: colors.goldLight, marginTop: "8px" }}>6,804 Yards · Par 72</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SgpTeesCoursePage({ course, setPage }) {
+  const mobile = useIsMobile();
+  const isSpire = course === "spire";
+  const holes = isSpire ? SGP_TEES_SPIRE : SGP_TEES_LAKE;
+  const courseName = isSpire ? "The Spire Course" : "The Lake Course";
+  const roundLabel = isSpire ? "AM ROUND" : "PM ROUND";
+  const format = isSpire ? "2-Man Net Best Ball" : "2-Man Scramble";
+  const front = holes.filter((h) => h.hole <= 9);
+  const back = holes.filter((h) => h.hole >= 10);
+  const frontYards = front.reduce((s, h) => s + h.yards, 0);
+  const backYards = back.reduce((s, h) => s + h.yards, 0);
+  const frontPar = front.reduce((s, h) => s + h.par, 0);
+  const backPar = back.reduce((s, h) => s + h.par, 0);
+
+  const renderRow = (h) => (
+    <tr key={h.hole}>
+      <td style={{ padding: "10px 12px", fontWeight: 700, fontSize: mobile ? "15px" : "16px", textAlign: "center", borderBottom: `1px solid ${colors.border}` }}>{h.hole}</td>
+      <td style={{ padding: "10px 12px", textAlign: "center", borderBottom: `1px solid ${colors.border}` }}>{h.par}</td>
+      <td style={{ padding: "10px 8px", textAlign: "center", borderBottom: `1px solid ${colors.border}` }}>
+        <span style={{ display: "inline-block", padding: "4px 12px", borderRadius: "20px", fontSize: "12px", fontWeight: 700, letterSpacing: "0.5px", background: TEE_COLORS[h.tee].bg, color: TEE_COLORS[h.tee].text, border: h.tee === "White" ? "1px solid #ccc" : "none", textTransform: "uppercase" }}>{h.tee}</span>
+      </td>
+      <td style={{ padding: "10px 12px", textAlign: "center", fontWeight: 700, fontSize: mobile ? "16px" : "18px", borderBottom: `1px solid ${colors.border}`, fontFamily: "'DM Sans', sans-serif" }}>{h.yards}</td>
+      <td style={{ padding: "10px 12px", textAlign: "center", color: colors.textMuted, fontSize: "13px", borderBottom: `1px solid ${colors.border}` }}>{h.hcp}</td>
+    </tr>
+  );
+
+  const renderSubtotal = (label, par, yards) => (
+    <tr style={{ background: colors.greenDark }}>
+      <td colSpan={3} style={{ padding: "10px 12px", fontWeight: 800, fontSize: "14px", color: "white", textTransform: "uppercase", letterSpacing: "0.5px" }}>{label}</td>
+      <td style={{ padding: "10px 12px", textAlign: "center", fontWeight: 800, fontSize: "16px", color: "white", fontFamily: "'DM Sans', sans-serif" }}>{yards.toLocaleString()}</td>
+      <td style={{ padding: "10px 12px", textAlign: "center", fontWeight: 700, fontSize: "13px", color: "rgba(255,255,255,0.7)" }}>Par {par}</td>
+    </tr>
+  );
+
+  return (
+    <div>
+      <Breadcrumb items={[
+        { label: "SGP Tees", onClick: () => setPage({ id: "sgp-tees" }) },
+        { label: courseName },
+      ]} onNavigate={() => {}} />
+
+      <div style={{ background: `linear-gradient(135deg, ${colors.greenDark} 0%, #166534 100%)`, borderRadius: "12px", padding: mobile ? "20px 16px" : "28px 32px", marginBottom: "24px", color: "white", textAlign: "center" }}>
+        <div style={{ display: "inline-block", background: colors.goldLight, color: colors.greenDark, padding: "4px 14px", borderRadius: "20px", fontSize: "11px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: "10px", fontFamily: "'DM Sans', sans-serif" }}>{roundLabel}</div>
+        <h1 style={{ fontSize: mobile ? "24px" : "32px", fontWeight: 800, margin: "0 0 4px 0", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "1px" }}>{courseName}</h1>
+        <p style={{ margin: "0 0 4px 0", fontSize: "14px", opacity: 0.7 }}>{format}</p>
+        <p style={{ margin: 0, fontSize: "16px", fontWeight: 700, color: colors.goldLight }}>{(frontYards + backYards).toLocaleString()} Yards · Par {frontPar + backPar}</p>
+      </div>
+
+      <Card style={{ padding: 0, overflow: "hidden" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
+          <thead>
+            <tr style={{ background: "#f5f5f4" }}>
+              <th style={{ padding: "10px 12px", textAlign: "center", fontSize: "12px", fontWeight: 700, color: colors.textMuted, textTransform: "uppercase", letterSpacing: "0.5px", borderBottom: `2px solid ${colors.border}` }}>Hole</th>
+              <th style={{ padding: "10px 12px", textAlign: "center", fontSize: "12px", fontWeight: 700, color: colors.textMuted, textTransform: "uppercase", letterSpacing: "0.5px", borderBottom: `2px solid ${colors.border}` }}>Par</th>
+              <th style={{ padding: "10px 12px", textAlign: "center", fontSize: "12px", fontWeight: 700, color: colors.textMuted, textTransform: "uppercase", letterSpacing: "0.5px", borderBottom: `2px solid ${colors.border}` }}>Tee</th>
+              <th style={{ padding: "10px 12px", textAlign: "center", fontSize: "12px", fontWeight: 700, color: colors.textMuted, textTransform: "uppercase", letterSpacing: "0.5px", borderBottom: `2px solid ${colors.border}` }}>Yards</th>
+              <th style={{ padding: "10px 12px", textAlign: "center", fontSize: "12px", fontWeight: 700, color: colors.textMuted, textTransform: "uppercase", letterSpacing: "0.5px", borderBottom: `2px solid ${colors.border}` }}>HCP</th>
+            </tr>
+          </thead>
+          <tbody>
+            {front.map(renderRow)}
+            {renderSubtotal("OUT", frontPar, frontYards)}
+            {back.map(renderRow)}
+            {renderSubtotal("IN", backPar, backYards)}
+            <tr style={{ background: colors.goldLight }}>
+              <td colSpan={3} style={{ padding: "12px", fontWeight: 800, fontSize: "15px", color: colors.greenDark, textTransform: "uppercase", letterSpacing: "0.5px" }}>TOTAL</td>
+              <td style={{ padding: "12px", textAlign: "center", fontWeight: 800, fontSize: "18px", color: colors.greenDark, fontFamily: "'DM Sans', sans-serif" }}>{(frontYards + backYards).toLocaleString()}</td>
+              <td style={{ padding: "12px", textAlign: "center", fontWeight: 700, fontSize: "13px", color: colors.greenDark }}>Par {frontPar + backPar}</td>
+            </tr>
+          </tbody>
+        </table>
+      </Card>
+
+      <div style={{ textAlign: "center", marginTop: "20px" }}>
+        <button onClick={() => setPage({ id: course === "spire" ? "sgp-tees-lake" : "sgp-tees-spire" })} style={{ background: colors.greenDark, color: "white", border: "none", padding: "12px 28px", borderRadius: "8px", cursor: "pointer", fontSize: "14px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+          View {course === "spire" ? "Lake Course (PM)" : "Spire Course (AM)"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
 // APP
 // ═══════════════════════════════════════════════════════════════
 
@@ -2671,6 +2854,7 @@ export default function App() {
     if (page.id.includes("tournament")) return "tournaments";
     if (page.id.includes("player")) return "players";
     if (page.id === "parimutuel") return "parimutuel";
+    if (page.id.includes("sgp-tees")) return "sgp-tees";
     if (page.id === "rules" || page.id === "course-legend" || page.id === "course-legacy") return page.id;
     return "home";
   };
@@ -2699,6 +2883,12 @@ export default function App() {
         return <CourseGuidePage course="legend" setPage={setPage} />;
       case "course-legacy":
         return <CourseGuidePage course="legacy" setPage={setPage} />;
+      case "sgp-tees":
+        return <SgpTeesPickerPage setPage={setPage} />;
+      case "sgp-tees-spire":
+        return <SgpTeesCoursePage course="spire" setPage={setPage} />;
+      case "sgp-tees-lake":
+        return <SgpTeesCoursePage course="lake" setPage={setPage} />;
       default:
         return <HomePage setPage={setPage} />;
     }
