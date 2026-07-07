@@ -1232,44 +1232,89 @@ function HomePage({ setPage }) {
         })}
       </div>
 
-      {/* Teams */}
-      <SectionTitle icon={Users}>2026 Teams</SectionTitle>
+      {/* Morning Foursomes */}
+      <SectionTitle icon={Users}>Morning Foursomes</SectionTitle>
       {(() => {
-        const paid = new Set(["Anthony Laud", "Mark Johnson", "Paul Statchuk", "Joel Greaves", "Graham Booth", "Geoff Crain", "Chris Statchuk", "Patrick Forbes", "Reid Hartley"]);
-        const teams2026 = [
-          { num: 1, p1: "Reid Hartley", p2: "Joel Greaves" },
-          { num: 2, p1: "Anthony Laud", p2: "Trevor Williams" },
-          { num: 3, p1: "Mark Johnson", p2: "Graham Booth" },
-          { num: 4, p1: "Geoff Crain", p2: "David Carlson" },
-          { num: 5, p1: "Nolan Rundle", p2: "Keon Karamchi" },
-          { num: 6, p1: "Andrew Carlson", p2: "Nick Crain" },
-          { num: 7, p1: "Brendan Black", p2: "Paul Statchuk" },
-          { num: 8, p1: "Patrick Forbes", p2: "Dave MacDougall" },
-          { num: 9, p1: "Chris Williams", p2: "Chris Statchuk" },
-          { num: 10, p1: "Johnny D'Amato", p2: "Kevin Kernohan" },
+        const paid = new Set(["Anthony Laud", "Mark Johnson", "Paul Statchuk", "Joel Greaves", "Graham Booth", "Geoff Crain", "Chris Statchuk", "Patrick Forbes", "Reid Hartley", "Keon Karamchi", "Chris Williams", "Andrew Carlson", "Kevin Kernohan", "David Carlson", "Dave MacDougall"]);
+        const lunch = {
+          "Chris Statchuk": "Caesar Salad with Chicken",
+          "Geoff Crain": "Caesar Salad with Chicken",
+          "Andrew Carlson": "Turkey & Avocado Wrap",
+          "Brendan Black": "Turkey & Avocado Wrap",
+          "Reid Hartley": "Caesar Salad with Chicken",
+          "Chris Williams": "Chicken Club",
+          "Dave MacDougall": "Chicken Club",
+          "Graham Booth": "Smash Burger",
+          "Keon Karamchi": "Caesar Salad with Chicken",
+          "David Carlson": "Turkey & Avocado Wrap",
+        };
+        const foursomes = [
+          { num: 1, t1: 7, t2: 4, hole: "1" },
+          { num: 2, t1: 5, t2: 2, hole: "2" },
+          { num: 3, t1: 9, t2: 8, hole: null },
+          { num: 4, t1: 1, t2: 6, hole: null },
+          { num: 5, t1: 10, t2: 3, hole: null },
         ];
-        const totalPaid = teams2026.reduce((c, t) => c + (paid.has(t.p1) ? 1 : 0) + (paid.has(t.p2) ? 1 : 0), 0);
-        const PlayerName = ({ name }) => (
-          <div style={{ fontSize: "13px", fontWeight: 600, display: "flex", alignItems: "center", gap: "6px" }}>
-            {paid.has(name) && <span style={{ color: colors.green, fontSize: "14px", fontWeight: 700 }}>&#10003;</span>}
-            <span style={{ color: paid.has(name) ? colors.text : colors.textMuted }}>{name}</span>
-          </div>
+        const teamData = {
+          1: { p1: "Reid Hartley", p2: "Joel Greaves" },
+          2: { p1: "Anthony Laud", p2: "Trevor Williams" },
+          3: { p1: "Mark Johnson", p2: "Graham Booth" },
+          4: { p1: "Geoff Crain", p2: "David Carlson" },
+          5: { p1: "Nolan Rundle", p2: "Keon Karamchi" },
+          6: { p1: "Andrew Carlson", p2: "Nick Crain" },
+          7: { p1: "Brendan Black", p2: "Paul Statchuk" },
+          8: { p1: "Patrick Forbes", p2: "Dave MacDougall" },
+          9: { p1: "Chris Williams", p2: "Chris Statchuk" },
+          10: { p1: "Johnny D'Amato", p2: "Kevin Kernohan" },
+        };
+        const allPlayers = foursomes.flatMap((f) => {
+          const a = teamData[f.t1], b = teamData[f.t2];
+          return [a.p1, a.p2, b.p1, b.p2];
+        });
+        const totalPaid = allPlayers.filter((n) => paid.has(n)).length;
+        const PlayerRow = ({ name, isLast }) => (
+          <tr style={{ borderBottom: isLast ? "none" : `1px solid ${colors.border}` }}>
+            <td style={{ padding: "10px 16px", fontSize: "13px", fontWeight: 600, color: paid.has(name) ? colors.text : colors.textMuted }}>{name}</td>
+            <td style={{ padding: "10px 12px", textAlign: "center", fontSize: "15px", fontWeight: 700, color: paid.has(name) ? colors.green : colors.textMuted }}>{paid.has(name) ? "✓" : "—"}</td>
+            <td style={{ padding: "10px 16px", fontSize: "13px", color: lunch[name] ? colors.textMuted : colors.textMuted, fontStyle: lunch[name] ? "normal" : "italic" }}>{lunch[name] || "TBD"}</td>
+          </tr>
         );
         return (
           <>
             <div style={{ fontSize: "13px", color: colors.textMuted, marginBottom: "10px" }}>
               <span style={{ color: colors.green, fontWeight: 700 }}>&#10003;</span> = Paid &middot; <span style={{ fontWeight: 600 }}>{totalPaid}/20</span> collected
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: mobile ? "repeat(2, 1fr)" : "repeat(5, 1fr)", gap: "10px", marginBottom: "32px" }}>
-              {teams2026.map((team) => (
-                <div key={team.num} style={{ background: "white", borderRadius: "10px", overflow: "hidden", border: `1px solid ${colors.border}` }}>
-                  <div style={{ background: colors.greenDark, color: "white", padding: "8px 12px", fontSize: "13px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px", textAlign: "center" }}>Team {team.num}</div>
-                  <div style={{ padding: "10px 12px" }}>
-                    <div style={{ marginBottom: "4px" }}><PlayerName name={team.p1} /></div>
-                    <PlayerName name={team.p2} />
+            <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: "12px", marginBottom: "32px" }}>
+              {foursomes.map((f) => {
+                const a = teamData[f.t1], b = teamData[f.t2];
+                const players = [a.p1, a.p2, b.p1, b.p2];
+                return (
+                  <div key={f.num} style={{ background: "white", borderRadius: "10px", overflow: "hidden", border: `1px solid ${colors.border}` }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 16px", background: colors.greenDark, color: "white" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                        <span style={{ fontSize: "16px", fontWeight: 800, fontFamily: "'DM Sans', sans-serif" }}>Foursome {f.num}</span>
+                        <span style={{ fontSize: "12px", opacity: 0.6 }}>Teams {f.t1} & {f.t2}</span>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center", gap: "6px", background: "rgba(255,255,255,0.15)", padding: "4px 12px", borderRadius: "20px" }}>
+                        <Flag size={12} color={colors.goldLight} />
+                        <span style={{ fontSize: "13px", fontWeight: 600, color: colors.goldLight }}>{f.hole ? `Hole ${f.hole}` : "TBD"}</span>
+                      </div>
+                    </div>
+                    <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                      <thead>
+                        <tr style={{ background: "#f5f5f4" }}>
+                          <th style={{ padding: "8px 16px", textAlign: "left", fontSize: "11px", fontWeight: 600, color: colors.textMuted, textTransform: "uppercase", letterSpacing: "0.5px" }}>Player</th>
+                          <th style={{ padding: "8px 12px", textAlign: "center", fontSize: "11px", fontWeight: 600, color: colors.textMuted, textTransform: "uppercase", letterSpacing: "0.5px", width: "50px" }}>Paid</th>
+                          <th style={{ padding: "8px 16px", textAlign: "left", fontSize: "11px", fontWeight: 600, color: colors.textMuted, textTransform: "uppercase", letterSpacing: "0.5px" }}>Lunch</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {players.map((name, i) => <PlayerRow key={name} name={name} isLast={i === 3} />)}
+                      </tbody>
+                    </table>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </>
         );
@@ -2926,4 +2971,3 @@ export default function App() {
     </div>
   );
 }
-
