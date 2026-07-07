@@ -1159,6 +1159,12 @@ function HomePage({ setPage }) {
             >
               <MapPin size={14} /> Lake Tees (PM)
             </div>
+            <div onClick={() => document.getElementById("morning-foursomes")?.scrollIntoView({ behavior: "smooth" })} style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "rgba(255,255,255,0.15)", color: "white", padding: "8px 16px", borderRadius: "8px", fontSize: "13px", fontWeight: 600, fontFamily: "'DM Sans', sans-serif", cursor: "pointer", transition: "background 0.15s" }}
+              onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.25)"}
+              onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.15)"}
+            >
+              <Users size={14} /> Morning Foursomes
+            </div>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3, auto)", gap: mobile ? "10px" : "16px" }}>
             <div style={{ background: "rgba(255,255,255,0.12)", borderRadius: "10px", padding: "14px 20px" }}>
@@ -1233,9 +1239,10 @@ function HomePage({ setPage }) {
       </div>
 
       {/* Morning Foursomes */}
+      <div id="morning-foursomes" />
       <SectionTitle icon={Users}>Morning Foursomes</SectionTitle>
       {(() => {
-        const paid = new Set(["Anthony Laud", "Mark Johnson", "Paul Statchuk", "Joel Greaves", "Graham Booth", "Geoff Crain", "Chris Statchuk", "Patrick Forbes", "Reid Hartley", "Keon Karamchi", "Chris Williams", "Andrew Carlson", "Kevin Kernohan", "David Carlson", "Dave MacDougall"]);
+        const paid = new Set(["Anthony Laud", "Mark Johnson", "Paul Statchuk", "Joel Greaves", "Graham Booth", "Geoff Crain", "Chris Statchuk", "Patrick Forbes", "Reid Hartley", "Keon Karamchi", "Chris Williams", "Andrew Carlson", "Kevin Kernohan", "David Carlson", "Dave MacDougall", "Trevor Williams", "Johnny D'Amato"]);
         const lunch = {
           "Chris Statchuk": "Caesar Salad with Chicken",
           "Geoff Crain": "Caesar Salad with Chicken",
@@ -1247,6 +1254,9 @@ function HomePage({ setPage }) {
           "Graham Booth": "Smash Burger",
           "Keon Karamchi": "Caesar Salad with Chicken",
           "David Carlson": "Turkey & Avocado Wrap",
+          "Trevor Williams": "Caesar Salad with Chicken",
+          "Johnny D'Amato": "Turkey & Avocado Wrap",
+          "Nolan Rundle": "Turkey & Avocado Wrap",
         };
         const foursomes = [
           { num: 1, t1: 7, t2: 4, hole: "1" },
