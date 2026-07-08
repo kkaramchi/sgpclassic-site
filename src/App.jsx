@@ -1259,6 +1259,8 @@ function HomePage({ setPage }) {
           "Nolan Rundle": "Turkey & Avocado Wrap",
           "Joel Greaves": "Chicken Club",
           "Kevin Kernohan": "Turkey & Avocado Wrap",
+          "Patrick Forbes": "Smash Burger",
+          "Mark Johnson": "Smash Burger",
         };
         const foursomes = [
           { num: 1, t1: 7, t2: 4, hole: "1" },
