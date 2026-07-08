@@ -1242,7 +1242,7 @@ function HomePage({ setPage }) {
       <div id="morning-foursomes" />
       <SectionTitle icon={Users}>Morning Foursomes</SectionTitle>
       {(() => {
-        const paid = new Set(["Anthony Laud", "Mark Johnson", "Paul Statchuk", "Joel Greaves", "Graham Booth", "Geoff Crain", "Chris Statchuk", "Patrick Forbes", "Reid Hartley", "Keon Karamchi", "Chris Williams", "Andrew Carlson", "Kevin Kernohan", "David Carlson", "Dave MacDougall", "Trevor Williams", "Johnny D'Amato"]);
+        const paid = new Set(["Anthony Laud", "Mark Johnson", "Paul Statchuk", "Joel Greaves", "Graham Booth", "Geoff Crain", "Chris Statchuk", "Patrick Forbes", "Reid Hartley", "Keon Karamchi", "Chris Williams", "Andrew Carlson", "Kevin Kernohan", "David Carlson", "Dave MacDougall", "Trevor Williams", "Johnny D'Amato", "Nolan Rundle"]);
         const lunch = {
           "Chris Statchuk": "Caesar Salad with Chicken",
           "Geoff Crain": "Caesar Salad with Chicken",
@@ -1266,8 +1266,8 @@ function HomePage({ setPage }) {
           "Anthony Laud": "Chicken Club",
         };
         const foursomes = [
-          { num: 1, t1: 7, t2: 4, hole: "1" },
-          { num: 2, t1: 5, t2: 2, hole: "2" },
+          { num: 1, t1: 7, t2: 4, hole: null },
+          { num: 2, t1: 5, t2: 2, hole: null },
           { num: 3, t1: 9, t2: 8, hole: null },
           { num: 4, t1: 1, t2: 6, hole: null },
           { num: 5, t1: 10, t2: 3, hole: null },
