@@ -1257,6 +1257,8 @@ function HomePage({ setPage }) {
           "Trevor Williams": "Caesar Salad with Chicken",
           "Johnny D'Amato": "Turkey & Avocado Wrap",
           "Nolan Rundle": "Turkey & Avocado Wrap",
+          "Joel Greaves": "Chicken Club",
+          "Kevin Kernohan": "Turkey & Avocado Wrap",
         };
         const foursomes = [
           { num: 1, t1: 7, t2: 4, hole: "1" },
