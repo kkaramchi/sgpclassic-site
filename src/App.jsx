@@ -1254,13 +1254,16 @@ function HomePage({ setPage }) {
           "Graham Booth": "Smash Burger",
           "Keon Karamchi": "Caesar Salad with Chicken",
           "David Carlson": "Turkey & Avocado Wrap",
-          "Trevor Williams": "Caesar Salad with Chicken",
+          "Trevor Williams": "Turkey & Avocado Wrap",
           "Johnny D'Amato": "Turkey & Avocado Wrap",
           "Nolan Rundle": "Turkey & Avocado Wrap",
           "Joel Greaves": "Chicken Club",
           "Kevin Kernohan": "Turkey & Avocado Wrap",
           "Patrick Forbes": "Smash Burger",
           "Mark Johnson": "Smash Burger",
+          "Paul Statchuk": "Chicken Club",
+          "Nick Crain": "Chicken Club",
+          "Anthony Laud": "Chicken Club",
         };
         const foursomes = [
           { num: 1, t1: 7, t2: 4, hole: "1" },
