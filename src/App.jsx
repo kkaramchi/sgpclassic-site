@@ -1097,6 +1097,41 @@ function Breadcrumb({ items, onNavigate }) {
 
 function HomePage({ setPage }) {
   const mobile = useIsMobile();
+  const [homeBets, setHomeBets] = useState([]);
+
+  // Fetch bets for favourites tracker (lightweight — no config needed)
+  useEffect(() => {
+    const fetchBets = async () => {
+      const { data } = await supabase.from("bets_2026").select("team,amount");
+      if (data) setHomeBets(data);
+    };
+    fetchBets();
+    const channel = supabase
+      .channel("home-favourites")
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "bets_2026" }, (payload) => {
+        setHomeBets((prev) => [...prev, { team: payload.new.team, amount: payload.new.amount }]);
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, []);
+
+  const homePools = {};
+  let homeTotal = 0;
+  BETTING_TEAMS.forEach((t) => { homePools[t.num] = 0; });
+  homeBets.forEach((b) => {
+    if (b.team && b.amount) {
+      homePools[b.team] = (homePools[b.team] || 0) + b.amount;
+      homeTotal += b.amount;
+    }
+  });
+  const getHomeOdds = (teamNum) => {
+    if (homePools[teamNum] > 0 && homeTotal > 0) return homeTotal / homePools[teamNum];
+    return 0;
+  };
+  const topFavourites = [...BETTING_TEAMS]
+    .filter((t) => getHomeOdds(t.num) > 0)
+    .sort((a, b) => getHomeOdds(a.num) - getHomeOdds(b.num))
+    .slice(0, 3);
 
   // Compute top 5 career earners from prize pool
   const moneyList = useMemo(() => {
@@ -1166,6 +1201,39 @@ function HomePage({ setPage }) {
               <Users size={14} /> Morning Foursomes
             </div>
           </div>
+          {/* Live Favourites Tracker */}
+          {topFavourites.length > 0 && (
+            <div onClick={() => setPage({ id: "live-betting" })} style={{ background: "rgba(0,0,0,0.25)", borderRadius: "10px", padding: "14px 16px", marginBottom: "20px", cursor: "pointer", transition: "background 0.15s", maxWidth: mobile ? "100%" : "420px" }}
+              onMouseEnter={(e) => e.currentTarget.style.background = "rgba(0,0,0,0.35)"}
+              onMouseLeave={(e) => e.currentTarget.style.background = "rgba(0,0,0,0.25)"}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <span style={{ fontSize: "13px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "1px" }}>Favourites</span>
+                  <span style={{ fontSize: "10px", background: "rgba(255,255,255,0.15)", padding: "2px 8px", borderRadius: "10px", fontWeight: 600, letterSpacing: "0.3px" }}>LIVE</span>
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <div style={{ fontSize: "9px", textTransform: "uppercase", letterSpacing: "0.5px", opacity: 0.5 }}>Total pool</div>
+                  <div style={{ fontSize: "18px", fontWeight: 800, color: colors.goldLight, fontFamily: "'DM Sans', sans-serif" }}>${homeTotal.toLocaleString()}</div>
+                </div>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                {topFavourites.map((team, i) => (
+                  <div key={team.num} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.08)", borderRadius: "8px", padding: "8px 12px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      <span style={{ fontSize: "12px", fontWeight: 800, color: i === 0 ? colors.goldLight : "rgba(255,255,255,0.4)", width: "14px" }}>{i + 1}</span>
+                      <div>
+                        <div style={{ fontSize: "13px", fontWeight: 700 }}>{team.p1.split(" ").pop()} & {team.p2.split(" ").pop()}</div>
+                        <div style={{ fontSize: "11px", opacity: 0.5 }}>Team {team.num}</div>
+                      </div>
+                    </div>
+                    <div style={{ fontSize: "16px", fontWeight: 800, color: i === 0 ? colors.goldLight : "rgba(255,255,255,0.7)", fontFamily: "'DM Sans', sans-serif" }}>{getHomeOdds(team.num).toFixed(1)}x</div>
+                  </div>
+                ))}
+              </div>
+              <div style={{ marginTop: "10px", textAlign: "center", fontSize: "11px", fontWeight: 600, letterSpacing: "0.5px", opacity: 0.5, textTransform: "uppercase" }}>View full odds board →</div>
+            </div>
+          )}
           <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3, auto)", gap: mobile ? "10px" : "16px" }}>
             <div style={{ background: "rgba(255,255,255,0.12)", borderRadius: "10px", padding: "14px 20px" }}>
               <Calendar size={18} style={{ marginBottom: "6px", opacity: 0.8 }} />
