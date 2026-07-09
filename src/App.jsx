@@ -1242,7 +1242,7 @@ function HomePage({ setPage }) {
       <div id="morning-foursomes" />
       <SectionTitle icon={Users}>Morning Foursomes</SectionTitle>
       {(() => {
-        const paid = new Set(["Anthony Laud", "Mark Johnson", "Paul Statchuk", "Joel Greaves", "Graham Booth", "Geoff Crain", "Chris Statchuk", "Patrick Forbes", "Reid Hartley", "Keon Karamchi", "Chris Williams", "Andrew Carlson", "Kevin Kernohan", "David Carlson", "Dave MacDougall", "Trevor Williams", "Johnny D'Amato", "Nolan Rundle"]);
+        const paid = new Set(["Anthony Laud", "Mark Johnson", "Paul Statchuk", "Joel Greaves", "Graham Booth", "Geoff Crain", "Chris Statchuk", "Patrick Forbes", "Reid Hartley", "Keon Karamchi", "Chris Williams", "Andrew Carlson", "Kevin Kernohan", "David Carlson", "Dave MacDougall", "Trevor Williams", "Johnny D'Amato", "Nolan Rundle", "Brendan Black"]);
         const lunch = {
           "Chris Statchuk": "Caesar Salad with Chicken",
           "Geoff Crain": "Caesar Salad with Chicken",
