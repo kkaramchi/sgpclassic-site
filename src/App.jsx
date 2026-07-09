@@ -1266,11 +1266,11 @@ function HomePage({ setPage }) {
           "Anthony Laud": "Chicken Club",
         };
         const foursomes = [
-          { num: 1, t1: 7, t2: 4, hole: null },
-          { num: 2, t1: 5, t2: 2, hole: null },
-          { num: 3, t1: 9, t2: 8, hole: null },
-          { num: 4, t1: 1, t2: 6, hole: null },
-          { num: 5, t1: 10, t2: 3, hole: null },
+          { num: 1, t1: 7, t2: 4, hole: "1A" },
+          { num: 2, t1: 5, t2: 2, hole: "1B" },
+          { num: 3, t1: 9, t2: 8, hole: "17A" },
+          { num: 4, t1: 1, t2: 6, hole: "18A" },
+          { num: 5, t1: 10, t2: 3, hole: "18B" },
         ];
         const teamData = {
           1: { p1: "Reid Hartley", p2: "Joel Greaves" },
