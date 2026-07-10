@@ -2796,7 +2796,7 @@ function LiveBettingPage() {
                         <span style={{ fontWeight: 700, color: colors.text }}>{uniqueBettors}</span> {uniqueBettors === 1 ? "bettor" : "bettors"}
                       </div>
                       <div style={{ fontSize: "12px", color: colors.textMuted }}>
-                        Largest single: <span style={{ fontWeight: 700, color: colors.text }}>${largestBet.toLocaleString()}</span>
+                        Largest position: <span style={{ fontWeight: 700, color: colors.text }}>${maxPosition.toLocaleString()}</span>
                       </div>
                       {maxPositionPct >= 40 && (
                         <div style={{ fontSize: "12px", color: "#b45309", fontWeight: 600 }}>
