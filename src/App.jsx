@@ -2766,6 +2766,113 @@ function LiveBettingPage() {
         })}
       </div>
 
+      {/* Position Concentration */}
+      {bets.length > 0 && (
+        <div style={{ marginBottom: "24px" }}>
+          <SectionTitle icon={Users}>Position Tracker</SectionTitle>
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(2, 1fr)", gap: "10px" }}>
+            {[...BETTING_TEAMS]
+              .filter((t) => pools[t.num] > 0)
+              .sort((a, b) => (pools[b.num] || 0) - (pools[a.num] || 0))
+              .map((team) => {
+                const teamBets = bets.filter((b) => b.team === team.num);
+                const uniqueBettors = new Set(teamBets.map((b) => b.name)).size;
+                const largestBet = Math.max(...teamBets.map((b) => b.amount));
+                const largestBettorTotal = {};
+                teamBets.forEach((b) => { largestBettorTotal[b.name] = (largestBettorTotal[b.name] || 0) + b.amount; });
+                const maxPosition = Math.max(...Object.values(largestBettorTotal));
+                const maxPositionPct = pools[team.num] > 0 ? Math.round((maxPosition / pools[team.num]) * 100) : 0;
+                return (
+                  <div key={team.num} style={{ background: "white", borderRadius: "10px", border: `1px solid ${colors.border}`, padding: "14px 16px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                        <span style={{ fontSize: "14px", fontWeight: 800, color: colors.greenDark, fontFamily: "'DM Sans', sans-serif" }}>{team.num}</span>
+                        <span style={{ fontSize: "13px", fontWeight: 700, color: colors.text }}>{team.p1.split(" ").pop()} & {team.p2.split(" ").pop()}</span>
+                      </div>
+                      <span style={{ fontSize: "14px", fontWeight: 800, color: colors.greenDark, fontFamily: "'DM Sans', sans-serif" }}>${pools[team.num].toLocaleString()}</span>
+                    </div>
+                    <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                      <div style={{ fontSize: "12px", color: colors.textMuted }}>
+                        <span style={{ fontWeight: 700, color: colors.text }}>{uniqueBettors}</span> {uniqueBettors === 1 ? "bettor" : "bettors"}
+                      </div>
+                      <div style={{ fontSize: "12px", color: colors.textMuted }}>
+                        Largest single: <span style={{ fontWeight: 700, color: colors.text }}>${largestBet.toLocaleString()}</span>
+                      </div>
+                      {maxPositionPct >= 40 && (
+                        <div style={{ fontSize: "12px", color: "#b45309", fontWeight: 600 }}>
+                          1 bettor holds {maxPositionPct}%
+                        </div>
+                      )}
+                    </div>
+                    {/* Position bar */}
+                    <div style={{ marginTop: "8px", height: "6px", background: "#f0f0f0", borderRadius: "3px", overflow: "hidden", position: "relative" }}>
+                      {(() => {
+                        const positions = Object.values(largestBettorTotal).sort((a, b) => b - a);
+                        const teamTotal = pools[team.num];
+                        const barColors = ["#1B3D2F", "#2d6a4f", "#40916c", "#52b788", "#95d5b2", "#b7e4c7", "#d8f3dc"];
+                        let offset = 0;
+                        return positions.map((pos, i) => {
+                          const width = (pos / teamTotal) * 100;
+                          const el = <div key={i} style={{ position: "absolute", left: `${offset}%`, width: `${width}%`, height: "100%", background: barColors[i] || barColors[barColors.length - 1] }} />;
+                          offset += width;
+                          return el;
+                        });
+                      })()}
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+      )}
+
+      {/* Anonymous Bet Feed */}
+      {bets.length > 0 && (
+        <div style={{ marginBottom: "24px" }}>
+          <SectionTitle icon={TrendingUp}>Recent Activity</SectionTitle>
+          <Card style={{ padding: 0, overflow: "hidden" }}>
+            {bets.slice(0, 10).map((bet, i) => {
+              const team = BETTING_TEAMS.find((t) => t.num === bet.team);
+              const timeAgo = (() => {
+                if (!bet.created_at) return "";
+                const diff = Date.now() - new Date(bet.created_at).getTime();
+                const mins = Math.floor(diff / 60000);
+                if (mins < 1) return "Just now";
+                if (mins < 60) return `${mins}m ago`;
+                const hrs = Math.floor(mins / 60);
+                if (hrs < 24) return `${hrs}h ago`;
+                const days = Math.floor(hrs / 24);
+                return `${days}d ago`;
+              })();
+              return (
+                <div key={bet.id || i} style={{
+                  display: "flex", justifyContent: "space-between", alignItems: "center",
+                  padding: "12px 16px",
+                  borderBottom: i < Math.min(bets.length, 10) - 1 ? `1px solid ${colors.border}` : "none",
+                  background: i === 0 && flashTeam === bet.team ? "#f0fdf4" : "transparent",
+                  transition: "background 0.4s ease",
+                }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                    <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: colors.greenDark, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <DollarSign size={16} color="white" />
+                    </div>
+                    <div>
+                      <div style={{ fontSize: "14px", fontWeight: 700, color: colors.text }}>
+                        ${bet.amount?.toLocaleString()} on Team {bet.team}
+                      </div>
+                      <div style={{ fontSize: "12px", color: colors.textMuted }}>
+                        {team ? `${team.p1.split(" ").pop()} & ${team.p2.split(" ").pop()}` : ""}
+                        {timeAgo ? ` · ${timeAgo}` : ""}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </Card>
+        </div>
+      )}
+
       {/* How it works */}
       <div style={{ padding: "20px", background: "#f5f5f4", borderRadius: "12px", fontSize: "13px", color: colors.textMuted, lineHeight: 1.6 }}>
         <strong style={{ color: colors.text }}>How it works:</strong> Place your bets on any team — you can bet on multiple teams. The odds update live as the pool grows. After the tournament, the entire pool is divided among bettors who picked the winning team, proportional to their bet size. Minimum bet is $25. All payments are collected and distributed by the SGP Classic committee outside of this website.
