@@ -2560,6 +2560,7 @@ function LiveBettingPage() {
   };
 
   const handleSubmit = async () => {
+    if (Date.now() >= BETTING_DEADLINE.getTime()) { setMessage({ type: "error", text: "Betting is now closed." }); setDeadlinePassed(true); return; }
     if (!formName.trim()) { setMessage({ type: "error", text: "Please enter your name." }); return; }
     if (!formTeam) { setMessage({ type: "error", text: "Please select a team." }); return; }
     const amt = parseFloat(formAmount);
@@ -2590,7 +2591,31 @@ function LiveBettingPage() {
     setSubmitting(false);
   };
 
-  const isOpen = config?.is_open;
+  // Betting deadline: 8:00 PM ET tonight (Jul 10, 2026)
+  const BETTING_DEADLINE = new Date("2026-07-11T00:00:00Z"); // 8 PM ET = midnight UTC
+  const [countdown, setCountdown] = useState("");
+  const [deadlinePassed, setDeadlinePassed] = useState(Date.now() >= BETTING_DEADLINE.getTime());
+
+  useEffect(() => {
+    const tick = () => {
+      const now = Date.now();
+      const diff = BETTING_DEADLINE.getTime() - now;
+      if (diff <= 0) {
+        setDeadlinePassed(true);
+        setCountdown("CLOSED");
+        return;
+      }
+      const hrs = Math.floor(diff / 3600000);
+      const mins = Math.floor((diff % 3600000) / 60000);
+      const secs = Math.floor((diff % 60000) / 1000);
+      setCountdown(`${hrs}h ${String(mins).padStart(2, "0")}m ${String(secs).padStart(2, "0")}s`);
+    };
+    tick();
+    const interval = setInterval(tick, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const isOpen = config?.is_open && !deadlinePassed;
 
   if (loading) {
     return (
@@ -2624,6 +2649,15 @@ function LiveBettingPage() {
             <div style={{ fontSize: "10px", opacity: 0.5, letterSpacing: "0.5px", textTransform: "uppercase" }}>Bets</div>
             <div style={{ fontSize: mobile ? "20px" : "24px", fontWeight: 800, fontFamily: "'DM Sans', sans-serif" }}>{bets.length}</div>
           </div>
+          {!deadlinePassed && countdown && (
+            <>
+              <span style={{ opacity: 0.3 }}>|</span>
+              <div style={{ textAlign: "center" }}>
+                <div style={{ fontSize: "10px", opacity: 0.5, letterSpacing: "0.5px", textTransform: "uppercase" }}>Closes In</div>
+                <div style={{ fontSize: mobile ? "16px" : "20px", fontWeight: 800, color: "#fca5a5", fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.5px" }}>{countdown}</div>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
@@ -2699,7 +2733,7 @@ function LiveBettingPage() {
 
       {!isOpen && (
         <Card style={{ textAlign: "center", padding: "24px", marginBottom: "24px", borderTop: "4px solid #dc2626" }}>
-          <p style={{ margin: 0, fontSize: "16px", fontWeight: 700, color: "#991b1b", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Betting is currently closed</p>
+          <p style={{ margin: 0, fontSize: "16px", fontWeight: 700, color: "#991b1b", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>{deadlinePassed ? "Betting is closed — Final odds are locked in" : "Betting is currently closed"}</p>
         </Card>
       )}
 
@@ -2804,7 +2838,7 @@ function LiveBettingPage() {
                         </div>
                       )}
                     </div>
-                    {/* Position bar v2 */}
+                    {/* Position bar */}
                     <div style={{ marginTop: "8px", height: "6px", background: "#f0f0f0", borderRadius: "3px", overflow: "hidden", position: "relative" }}>
                       {(() => {
                         const positions = Object.values(largestBettorTotal).sort((a, b) => b - a);
