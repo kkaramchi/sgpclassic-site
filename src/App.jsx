@@ -2796,7 +2796,7 @@ function LiveBettingPage() {
                         <span style={{ fontWeight: 700, color: colors.text }}>{uniqueBettors}</span> {uniqueBettors === 1 ? "bettor" : "bettors"}
                       </div>
                       <div style={{ fontSize: "12px", color: colors.textMuted }}>
-                        Largest position: <span style={{ fontWeight: 700, color: colors.text }}>${maxPosition.toLocaleString()}</span>
+                        Top bettor holds: <span style={{ fontWeight: 700, color: colors.text }}>${maxPosition.toLocaleString()}</span>
                       </div>
                       {maxPositionPct >= 40 && (
                         <div style={{ fontSize: "12px", color: "#b45309", fontWeight: 600 }}>
@@ -2804,12 +2804,12 @@ function LiveBettingPage() {
                         </div>
                       )}
                     </div>
-                    {/* Position bar */}
+                    {/* Position bar v2 */}
                     <div style={{ marginTop: "8px", height: "6px", background: "#f0f0f0", borderRadius: "3px", overflow: "hidden", position: "relative" }}>
                       {(() => {
                         const positions = Object.values(largestBettorTotal).sort((a, b) => b - a);
                         const teamTotal = pools[team.num];
-                        const barColors = ["#1B3D2F", "#2d6a4f", "#40916c", "#52b788", "#95d5b2", "#b7e4c7", "#d8f3dc"];
+                        const barColors = ["#1B3D2F", "#2563eb", "#d4a800", "#dc2626", "#7c3aed", "#ea580c", "#0891b2"];
                         let offset = 0;
                         return positions.map((pos, i) => {
                           const width = (pos / teamTotal) * 100;
