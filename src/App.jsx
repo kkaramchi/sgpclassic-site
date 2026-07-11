@@ -2157,11 +2157,34 @@ function CourseGuidePage({ course, setPage }) {
       <SectionTitle icon={MapPin}>{courseName} Course — Hazards & Boundaries</SectionTitle>
 
       {!hasImages ? (
-        <Card style={{ padding: "40px", textAlign: "center" }}>
-          <MapPin size={40} color={colors.textMuted} style={{ marginBottom: "12px" }} />
-          <p style={{ fontSize: "16px", fontWeight: 600, color: colors.text, margin: "0 0 8px 0" }}>Coming Soon</p>
-          <p style={{ fontSize: "14px", color: colors.textMuted, margin: 0 }}>{courseName} course boundary maps are being prepared and will be available before tournament day.</p>
-        </Card>
+        <div>
+          {/* Out of Bounds Maps */}
+          <div style={{ display: "flex", gap: "12px", marginBottom: "20px", flexWrap: "wrap", alignItems: "center" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <div style={{ width: "16px", height: "16px", borderRadius: "3px", background: "#dc2626" }} />
+              <span style={{ fontSize: "13px", color: colors.textMuted }}>Out of Bounds</span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <div style={{ width: "16px", height: "16px", borderRadius: "3px", background: "#d946ef" }} />
+              <span style={{ fontSize: "13px", color: colors.textMuted }}>See Other Course Markings</span>
+            </div>
+          </div>
+          <div style={{ display: "grid", gap: "16px" }}>
+            {[1, 2, 3].map((n) => (
+              <Card key={n} style={{ padding: 0, overflow: "hidden" }}>
+                <div style={{ background: colors.greenDark, padding: mobile ? "10px 16px" : "12px 20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ color: "white", fontWeight: 700, fontSize: mobile ? "15px" : "17px", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Map {n}</span>
+                  <span style={{ color: colors.goldLight, fontSize: "13px", fontWeight: 600 }}>Out of Bounds</span>
+                </div>
+                <img
+                  src={process.env.PUBLIC_URL + `/ob-map-${n}.png`}
+                  alt={`Out of Bounds Map ${n}`}
+                  style={{ width: "100%", display: "block" }}
+                />
+              </Card>
+            ))}
+          </div>
+        </div>
       ) : (
         <div>
           {/* Legend */}
