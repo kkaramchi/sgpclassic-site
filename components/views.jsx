@@ -1,10 +1,9 @@
+"use client";
 import { useState, useMemo, useEffect, useCallback } from "react";
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  "https://bamerxmzzlolqzqnzidr.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJhbWVyeG16emxvbHF6cW56aWRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzMDc4OTAsImV4cCI6MjA5NDg4Mzg5MH0.smf-SL5q9oFqKv2JoNtIzl3a4zMWENGyrYCkze3RC3Q"
-);
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, PieChart, Pie, Legend as RLegend } from "recharts";
+import { Trophy, User, DollarSign, Home, ChevronRight, ChevronLeft, Award, Flag, TrendingUp, Users, MapPin, Calendar } from "lucide-react";
+import { supabase } from "@/lib/supabase";
+import { useSetPage } from "@/lib/nav";
 
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(typeof window !== "undefined" ? window.innerWidth < breakpoint : false);
@@ -15,8 +14,6 @@ function useIsMobile(breakpoint = 768) {
   }, [breakpoint]);
   return isMobile;
 }
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, PieChart, Pie, Legend as RLegend } from "recharts";
-import { Trophy, User, DollarSign, Home, ChevronRight, ChevronLeft, Award, Flag, TrendingUp, Users, MapPin, Calendar } from "lucide-react";
 
 // ═══════════════════════════════════════════════════════════════
 // DATA
@@ -769,7 +766,7 @@ const TOURNAMENTS = {
 // THEME
 // ═══════════════════════════════════════════════════════════════
 
-const colors = {
+export const colors = {
   green: "#15803d",
   greenLight: "#22c55e",
   greenDark: "#14532d",
@@ -949,7 +946,7 @@ function Table({ columns, data, onRowClick, defaultSort, sortable, rowStyle }) {
   );
 }
 
-function Nav({ active, setPage }) {
+export function Nav({ active, setPage }) {
   const mobile = useIsMobile();
   const [menuOpen, setMenuOpen] = useState(false);
   const [rulesOpen, setRulesOpen] = useState(false);
@@ -977,7 +974,7 @@ function Nav({ active, setPage }) {
       <>
         <nav style={{ background: colors.greenDark, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "56px", position: "relative", zIndex: 100 }}>
           <div style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }} onClick={() => handleNav("home")}>
-            <img src={process.env.PUBLIC_URL + "/logo-small-white.png"} alt="SGP Classic" style={{ height: "28px", objectFit: "contain" }} />
+            <img src={"/logo-small-white.png"} alt="SGP Classic" style={{ height: "28px", objectFit: "contain" }} />
             <span style={{ color: "white", fontSize: "16px", fontFamily: "'DM Sans', sans-serif", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>SGP CLASSIC</span>
           </div>
           <button onClick={() => setMenuOpen(!menuOpen)} style={{ background: "none", border: "none", cursor: "pointer", padding: "8px", display: "flex", flexDirection: "column", gap: "4px" }}>
@@ -1028,7 +1025,7 @@ function Nav({ active, setPage }) {
   return (
     <nav style={{ background: colors.greenDark, padding: "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "56px", position: "relative", zIndex: 100, overflow: "visible" }}>
       <div style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer" }} onClick={() => handleNav("home")}>
-        <img src={process.env.PUBLIC_URL + "/logo-small-white.png"} alt="SGP Classic" style={{ height: "36px", objectFit: "contain" }} />
+        <img src={"/logo-small-white.png"} alt="SGP Classic" style={{ height: "36px", objectFit: "contain" }} />
         <span style={{ color: "white", fontSize: "20px", fontFamily: "'DM Sans', sans-serif", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>SGP CLASSIC</span>
       </div>
       <div style={{ display: "flex", gap: "2px", alignItems: "center" }}>
@@ -1095,7 +1092,7 @@ function Breadcrumb({ items, onNavigate }) {
 // PAGES
 // ═══════════════════════════════════════════════════════════════
 
-function HomePage({ setPage }) {
+export function HomePage({ setPage }) {
   const mobile = useIsMobile();
   const [homeBets, setHomeBets] = useState([]);
 
@@ -1175,7 +1172,7 @@ function HomePage({ setPage }) {
         )}
         <div style={{ position: "relative", maxWidth: mobile ? "100%" : "calc(100% - 280px)" }}>
           <div style={{ fontSize: mobile ? "12px" : "14px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", opacity: 0.8, marginBottom: "8px", fontFamily: "'DM Sans', sans-serif" }}>Year 9</div>
-          <img src={process.env.PUBLIC_URL + "/logo-white.png"} alt="SGP Classic" style={{ height: mobile ? "50px" : "80px", objectFit: "contain", marginBottom: "8px" }} />
+          <img src={"/logo-white.png"} alt="SGP Classic" style={{ height: mobile ? "50px" : "80px", objectFit: "contain", marginBottom: "8px" }} />
           <h1 style={{ fontSize: mobile ? "28px" : "42px", fontWeight: 700, margin: "0 0 8px 0", letterSpacing: "1px", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase" }}>SGP Classic 2026</h1>
           <p style={{ fontSize: mobile ? "15px" : "18px", opacity: 0.85, margin: "0 0 16px 0" }}>Woodington Lake Golf Club &middot; Tottenham, ON</p>
           <div onClick={() => setPage({ id: "live-betting" })} style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: colors.goldLight, color: colors.greenDark, padding: mobile ? "10px 20px" : "12px 28px", borderRadius: "8px", fontSize: mobile ? "14px" : "16px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "1px", cursor: "pointer", marginBottom: "20px", transition: "transform 0.15s, box-shadow 0.15s", boxShadow: "0 4px 12px rgba(0,0,0,0.3)" }} onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 6px 16px rgba(0,0,0,0.4)"; }} onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.3)"; }}>
@@ -1274,7 +1271,7 @@ function HomePage({ setPage }) {
       <div style={{ marginBottom: "32px", textAlign: "center" }}>
         <div style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", color: colors.textMuted, marginBottom: "10px", fontFamily: "'DM Sans', sans-serif" }}>Tournament Sponsor</div>
         <div style={{ background: "white", borderRadius: "12px", border: `1px solid ${colors.border}`, padding: mobile ? "16px 20px" : "20px 40px", display: "inline-block" }}>
-          <img src={process.env.PUBLIC_URL + "/sponsor-logo.svg"} alt="Alpha Bull Canada — Private Wealth Management" style={{ height: mobile ? "50px" : "80px", maxWidth: "100%", objectFit: "contain" }} />
+          <img src={"/sponsor-logo.svg"} alt="Alpha Bull Canada — Private Wealth Management" style={{ height: mobile ? "50px" : "80px", maxWidth: "100%", objectFit: "contain" }} />
         </div>
       </div>
 
@@ -1399,7 +1396,7 @@ function HomePage({ setPage }) {
   );
 }
 
-function TournamentsPage({ setPage }) {
+export function TournamentsPage({ setPage }) {
   const years = Object.keys(TOURNAMENTS).sort((a, b) => b - a);
   return (
     <div>
@@ -1440,7 +1437,7 @@ function TournamentsPage({ setPage }) {
   );
 }
 
-function TournamentDetailPage({ year, defaultTab, setPage }) {
+export function TournamentDetailPage({ year, defaultTab, setPage }) {
   const t = TOURNAMENTS[year];
   if (!t) return <div>Tournament not found.</div>;
   const mobile = useIsMobile();
@@ -1772,7 +1769,7 @@ function ParimutuelYearView({ t }) {
   );
 }
 
-function PlayersPage({ setPage }) {
+export function PlayersPage({ setPage }) {
   const allPlayers = useMemo(() => {
     const players = {};
     // First pass: register all players from team rosters and calculate earnings
@@ -1843,7 +1840,7 @@ function PlayersPage({ setPage }) {
   );
 }
 
-function PlayerDetailPage({ name, setPage }) {
+export function PlayerDetailPage({ name, setPage }) {
   const mobile = useIsMobile();
   const playerData = useMemo(() => {
     const appearances = [];
@@ -1950,7 +1947,7 @@ function PlayerDetailPage({ name, setPage }) {
   );
 }
 
-function ParimutuelPage({ setPage }) {
+export function ParimutuelPage({ setPage }) {
   const mobile = useIsMobile();
   const allTimeData = useMemo(() => {
     const bettors = {};
@@ -2085,7 +2082,7 @@ function ParimutuelPage({ setPage }) {
 // RULES PAGES
 // ═══════════════════════════════════════════════════════════════
 
-function RulesPage() {
+export function RulesPage() {
   const mobile = useIsMobile();
   const rules = [
     { title: "USGA Rules", content: "USGA rules govern all play. If you do not know the basics about the USGA Rules of Golf, you should not be playing in the SGP Classic." },
@@ -2143,7 +2140,7 @@ function RulesPage() {
   );
 }
 
-function CourseGuidePage({ course, setPage }) {
+export function CourseGuidePage({ course, setPage }) {
   const mobile = useIsMobile();
   const [selectedHole, setSelectedHole] = useState(null);
   const totalHoles = 18;
@@ -2177,7 +2174,7 @@ function CourseGuidePage({ course, setPage }) {
                   <span style={{ color: colors.goldLight, fontSize: "13px", fontWeight: 600 }}>Out of Bounds</span>
                 </div>
                 <img
-                  src={process.env.PUBLIC_URL + `/ob-map-${n}.png`}
+                  src={`/ob-map-${n}.png`}
                   alt={`Out of Bounds Map ${n}`}
                   style={{ width: "100%", display: "block" }}
                 />
@@ -2241,7 +2238,7 @@ function CourseGuidePage({ course, setPage }) {
                     </span>
                   </div>
                   <img
-                    src={process.env.PUBLIC_URL + `/holes/legend-hole-${h}.jpg`}
+                    src={`/holes/legend-hole-${h}.jpg`}
                     alt={`Legend Course Hole ${h} Hazards`}
                     style={{ width: "100%", display: "block" }}
                   />
@@ -2270,7 +2267,7 @@ function getTeamForPick(pickNumber) {
   return ((pickNumber - 1) % 10) + 1;
 }
 
-function LiveDraftPage() {
+export function LiveDraftPage() {
   const mobile = useIsMobile();
   const [picks, setPicks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -2525,7 +2522,7 @@ const BETTING_TEAMS = [
   { num: 10, p1: "Johnny D'Amato", p2: "Kevin Kernohan", h1: 13, h2: 16, scramble: 7 },
 ];
 
-function LiveBettingPage() {
+export function LiveBettingPage() {
   const mobile = useIsMobile();
   const [bets, setBets] = useState([]);
   const [config, setConfig] = useState(null);
@@ -2991,7 +2988,7 @@ const TEE_COLORS = {
   White: { bg: "#ffffff", text: "#333" },
 };
 
-function SgpTeesPickerPage({ setPage }) {
+export function SgpTeesPickerPage({ setPage }) {
   const mobile = useIsMobile();
   return (
     <div>
@@ -3024,7 +3021,7 @@ function SgpTeesPickerPage({ setPage }) {
   );
 }
 
-function SgpTeesCoursePage({ course, setPage }) {
+export function SgpTeesCoursePage({ course, setPage }) {
   const mobile = useIsMobile();
   const isSpire = course === "spire";
   const holes = isSpire ? SGP_TEES_SPIRE : SGP_TEES_LAKE;
@@ -3102,74 +3099,6 @@ function SgpTeesCoursePage({ course, setPage }) {
           View {course === "spire" ? "Lake Course (PM)" : "Spire Course (AM)"}
         </button>
       </div>
-    </div>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════════
-// APP
-// ═══════════════════════════════════════════════════════════════
-
-export default function App() {
-  const [page, setPageRaw] = useState({ id: "home" });
-  const setPage = (p) => { setPageRaw(p); window.scrollTo(0, 0); };
-
-  const getActiveNav = () => {
-    if (page.id === "home") return "home";
-    if (page.id.includes("tournament")) return "tournaments";
-    if (page.id.includes("player")) return "players";
-    if (page.id === "parimutuel") return "parimutuel";
-    if (page.id.includes("sgp-tees")) return "sgp-tees";
-    if (page.id === "rules" || page.id === "course-legend" || page.id === "course-legacy") return page.id;
-    return "home";
-  };
-
-  const renderPage = () => {
-    switch (page.id) {
-      case "home":
-        return <HomePage setPage={setPage} />;
-      case "tournaments":
-        return <TournamentsPage setPage={setPage} />;
-      case "tournament-detail":
-        return <TournamentDetailPage year={page.year} defaultTab={page.tab} setPage={setPage} />;
-      case "players":
-        return <PlayersPage setPage={setPage} />;
-      case "player-detail":
-        return <PlayerDetailPage name={page.name} setPage={setPage} />;
-      case "parimutuel":
-        return <ParimutuelPage setPage={setPage} />;
-      case "live-betting":
-        return <LiveBettingPage />;
-      case "live-draft":
-        return <LiveDraftPage />;
-      case "rules":
-        return <RulesPage />;
-      case "course-legend":
-        return <CourseGuidePage course="legend" setPage={setPage} />;
-      case "course-legacy":
-        return <CourseGuidePage course="legacy" setPage={setPage} />;
-      case "sgp-tees":
-        return <SgpTeesPickerPage setPage={setPage} />;
-      case "sgp-tees-spire":
-        return <SgpTeesCoursePage course="spire" setPage={setPage} />;
-      case "sgp-tees-lake":
-        return <SgpTeesCoursePage course="lake" setPage={setPage} />;
-      default:
-        return <HomePage setPage={setPage} />;
-    }
-  };
-
-  const mobile = useIsMobile();
-
-  return (
-    <div style={{ background: colors.bg, minHeight: "100vh", fontFamily: "'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
-      <Nav active={getActiveNav()} setPage={setPage} />
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: mobile ? "16px 12px" : "32px 24px" }}>
-        {renderPage()}
-      </div>
-      <footer style={{ textAlign: "center", padding: "32px", color: colors.textMuted, fontSize: "13px", borderTop: `1px solid ${colors.border}` }}>
-        <span style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, textTransform: "uppercase", letterSpacing: "1px" }}>SGP Classic</span> &middot; Est. 2018 &middot; Woodington Lake Golf Club
-      </footer>
     </div>
   );
 }
