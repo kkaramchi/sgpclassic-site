@@ -760,6 +760,130 @@ const TOURNAMENTS = {
       ],
     },
   },
+  2026: {
+    year: 2026,
+    yearNum: 9,
+    name: "SGP Classic Year 9",
+    venue: "Woodington Lake Golf Club",
+    location: "Tottenham, ON",
+    round1Format: "2-Man Best Ball",
+    round1Course: "Spire",
+    round2Format: "2-Man Scramble",
+    round2Course: "Lake",
+    entryFee: 60,
+    prizePool: 1200,
+    prizeSplit: { first: 720, second: 240 },
+    teams: [
+      { num: 1, p1: "Reid Hartley", p2: "Joel Greaves" },
+      { num: 2, p1: "Anthony Laud", p2: "Trevor Williams" },
+      { num: 3, p1: "Mark Johnson", p2: "Graham Booth" },
+      { num: 4, p1: "Geoff Crain", p2: "David Carlson" },
+      { num: 5, p1: "Nolan Rundle", p2: "Keon Karamchi" },
+      { num: 6, p1: "Andrew Carlson", p2: "Nick Crain" },
+      { num: 7, p1: "Brendan Black", p2: "Paul Statchuk" },
+      { num: 8, p1: "Patrick Forbes", p2: "Dave MacDougall" },
+      { num: 9, p1: "Chris Statchuk", p2: "Chris Williams" },
+      { num: 10, p1: "Johnny D'Amato", p2: "Kevin Kernohan" },
+    ],
+    leaderboard: [
+      { pos: 1, team: "Black/Statchuk", teamNum: 7, r1Gross: 71, r1Net: 64, r2Gross: 66, r2Net: 63, totalGross: 137, totalNet: 127, toPar: -17, prize: 720 },
+      { pos: "T2", team: "Greaves/Hartley", teamNum: 1, r1Gross: 71, r1Net: 61, r2Gross: 72, r2Net: 68, totalGross: 143, totalNet: 129, toPar: -15, prize: 240 },
+      { pos: "T2", team: "Laud/Williams", teamNum: 2, r1Gross: 78, r1Net: 64, r2Gross: 71, r2Net: 65, totalGross: 149, totalNet: 129, toPar: -15, prize: 240 },
+      { pos: 4, team: "C.Statchuk/Williams", teamNum: 9, r1Gross: 74, r1Net: 67, r2Gross: 66, r2Net: 63, totalGross: 140, totalNet: 130, toPar: -14, prize: 0 },
+      { pos: "T5", team: "G.Crain/Carlson", teamNum: 4, r1Gross: 78, r1Net: 68, r2Gross: 70, r2Net: 65, totalGross: 148, totalNet: 133, toPar: -11, prize: 0 },
+      { pos: "T5", team: "A.Carlson/Crain", teamNum: 6, r1Gross: 80, r1Net: 63, r2Gross: 78, r2Net: 70, totalGross: 158, totalNet: 133, toPar: -11, prize: 0 },
+      { pos: "T7", team: "Rundle/Karamchi", teamNum: 5, r1Gross: 83, r1Net: 66, r2Gross: 77, r2Net: 68, totalGross: 160, totalNet: 134, toPar: -10, prize: 0 },
+      { pos: "T7", team: "Forbes/MacDougall", teamNum: 8, r1Gross: 71, r1Net: 66, r2Gross: 71, r2Net: 68, totalGross: 142, totalNet: 134, toPar: -10, prize: 0 },
+      { pos: 9, team: "D'Amato/Kernohan", teamNum: 10, r1Gross: 87, r1Net: 72, r2Gross: 73, r2Net: 66, totalGross: 160, totalNet: 138, toPar: -6, prize: 0 },
+      { pos: 10, team: "Johnson/Booth", teamNum: 3, r1Gross: 89, r1Net: 71, r2Gross: 84, r2Net: 76, totalGross: 173, totalNet: 147, toPar: 3, prize: 0 },
+    ],
+    lowGross: { player: "Pat Forbes", score: 72, toPar: 0, course: "Spire" },
+    individualScores: [
+      { name: "Pat Forbes", hdcp: 1, gross: 72, net: 71, toPar: 0, netToPar: -1, birdies: 3, eagles: 1, front: 39, back: 33 },
+      { name: "Reid Hartley", hdcp: 3, gross: 75, net: 72, toPar: 3, netToPar: 0, birdies: 2, eagles: 0, front: 39, back: 36 },
+      { name: "Paul Statchuk", hdcp: 8, gross: 77, net: 69, toPar: 5, netToPar: -3, birdies: 3, eagles: 1, front: 41, back: 36 },
+      { name: "Geoff Crain", hdcp: 4, gross: 78, net: 74, toPar: 6, netToPar: 2, birdies: 2, eagles: 0, front: 42, back: 36 },
+      { name: "Brendan Black", hdcp: 5, gross: 79, net: 74, toPar: 7, netToPar: 2, birdies: 2, eagles: 0, front: 41, back: 38 },
+      { name: "Chris Williams", hdcp: 9, gross: 80, net: 71, toPar: 8, netToPar: -1, birdies: 0, eagles: 0, front: 40, back: 40 },
+      { name: "Chris Statchuk", hdcp: 4, gross: 82, net: 78, toPar: 10, netToPar: 6, birdies: 1, eagles: 0, front: 44, back: 38 },
+      { name: "Anthony Laud", hdcp: 10, gross: 83, net: 73, toPar: 11, netToPar: 1, birdies: 3, eagles: 0, front: 40, back: 43 },
+      { name: "Nick Crain", hdcp: 11, gross: 83, net: 72, toPar: 11, netToPar: 0, birdies: 1, eagles: 0, front: 46, back: 37 },
+      { name: "Keon Karamchi", hdcp: 14, gross: 85, net: 71, toPar: 13, netToPar: -1, birdies: 3, eagles: 0, front: 44, back: 41 },
+      { name: "Joel Greaves", hdcp: 20, gross: 86, net: 66, toPar: 14, netToPar: -6, birdies: 2, eagles: 0, front: 46, back: 40 },
+      { name: "Kevin Kernohan", hdcp: 16, gross: 92, net: 76, toPar: 20, netToPar: 4, birdies: 3, eagles: 0, front: 49, back: 43 },
+      { name: "Andrew Carlson", hdcp: 25, gross: 94, net: 69, toPar: 22, netToPar: -3, birdies: 0, eagles: 0, front: 52, back: 42 },
+      { name: "Nolan Rundle", hdcp: 22, gross: 95, net: 73, toPar: 23, netToPar: 1, birdies: 0, eagles: 0, front: 49, back: 46 },
+      { name: "Trevor Williams", hdcp: 14, gross: 95, net: 81, toPar: 23, netToPar: 9, birdies: 0, eagles: 0, front: 53, back: 42 },
+      { name: "Graham Booth", hdcp: 13, gross: 98, net: 85, toPar: 26, netToPar: 13, birdies: 0, eagles: 0, front: 52, back: 46 },
+      { name: "John D'Amato", hdcp: 13, gross: 100, net: 87, toPar: 28, netToPar: 15, birdies: 0, eagles: 0, front: 50, back: 50 },
+      { name: "Mark Johnson", hdcp: 22, gross: 100, net: 78, toPar: 28, netToPar: 6, birdies: 0, eagles: 0, front: 57, back: 43 },
+      { name: "Dave MacDougall", hdcp: 16, gross: 100, net: 84, toPar: 28, netToPar: 12, birdies: 1, eagles: 0, front: 56, back: 44 },
+      { name: "David Carlson", hdcp: 23, gross: 103, net: 80, toPar: 31, netToPar: 8, birdies: 0, eagles: 0, front: 56, back: 47 },
+    ],
+    parimutuel: {
+      totalPool: 5450,
+      winningTeam: 7,
+      payoutMultiplier: 4.84,
+      bets: [
+        { bettor: "Paul Statchuk", team: 8, amount: 50 }, { bettor: "Paul Statchuk", team: 9, amount: 50 }, { bettor: "Paul Statchuk", team: 2, amount: 25 },
+        { bettor: "Paul Statchuk", team: 7, amount: 375 }, { bettor: "Anthony Laud", team: 2, amount: 150 }, { bettor: "Anthony Laud", team: 8, amount: 50 },
+        { bettor: "Anthony Laud", team: 5, amount: 25 }, { bettor: "Anthony Laud", team: 10, amount: 25 }, { bettor: "Anthony Laud", team: 4, amount: 25 },
+        { bettor: "Anthony Laud", team: 2, amount: 50 }, { bettor: "Keon Karamchi", team: 5, amount: 100 }, { bettor: "Keon Karamchi", team: 9, amount: 100 },
+        { bettor: "Keon Karamchi", team: 2, amount: 100 }, { bettor: "Keon Karamchi", team: 9, amount: 100 }, { bettor: "Kevin Kernohan", team: 9, amount: 50 },
+        { bettor: "Kevin Kernohan", team: 10, amount: 50 }, { bettor: "Kevin Kernohan", team: 10, amount: 50 }, { bettor: "Kevin Kernohan", team: 9, amount: 50 },
+        { bettor: "David Carlson", team: 4, amount: 100 }, { bettor: "David Carlson", team: 4, amount: 100 }, { bettor: "Mark Johnson", team: 3, amount: 25 },
+        { bettor: "Mark Johnson", team: 7, amount: 50 }, { bettor: "Mark Johnson", team: 3, amount: 50 }, { bettor: "Mark Johnson", team: 5, amount: 50 },
+        { bettor: "Mark Johnson", team: 9, amount: 75 }, { bettor: "Dave MacDougall", team: 8, amount: 75 }, { bettor: "Dave MacDougall", team: 7, amount: 25 },
+        { bettor: "Dave MacDougall", team: 5, amount: 25 }, { bettor: "Dave MacDougall", team: 8, amount: 50 }, { bettor: "Dave MacDougall", team: 9, amount: 25 },
+        { bettor: "Patrick Forbes", team: 8, amount: 100 }, { bettor: "Patrick Forbes", team: 9, amount: 50 }, { bettor: "Patrick Forbes", team: 8, amount: 50 },
+        { bettor: "Chris Statchuk", team: 9, amount: 100 }, { bettor: "Chris Statchuk", team: 5, amount: 50 }, { bettor: "Brendan Black", team: 7, amount: 50 },
+        { bettor: "Brendan Black", team: 9, amount: 50 }, { bettor: "Brendan Black", team: 8, amount: 50 }, { bettor: "Brendan Black", team: 5, amount: 50 },
+        { bettor: "Brendan Black", team: 2, amount: 25 }, { bettor: "Brendan Black", team: 3, amount: 25 }, { bettor: "Brendan Black", team: 1, amount: 25 },
+        { bettor: "Brendan Black", team: 10, amount: 25 }, { bettor: "Brendan Black", team: 6, amount: 25 }, { bettor: "Brendan Black", team: 7, amount: 50 },
+        { bettor: "Nolan Rundle", team: 5, amount: 50 }, { bettor: "Nolan Rundle", team: 5, amount: 25 }, { bettor: "Nolan Rundle", team: 9, amount: 25 },
+        { bettor: "Nolan Rundle", team: 7, amount: 50 }, { bettor: "Nolan Rundle", team: 10, amount: 50 }, { bettor: "Nolan Rundle", team: 5, amount: 50 },
+        { bettor: "Nolan Rundle", team: 9, amount: 50 }, { bettor: "Nolan Rundle", team: 1, amount: 25 }, { bettor: "Gendy", team: 9, amount: 25 },
+        { bettor: "Gendy", team: 8, amount: 25 }, { bettor: "Graham Booth", team: 3, amount: 25 }, { bettor: "Graham Booth", team: 8, amount: 25 },
+        { bettor: "Andrew Carlson", team: 6, amount: 50 }, { bettor: "Andrew Carlson", team: 6, amount: 50 }, { bettor: "Andrew Carlson", team: 6, amount: 50 },
+        { bettor: "Andrew Carlson", team: 2, amount: 50 }, { bettor: "Trevor Williams", team: 2, amount: 25 }, { bettor: "Trevor Williams", team: 9, amount: 25 },
+        { bettor: "Anthony Laud", team: 2, amount: 100 }, { bettor: "Anthony Laud", team: 1, amount: 25 }, { bettor: "Anthony Laud", team: 5, amount: 100 },
+        { bettor: "Anthony Laud", team: 2, amount: 100 }, { bettor: "Anthony Laud", team: 5, amount: 25 }, { bettor: "Anthony Laud", team: 2, amount: 50 },
+        { bettor: "Anthony Laud", team: 5, amount: 25 }, { bettor: "Adam Hoffman", team: 7, amount: 100 }, { bettor: "Adam Hoffman", team: 8, amount: 50 },
+        { bettor: "Adam Hoffman", team: 7, amount: 100 }, { bettor: "Adam Hoffman", team: 8, amount: 100 }, { bettor: "Adam Hoffman", team: 7, amount: 150 },
+        { bettor: "Chris Williams", team: 7, amount: 25 }, { bettor: "Chris Williams", team: 9, amount: 50 }, { bettor: "Chris Williams", team: 5, amount: 50 },
+        { bettor: "Chris Williams", team: 8, amount: 25 }, { bettor: "Reid Hartley", team: 7, amount: 25 }, { bettor: "Reid Hartley", team: 9, amount: 50 },
+        { bettor: "Reid Hartley", team: 8, amount: 50 }, { bettor: "Reid Hartley", team: 1, amount: 25 }, { bettor: "Andy Williams", team: 9, amount: 25 },
+        { bettor: "Geoff Crain", team: 9, amount: 50 }, { bettor: "Geoff Crain", team: 4, amount: 25 }, { bettor: "Geoff Crain", team: 8, amount: 25 },
+        { bettor: "Geoff Crain", team: 4, amount: 25 }, { bettor: "Johnny D\'Amato", team: 10, amount: 25 }, { bettor: "Johnny D\'Amato", team: 3, amount: 25 },
+        { bettor: "Keon Karamchi", team: 5, amount: 75 }, { bettor: "Keon Karamchi", team: 9, amount: 100 }, { bettor: "Paul Statchuk", team: 9, amount: 50 },
+        { bettor: "Paul Statchuk", team: 8, amount: 75 }, { bettor: "Paul Statchuk", team: 4, amount: 50 }, { bettor: "Paul Statchuk", team: 1, amount: 25 },
+        { bettor: "Paul Statchuk", team: 7, amount: 125 }, { bettor: "Anthony Laud", team: 2, amount: 50 },
+      ],
+      results: [
+        { bettor: "Paul Statchuk", wagered: 825, onWinner: 500, payout: 2422.22, net: 1597.22 },
+        { bettor: "Adam Hoffman", wagered: 500, onWinner: 350, payout: 1695.56, net: 1195.56 },
+        { bettor: "Brendan Black", wagered: 375, onWinner: 100, payout: 484.44, net: 109.44 },
+        { bettor: "Mark Johnson", wagered: 250, onWinner: 50, payout: 242.22, net: -7.78 },
+        { bettor: "Nolan Rundle", wagered: 325, onWinner: 50, payout: 242.22, net: -82.78 },
+        { bettor: "Dave MacDougall", wagered: 200, onWinner: 25, payout: 121.11, net: -78.89 },
+        { bettor: "Chris Williams", wagered: 150, onWinner: 25, payout: 121.11, net: -28.89 },
+        { bettor: "Reid Hartley", wagered: 150, onWinner: 25, payout: 121.11, net: -28.89 },
+        { bettor: "Anthony Laud", wagered: 800, onWinner: 0, payout: 0, net: -800 },
+        { bettor: "Keon Karamchi", wagered: 575, onWinner: 0, payout: 0, net: -575 },
+        { bettor: "Kevin Kernohan", wagered: 200, onWinner: 0, payout: 0, net: -200 },
+        { bettor: "David Carlson", wagered: 200, onWinner: 0, payout: 0, net: -200 },
+        { bettor: "Patrick Forbes", wagered: 200, onWinner: 0, payout: 0, net: -200 },
+        { bettor: "Andrew Carlson", wagered: 200, onWinner: 0, payout: 0, net: -200 },
+        { bettor: "Chris Statchuk", wagered: 150, onWinner: 0, payout: 0, net: -150 },
+        { bettor: "Geoff Crain", wagered: 125, onWinner: 0, payout: 0, net: -125 },
+        { bettor: "Johnny D\'Amato", wagered: 50, onWinner: 0, payout: 0, net: -50 },
+        { bettor: "Gendy", wagered: 50, onWinner: 0, payout: 0, net: -50 },
+        { bettor: "Graham Booth", wagered: 50, onWinner: 0, payout: 0, net: -50 },
+        { bettor: "Trevor Williams", wagered: 50, onWinner: 0, payout: 0, net: -50 },
+        { bettor: "Andy Williams", wagered: 25, onWinner: 0, payout: 0, net: -25 },
+      ],
+    },
+  },
 };
 
 // ═══════════════════════════════════════════════════════════════
@@ -1094,41 +1218,6 @@ function Breadcrumb({ items, onNavigate }) {
 
 export function HomePage({ setPage }) {
   const mobile = useIsMobile();
-  const [homeBets, setHomeBets] = useState([]);
-
-  // Fetch bets for favourites tracker (lightweight — no config needed)
-  useEffect(() => {
-    const fetchBets = async () => {
-      const { data } = await supabase.from("bets_2026").select("team,amount");
-      if (data) setHomeBets(data);
-    };
-    fetchBets();
-    const channel = supabase
-      .channel("home-favourites")
-      .on("postgres_changes", { event: "INSERT", schema: "public", table: "bets_2026" }, (payload) => {
-        setHomeBets((prev) => [...prev, { team: payload.new.team, amount: payload.new.amount }]);
-      })
-      .subscribe();
-    return () => { supabase.removeChannel(channel); };
-  }, []);
-
-  const homePools = {};
-  let homeTotal = 0;
-  BETTING_TEAMS.forEach((t) => { homePools[t.num] = 0; });
-  homeBets.forEach((b) => {
-    if (b.team && b.amount) {
-      homePools[b.team] = (homePools[b.team] || 0) + b.amount;
-      homeTotal += b.amount;
-    }
-  });
-  const getHomeOdds = (teamNum) => {
-    if (homePools[teamNum] > 0 && homeTotal > 0) return homeTotal / homePools[teamNum];
-    return 0;
-  };
-  const topFavourites = [...BETTING_TEAMS]
-    .filter((t) => getHomeOdds(t.num) > 0)
-    .sort((a, b) => getHomeOdds(a.num) - getHomeOdds(b.num))
-    .slice(0, 3);
 
   // Compute top 5 career earners from prize pool
   const moneyList = useMemo(() => {
@@ -1175,8 +1264,8 @@ export function HomePage({ setPage }) {
           <img src={"/logo-white.png"} alt="SGP Classic" style={{ height: mobile ? "50px" : "80px", objectFit: "contain", marginBottom: "8px" }} />
           <h1 style={{ fontSize: mobile ? "28px" : "42px", fontWeight: 700, margin: "0 0 8px 0", letterSpacing: "1px", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase" }}>SGP Classic 2026</h1>
           <p style={{ fontSize: mobile ? "15px" : "18px", opacity: 0.85, margin: "0 0 16px 0" }}>Woodington Lake Golf Club &middot; Tottenham, ON</p>
-          <div onClick={() => setPage({ id: "live-betting" })} style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: colors.goldLight, color: colors.greenDark, padding: mobile ? "10px 20px" : "12px 28px", borderRadius: "8px", fontSize: mobile ? "14px" : "16px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "1px", cursor: "pointer", marginBottom: "20px", transition: "transform 0.15s, box-shadow 0.15s", boxShadow: "0 4px 12px rgba(0,0,0,0.3)" }} onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 6px 16px rgba(0,0,0,0.4)"; }} onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.3)"; }}>
-            <DollarSign size={18} /> Place Your Bets — Live Parimutuel
+          <div onClick={() => setPage({ id: "tournament-detail", year: 2026 })} style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: colors.goldLight, color: colors.greenDark, padding: mobile ? "10px 20px" : "12px 28px", borderRadius: "8px", fontSize: mobile ? "14px" : "16px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "1px", cursor: "pointer", marginBottom: "20px", transition: "transform 0.15s, box-shadow 0.15s", boxShadow: "0 4px 12px rgba(0,0,0,0.3)" }} onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 6px 16px rgba(0,0,0,0.4)"; }} onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.3)"; }}>
+            <Trophy size={18} /> View 2026 Results — Black &amp; Statchuk Win
           </div>
           <div style={{ display: "flex", gap: "10px", marginBottom: "20px", justifyContent: "flex-start", flexWrap: "wrap" }}>
             <div onClick={() => setPage({ id: "sgp-tees-spire" })} style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "rgba(255,255,255,0.15)", color: "white", padding: "8px 16px", borderRadius: "8px", fontSize: "13px", fontWeight: 600, fontFamily: "'DM Sans', sans-serif", cursor: "pointer", transition: "background 0.15s" }}
@@ -1198,39 +1287,6 @@ export function HomePage({ setPage }) {
               <Users size={14} /> Morning Foursomes
             </div>
           </div>
-          {/* Live Favourites Tracker */}
-          {topFavourites.length > 0 && (
-            <div onClick={() => setPage({ id: "live-betting" })} style={{ background: "rgba(0,0,0,0.25)", borderRadius: "10px", padding: "14px 16px", marginBottom: "20px", cursor: "pointer", transition: "background 0.15s", maxWidth: mobile ? "100%" : "420px" }}
-              onMouseEnter={(e) => e.currentTarget.style.background = "rgba(0,0,0,0.35)"}
-              onMouseLeave={(e) => e.currentTarget.style.background = "rgba(0,0,0,0.25)"}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                  <span style={{ fontSize: "13px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "1px" }}>Favourites</span>
-                  <span style={{ fontSize: "10px", background: "rgba(255,255,255,0.15)", padding: "2px 8px", borderRadius: "10px", fontWeight: 600, letterSpacing: "0.3px" }}>LIVE</span>
-                </div>
-                <div style={{ textAlign: "right" }}>
-                  <div style={{ fontSize: "9px", textTransform: "uppercase", letterSpacing: "0.5px", opacity: 0.5 }}>Total pool</div>
-                  <div style={{ fontSize: "18px", fontWeight: 800, color: colors.goldLight, fontFamily: "'DM Sans', sans-serif" }}>${homeTotal.toLocaleString()}</div>
-                </div>
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                {topFavourites.map((team, i) => (
-                  <div key={team.num} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.08)", borderRadius: "8px", padding: "8px 12px" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                      <span style={{ fontSize: "12px", fontWeight: 800, color: i === 0 ? colors.goldLight : "rgba(255,255,255,0.4)", width: "14px" }}>{i + 1}</span>
-                      <div>
-                        <div style={{ fontSize: "13px", fontWeight: 700 }}>{team.p1.split(" ").pop()} & {team.p2.split(" ").pop()}</div>
-                        <div style={{ fontSize: "11px", opacity: 0.5 }}>Team {team.num}</div>
-                      </div>
-                    </div>
-                    <div style={{ fontSize: "16px", fontWeight: 800, color: i === 0 ? colors.goldLight : "rgba(255,255,255,0.7)", fontFamily: "'DM Sans', sans-serif" }}>{getHomeOdds(team.num).toFixed(1)}x</div>
-                  </div>
-                ))}
-              </div>
-              <div style={{ marginTop: "10px", textAlign: "center", fontSize: "11px", fontWeight: 600, letterSpacing: "0.5px", opacity: 0.5, textTransform: "uppercase" }}>View full odds board →</div>
-            </div>
-          )}
           <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3, auto)", gap: mobile ? "10px" : "16px" }}>
             <div style={{ background: "rgba(255,255,255,0.12)", borderRadius: "10px", padding: "14px 20px" }}>
               <Calendar size={18} style={{ marginBottom: "6px", opacity: 0.8 }} />
