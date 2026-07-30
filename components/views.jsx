@@ -895,6 +895,80 @@ const TOURNAMENTS = {
   },
 };
 
+const SCRAMBLES = {
+  2025: {
+    year: 2025,
+    edition: 1,
+    name: "Fall Scramble",
+    venue: "St Andrews Valley Golf Club",
+    location: "Aurora, ON",
+    date: "October 4, 2025",
+    format: "3-Man Scramble",
+    scoring: "Scratch (Gross)",
+    tees: "SGP Tees",
+    totalYards: 6731,
+    par: 72,
+    entryFee: 50,
+    prizePool: 750,
+    prizeNote: "Winner-take-all — $750 pool split three ways ($250 per player).",
+    draftNote: "Teams drafted by the five middle-handicap captains (Booth, Karamchi, Crain, Hoffman, Williams). Highest index picks first, snake order.",
+    teams: [
+      { num: 1, players: ["Graham Booth", "Reid Hartley", "Mark Johnson"] },
+      { num: 2, players: ["Keon Karamchi", "Paul Statchuk", "Dave MacDougall"] },
+      { num: 3, players: ["Nick Crain", "Anthony Laud", "Nolan Rundle"] },
+      { num: 4, players: ["Adam Hoffman", "Chris Statchuk", "Johnny D'Amato"] },
+      { num: 5, players: ["Chris Williams", "Brendan Black", "Kevin Kernohan"] },
+    ],
+    leaderboard: [
+      { pos: "1", teamNum: 4, team: "Hoffman / C.Statchuk / D'Amato", gross: 58, toPar: -14, prize: 750 },
+      { pos: "2", teamNum: 5, team: "Williams / Black / Kernohan", gross: 62, toPar: -10, prize: 0 },
+      { pos: "3", teamNum: 3, team: "Crain / Laud / Rundle", gross: 62, toPar: -10, prize: 0 },
+      { pos: "4", teamNum: 2, team: "Karamchi / Statchuk / MacDougall", gross: 64, toPar: -8, prize: 0 },
+      { pos: "5", teamNum: 1, team: "Booth / Hartley / Johnson", gross: 68, toPar: -4, prize: 0 },
+    ],
+    parimutuel: {
+      totalPool: 2350,
+      winningTeam: 4,
+      payoutMultiplier: 4.8,
+      bets: [
+        { bettor: "Reid Hartley", team: 1, amount: 50 }, { bettor: "Reid Hartley", team: 5, amount: 100 }, { bettor: "Anthony Laud", team: 3, amount: 40 },
+        { bettor: "Anthony Laud", team: 5, amount: 50 }, { bettor: "Anthony Laud", team: 4, amount: 150 }, { bettor: "Andrew Carlson", team: 5, amount: 75 },
+        { bettor: "Andrew Carlson", team: 2, amount: 25 }, { bettor: "Keon Karamchi", team: 2, amount: 100 }, { bettor: "Paul Statchuk", team: 2, amount: 100 },
+        { bettor: "Dave MacDougall", team: 2, amount: 100 }, { bettor: "Nolan Rundle", team: 2, amount: 60 }, { bettor: "Nolan Rundle", team: 3, amount: 40 },
+        { bettor: "Nolan Rundle", team: 5, amount: 50 }, { bettor: "Johnny D\'Amato", team: 4, amount: 50 }, { bettor: "Adam Hoffman", team: 1, amount: 5 },
+        { bettor: "Adam Hoffman", team: 2, amount: 5 }, { bettor: "Adam Hoffman", team: 3, amount: 10 }, { bettor: "Adam Hoffman", team: 4, amount: 80 },
+        { bettor: "Adam Hoffman", team: 5, amount: 30 }, { bettor: "Chris Statchuk", team: 2, amount: 20 }, { bettor: "Chris Statchuk", team: 4, amount: 20 },
+        { bettor: "Chris Statchuk", team: 5, amount: 20 }, { bettor: "Graham Booth", team: 1, amount: 40 }, { bettor: "Nick Crain", team: 3, amount: 40 },
+        { bettor: "Dave MacDougall", team: 5, amount: 100 }, { bettor: "Keon Karamchi", team: 4, amount: 100 }, { bettor: "Mark Johnson", team: 1, amount: 50 },
+        { bettor: "Mark Johnson", team: 2, amount: 50 }, { bettor: "Mark Johnson", team: 5, amount: 50 }, { bettor: "Kevin Kernohan", team: 5, amount: 100 },
+        { bettor: "Kevin Kernohan", team: 2, amount: 50 }, { bettor: "Kevin Kernohan", team: 4, amount: 30 }, { bettor: "Brendan Black", team: 5, amount: 100 },
+        { bettor: "Brendan Black", team: 2, amount: 50 }, { bettor: "Brendan Black", team: 4, amount: 30 }, { bettor: "Chris Williams", team: 5, amount: 100 },
+        { bettor: "Chris Williams", team: 2, amount: 50 }, { bettor: "Chris Williams", team: 4, amount: 30 }, { bettor: "Dave MacDougall", team: 5, amount: 100 },
+        { bettor: "David Carlson", team: 5, amount: 50 }, { bettor: "David Carlson", team: 2, amount: 50 },
+      ],
+      results: [
+        { bettor: "Anthony Laud", wagered: 240, onWinner: 150, payout: 719.39, net: 479.39 },
+        { bettor: "Keon Karamchi", wagered: 200, onWinner: 100, payout: 479.59, net: 279.59 },
+        { bettor: "Adam Hoffman", wagered: 130, onWinner: 80, payout: 383.67, net: 253.67 },
+        { bettor: "Johnny D\'Amato", wagered: 50, onWinner: 50, payout: 239.8, net: 189.8 },
+        { bettor: "Chris Statchuk", wagered: 60, onWinner: 20, payout: 95.92, net: 35.92 },
+        { bettor: "Kevin Kernohan", wagered: 180, onWinner: 30, payout: 143.88, net: -36.12 },
+        { bettor: "Brendan Black", wagered: 180, onWinner: 30, payout: 143.88, net: -36.12 },
+        { bettor: "Chris Williams", wagered: 180, onWinner: 30, payout: 143.88, net: -36.12 },
+        { bettor: "Graham Booth", wagered: 40, onWinner: 0, payout: 0.0, net: -40.0 },
+        { bettor: "Nick Crain", wagered: 40, onWinner: 0, payout: 0.0, net: -40.0 },
+        { bettor: "Andrew Carlson", wagered: 100, onWinner: 0, payout: 0.0, net: -100.0 },
+        { bettor: "Paul Statchuk", wagered: 100, onWinner: 0, payout: 0.0, net: -100.0 },
+        { bettor: "David Carlson", wagered: 100, onWinner: 0, payout: 0.0, net: -100.0 },
+        { bettor: "Reid Hartley", wagered: 150, onWinner: 0, payout: 0.0, net: -150.0 },
+        { bettor: "Nolan Rundle", wagered: 150, onWinner: 0, payout: 0.0, net: -150.0 },
+        { bettor: "Mark Johnson", wagered: 150, onWinner: 0, payout: 0.0, net: -150.0 },
+        { bettor: "Dave MacDougall", wagered: 300, onWinner: 0, payout: 0.0, net: -300.0 },
+      ],
+    },
+  },
+};
+
 // ═══════════════════════════════════════════════════════════════
 // THEME
 // ═══════════════════════════════════════════════════════════════
@@ -1090,6 +1164,7 @@ export function Nav({ active, setPage }) {
   const navItems = [
     { id: "home", label: "Home", icon: Home },
     { id: "tournaments", label: "Tournaments", icon: Trophy },
+    { id: "fall-scramble", label: "Fall Scramble", icon: Award },
     { id: "players", label: "Players", icon: Users },
     { id: "parimutuel", label: "Parimutuel", icon: DollarSign },
     { id: "sgp-tees", label: "SGP Tees", icon: MapPin },
@@ -1354,6 +1429,113 @@ export function HomePage({ setPage }) {
   );
 }
 
+export function FallScramblePage({ setPage }) {
+  const mobile = useIsMobile();
+  const editions = Object.values(SCRAMBLES).sort((a, b) => b.year - a.year);
+  const latest = editions[0];
+  const champ = latest.leaderboard[0];
+  const champTeam = latest.teams.find((t) => t.num === champ.teamNum);
+  const champions = editions.map((e) => {
+    const w = e.leaderboard[0];
+    const t = e.teams.find((x) => x.num === w.teamNum);
+    return { year: e.year, players: t.players, toPar: w.toPar };
+  });
+  const pari = latest.parimutuel;
+
+  const teamPlayers = (teamNum) => {
+    const t = latest.teams.find((x) => x.num === teamNum);
+    return t ? t.players.join(", ") : "";
+  };
+
+  return (
+    <div>
+      {/* Header — full-bleed */}
+      <div style={{ ...FULL_BLEED, marginTop: "-24px", background: CH.greenDark, color: "#f4efe3", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(120% 90% at 80% -10%, rgba(44,101,71,0.85), transparent 60%), radial-gradient(90% 80% at 0% 120%, rgba(18,39,27,0.9), transparent 55%)" }} />
+        <div style={{ position: "relative", maxWidth: "1040px", margin: "0 auto", padding: mobile ? "42px 22px" : "60px 40px", textAlign: "center" }}>
+          <div style={{ color: CH.gold, fontSize: mobile ? "11px" : "12.5px", fontWeight: 600, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "14px" }}>Signature Event &middot; Est. 2025</div>
+          <h1 style={{ fontFamily: SERIF, fontWeight: 600, fontSize: mobile ? "38px" : "56px", lineHeight: 1.02, letterSpacing: "-0.5px", margin: 0 }}>The Fall <span style={{ fontWeight: 400, fontStyle: "italic", color: "#e9e2cf" }}>Scramble</span></h1>
+          <p style={{ marginTop: "14px", color: "#c3ccbf", fontSize: mobile ? "14px" : "16px" }}>A 3-man scratch scramble under the SGP Classic umbrella.</p>
+        </div>
+      </div>
+
+      {/* Champion band — full-bleed */}
+      <div style={{ ...FULL_BLEED, background: CH.greenDark, color: "#f4efe3", overflow: "hidden", borderTop: "1px solid rgba(194,160,74,0.22)" }}>
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(90% 120% at 100% 0%, rgba(44,101,71,0.7), transparent 60%)" }} />
+        <div style={{ position: "relative", maxWidth: "1040px", margin: "0 auto", display: "flex", flexDirection: mobile ? "column" : "row", alignItems: "center", gap: mobile ? "20px" : "40px", padding: mobile ? "34px 24px" : "44px 40px", textAlign: mobile ? "center" : "left" }}>
+          <div style={{ width: mobile ? "88px" : "104px", height: mobile ? "88px" : "104px", borderRadius: "50%", border: `2px solid ${CH.gold}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: CH.gold, fontSize: mobile ? "34px" : "40px", fontFamily: SERIF }}>&#9819;</div>
+          <div>
+            <div style={{ fontSize: "11.5px", letterSpacing: "2.5px", textTransform: "uppercase", color: CH.gold }}>{latest.year} Champions</div>
+            <h3 style={{ fontFamily: SERIF, fontSize: mobile ? "24px" : "32px", fontWeight: 600, margin: "8px 0 6px" }}>{champTeam.players.join(" · ")}</h3>
+            <div style={{ color: "#b8c2b7", fontSize: "15px" }}>Team {champ.teamNum} &middot; {latest.format} &middot; {latest.venue}</div>
+            {champ.prize ? <div style={{ marginTop: "8px", display: "inline-block", background: "rgba(194,160,74,0.15)", color: CH.gold, fontSize: "12.5px", fontWeight: 600, letterSpacing: "0.5px", padding: "4px 12px", borderRadius: "20px" }}>${champ.prize.toLocaleString()} purse &middot; ${Math.round(champ.prize / champTeam.players.length)}/player</div> : null}
+          </div>
+          <div style={{ marginLeft: mobile ? 0 : "auto", textAlign: "center", flexShrink: 0 }}>
+            <div style={{ fontFamily: SERIF, fontSize: mobile ? "48px" : "58px", fontWeight: 600, color: "#fff", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>{formatScore(champ.toPar)}</div>
+            <div style={{ fontSize: "10.5px", letterSpacing: "2px", textTransform: "uppercase", color: CH.gold, marginTop: "8px" }}>To par</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Event meta */}
+      <div style={{ marginTop: "44px", marginBottom: "28px", display: "flex", flexWrap: "wrap", gap: mobile ? "12px" : "20px" }}>
+        {[["Date", latest.date], ["Venue", `${latest.venue} · ${latest.location}`], ["Format", `${latest.format} · ${latest.scoring}`], ["Course", `${latest.tees} · ${latest.totalYards.toLocaleString()} yds · Par ${latest.par}`], ["Purse", `$${latest.prizePool.toLocaleString()} · $${latest.entryFee}/player entry`]].map(([k, v]) => (
+          <div key={k} style={{ flex: mobile ? "1 1 100%" : "1 1 200px", background: "#fff", border: `1px solid ${CH.line}`, borderRadius: "4px", padding: "14px 18px" }}>
+            <div style={{ fontSize: "10.5px", letterSpacing: "1.5px", textTransform: "uppercase", color: CH.muted, marginBottom: "5px" }}>{k}</div>
+            <div style={{ fontSize: "14.5px", fontWeight: 500, color: CH.ink }}>{v}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Standings */}
+      <SectionTitle icon={Trophy}>{latest.year} Final Standings</SectionTitle>
+      <div style={{ marginBottom: "36px" }}>
+        <Table
+          columns={[
+            { header: "Pos", render: (r) => r.pos, align: "center" },
+            { header: "Team", render: (r) => <span style={{ fontWeight: 600 }}>Team {r.teamNum}</span> },
+            { header: "Players", render: (r) => teamPlayers(r.teamNum) },
+            { header: "Score", render: (r) => r.gross, align: "center", bold: true },
+            { header: "To Par", render: (r) => formatScore(r.toPar), align: "center", color: (r) => (r.toPar < 0 ? colors.green : colors.text) },
+            { header: "Prize", render: (r) => (r.prize ? `$${r.prize.toLocaleString()}` : "—"), align: "center", color: (r) => (r.prize ? colors.goldDeep : colors.textMuted) },
+          ]}
+          data={latest.leaderboard}
+          rowStyle={(r) => (r.pos === "1" ? { background: "#fbf7ea" } : {})}
+        />
+      </div>
+
+      {/* Parimutuel */}
+      <SectionTitle icon={DollarSign}>{latest.year} Parimutuel</SectionTitle>
+      <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr 1fr" : "repeat(4, 1fr)", gap: "12px", marginBottom: "18px" }}>
+        {[["Total Pool", `$${pari.totalPool.toLocaleString()}`], ["Winning Team", `Team ${pari.winningTeam}`], ["Payout", `${pari.payoutMultiplier}×`], ["Bettors", `${new Set(pari.bets.map((b) => b.bettor)).size}`]].map(([k, v]) => (
+          <div key={k} style={{ background: "#fff", border: `1px solid ${CH.line}`, borderRadius: "4px", padding: "14px 16px", textAlign: "center" }}>
+            <div style={{ fontSize: "10.5px", letterSpacing: "1.5px", textTransform: "uppercase", color: CH.muted, marginBottom: "6px" }}>{k}</div>
+            <div style={{ fontFamily: SERIF, fontSize: "22px", fontWeight: 600, color: CH.greenDark }}>{v}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{ marginBottom: "36px" }}>
+        <Table
+          columns={[
+            { header: "Bettor", render: (r) => r.bettor },
+            { header: "Wagered", render: (r) => `$${r.wagered}`, align: "center" },
+            { header: "On Winner", render: (r) => (r.onWinner ? `$${r.onWinner}` : "—"), align: "center" },
+            { header: "Payout", render: (r) => (r.payout ? `$${r.payout.toLocaleString()}` : "—"), align: "center" },
+            { header: "Net", render: (r) => `${r.net < 0 ? "−" : "+"}$${Math.abs(r.net).toLocaleString()}`, align: "center", bold: true, color: (r) => (r.net > 0 ? colors.green : r.net < 0 ? "#a3352d" : colors.text) },
+          ]}
+          data={pari.results}
+        />
+      </div>
+
+      {/* Format note */}
+      <div style={{ background: "#fff", border: `1px solid ${CH.line}`, borderLeft: `3px solid ${CH.gold}`, borderRadius: "0 4px 4px 0", padding: "18px 22px", marginBottom: "16px" }}>
+        <div style={{ fontSize: "11px", letterSpacing: "1.5px", textTransform: "uppercase", color: CH.goldDeep, marginBottom: "6px" }}>How the teams are drafted</div>
+        <div style={{ fontSize: "14.5px", color: CH.ink, lineHeight: 1.5 }}>{latest.draftNote}</div>
+      </div>
+    </div>
+  );
+}
+
 export function TournamentsPage({ setPage }) {
   const years = Object.keys(TOURNAMENTS).sort((a, b) => b - a);
   return (
@@ -1386,10 +1568,6 @@ export function TournamentsPage({ setPage }) {
             </Card>
           );
         })}
-      </div>
-      {/* Placeholder for future years */}
-      <div style={{ marginTop: "24px", padding: "20px", background: "#f5f5f4", borderRadius: "12px", textAlign: "center", color: colors.textMuted }}>
-        <p style={{ margin: 0, fontSize: "14px" }}>Years 1–7 coming soon — historical data will be added as it's collected.</p>
       </div>
     </div>
   );
