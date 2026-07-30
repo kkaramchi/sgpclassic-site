@@ -18,11 +18,11 @@ export default function RootLayout({ children }) {
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"
+          href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body style={{ background: "#fafaf9", minHeight: "100vh" }}>
+      <body style={{ background: "#f6f2e9", minHeight: "100vh" }}>
         <SiteNav />
         <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "24px" }}>
           {children}
@@ -30,22 +30,27 @@ export default function RootLayout({ children }) {
         <footer
           style={{
             textAlign: "center",
-            padding: "32px",
-            color: "#78716c",
-            fontSize: "13px",
-            borderTop: "1px solid #e7e5e4",
+            padding: "40px 32px",
+            background: "#12271b",
+            color: "#b8c2b7",
+            fontSize: "12.5px",
+            letterSpacing: "1px",
+            marginTop: "40px",
           }}
         >
-          <span
+          <div
             style={{
+              fontFamily: "'Fraunces', Georgia, serif",
+              color: "#c2a04a",
+              fontSize: "20px",
               fontWeight: 600,
-              textTransform: "uppercase",
-              letterSpacing: "1px",
+              letterSpacing: "0.3px",
+              marginBottom: "8px",
             }}
           >
             SGP Classic
-          </span>{" "}
-          &middot; Est. 2018 &middot; Woodington Lake Golf Club
+          </div>
+          EST. 2018 &middot; WOODINGTON LAKE GOLF CLUB
         </footer>
       </body>
     </html>

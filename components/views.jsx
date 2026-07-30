@@ -773,6 +773,15 @@ const TOURNAMENTS = {
     entryFee: 60,
     prizePool: 1200,
     prizeSplit: { first: 720, second: 240 },
+    entryFeeBreakdown: [
+      { item: "Round 1", cost: 132.87 },
+      { item: "Round 2", cost: 112.27 },
+      { item: "HST", cost: 31.87 },
+      { item: "Golfify Fee", cost: 5.0 },
+      { item: "After Party", cost: 30.0 },
+      { item: "Prize Pool", cost: 60.0 },
+    ],
+    entryFeeTotal: 372.01,
     teams: [
       { num: 1, p1: "Reid Hartley", p2: "Joel Greaves" },
       { num: 2, p1: "Anthony Laud", p2: "Trevor Williams" },
@@ -891,17 +900,19 @@ const TOURNAMENTS = {
 // ═══════════════════════════════════════════════════════════════
 
 export const colors = {
-  green: "#15803d",
-  greenLight: "#22c55e",
-  greenDark: "#14532d",
-  gold: "#a68700",
-  goldLight: "#a68700",
-  bg: "#fafaf9",
+  green: "#1e4d34",
+  greenLight: "#2c6547",
+  greenDark: "#12271b",
+  gold: "#c2a04a",
+  goldLight: "#c2a04a",
+  goldDeep: "#a4842f",
+  bg: "#f6f2e9",
   card: "#ffffff",
-  text: "#1c1917",
-  textMuted: "#78716c",
-  border: "#e7e5e4",
-  accent: "#15803d",
+  text: "#1b1b17",
+  textMuted: "#6f6d62",
+  border: "#e2dccd",
+  accent: "#1e4d34",
+  serif: "'Fraunces', Georgia, serif",
 };
 
 const CHART_COLORS = ["#15803d", "#d97706", "#2563eb", "#dc2626", "#7c3aed", "#0891b2", "#ea580c", "#4f46e5"];
@@ -963,7 +974,7 @@ function Card({ children, style, onClick }) {
       onClick={onClick}
       style={{
         background: colors.card,
-        borderRadius: "12px",
+        borderRadius: "4px",
         border: `1px solid ${colors.border}`,
         padding: "24px",
         cursor: onClick ? "pointer" : "default",
@@ -982,8 +993,8 @@ function Card({ children, style, onClick }) {
 function SectionTitle({ icon: Icon, children }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
-      {Icon && <Icon size={22} color={colors.green} />}
-      <h2 style={{ fontSize: "22px", fontWeight: 600, color: colors.text, margin: 0, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>{children}</h2>
+      {Icon && <Icon size={20} color={colors.goldDeep} />}
+      <h2 style={{ fontSize: "26px", fontWeight: 600, color: colors.greenDark, margin: 0, fontFamily: colors.serif, letterSpacing: "-0.2px" }}>{children}</h2>
     </div>
   );
 }
@@ -1042,7 +1053,7 @@ function Table({ columns, data, onRowClick, defaultSort, sortable, rowStyle }) {
         <tbody>
           {sortedData.map((row, ri) => {
             const extraStyle = rowStyle ? rowStyle(row) : {};
-            const baseBg = extraStyle.background || (ri % 2 === 0 ? "#ffffff" : "#fafaf9");
+            const baseBg = extraStyle.background || (ri % 2 === 0 ? "#ffffff" : "#f8f4ea");
             return (
             <tr
               key={ri}
@@ -1053,7 +1064,7 @@ function Table({ columns, data, onRowClick, defaultSort, sortable, rowStyle }) {
                 transition: "background 0.15s",
                 ...extraStyle,
               }}
-              onMouseEnter={(e) => { if (onRowClick) e.currentTarget.style.background = "#ecfdf5"; }}
+              onMouseEnter={(e) => { if (onRowClick) e.currentTarget.style.background = "#eef2ec"; }}
               onMouseLeave={(e) => { if (onRowClick) e.currentTarget.style.background = baseBg; }}
             >
               {columns.map((col, ci) => (
@@ -1096,10 +1107,10 @@ export function Nav({ active, setPage }) {
   if (mobile) {
     return (
       <>
-        <nav style={{ background: colors.greenDark, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "56px", position: "relative", zIndex: 100 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }} onClick={() => handleNav("home")}>
-            <img src={"/logo-small-white.png"} alt="SGP Classic" style={{ height: "28px", objectFit: "contain" }} />
-            <span style={{ color: "white", fontSize: "16px", fontFamily: "'DM Sans', sans-serif", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>SGP CLASSIC</span>
+        <nav style={{ background: colors.greenDark, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "56px", position: "relative", zIndex: 100, borderBottom: "1px solid rgba(194,160,74,0.28)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "9px", cursor: "pointer" }} onClick={() => handleNav("home")}>
+            <img src={"/logo-small-white.png"} alt="SGP Classic" style={{ height: "26px", objectFit: "contain" }} />
+            <span style={{ color: "#f4efe3", fontSize: "17px", fontFamily: colors.serif, fontWeight: 600, letterSpacing: "0.3px" }}>SGP Classic</span>
           </div>
           <button onClick={() => setMenuOpen(!menuOpen)} style={{ background: "none", border: "none", cursor: "pointer", padding: "8px", display: "flex", flexDirection: "column", gap: "4px" }}>
             <span style={{ display: "block", width: "22px", height: "2px", background: "white", borderRadius: "1px", transition: "transform 0.2s", transform: menuOpen ? "rotate(45deg) translate(4px, 4px)" : "none" }} />
@@ -1147,10 +1158,10 @@ export function Nav({ active, setPage }) {
 
   // Desktop: horizontal nav with Rules dropdown
   return (
-    <nav style={{ background: colors.greenDark, padding: "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "56px", position: "relative", zIndex: 100, overflow: "visible" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer" }} onClick={() => handleNav("home")}>
-        <img src={"/logo-small-white.png"} alt="SGP Classic" style={{ height: "36px", objectFit: "contain" }} />
-        <span style={{ color: "white", fontSize: "20px", fontFamily: "'DM Sans', sans-serif", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" }}>SGP CLASSIC</span>
+    <nav style={{ background: colors.greenDark, padding: "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "60px", position: "relative", zIndex: 100, overflow: "visible", borderBottom: "1px solid rgba(194,160,74,0.28)" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "11px", cursor: "pointer" }} onClick={() => handleNav("home")}>
+        <img src={"/logo-small-white.png"} alt="SGP Classic" style={{ height: "34px", objectFit: "contain" }} />
+        <span style={{ color: "#f4efe3", fontSize: "20px", fontFamily: colors.serif, fontWeight: 600, letterSpacing: "0.3px" }}>SGP Classic</span>
       </div>
       <div style={{ display: "flex", gap: "2px", alignItems: "center" }}>
         {navItems.map((item) => {
@@ -1181,9 +1192,9 @@ export function Nav({ active, setPage }) {
           <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 150 }} onClick={() => setRulesOpen(false)} />
           <div style={{ position: "fixed", top: "56px", right: "32px", background: "white", borderRadius: "8px", boxShadow: "0 8px 24px rgba(0,0,0,0.15)", minWidth: "230px", zIndex: 200, border: `1px solid ${colors.border}` }}>
             {rulesItems.map((item, i, arr) => (
-              <div key={item.id} onClick={() => handleNav(item.id)} style={{ padding: "12px 16px", cursor: "pointer", display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", fontWeight: 500, color: colors.text, background: active === item.id ? "#ecfdf5" : "white", borderBottom: i < arr.length - 1 ? `1px solid ${colors.border}` : "none", borderRadius: i === 0 ? "8px 8px 0 0" : i === arr.length - 1 ? "0 0 8px 8px" : "0" }}
-                onMouseEnter={(e) => e.currentTarget.style.background = "#f0fdf4"}
-                onMouseLeave={(e) => e.currentTarget.style.background = active === item.id ? "#ecfdf5" : "white"}
+              <div key={item.id} onClick={() => handleNav(item.id)} style={{ padding: "12px 16px", cursor: "pointer", display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", fontWeight: 500, color: colors.text, background: active === item.id ? "#f2ede0" : "white", borderBottom: i < arr.length - 1 ? `1px solid ${colors.border}` : "none", borderRadius: i === 0 ? "4px 4px 0 0" : i === arr.length - 1 ? "0 0 4px 4px" : "0" }}
+                onMouseEnter={(e) => e.currentTarget.style.background = "#f7f3ea"}
+                onMouseLeave={(e) => e.currentTarget.style.background = active === item.id ? "#f2ede0" : "white"}
               >
                 <item.icon size={16} color={colors.green} />{item.label}
               </div>
@@ -1216,10 +1227,13 @@ function Breadcrumb({ items, onNavigate }) {
 // PAGES
 // ═══════════════════════════════════════════════════════════════
 
+const CH = { greenDark: "#12271b", green: "#1e4d34", gold: "#c2a04a", goldDeep: "#a4842f", cream: "#f6f2e9", ink: "#1b1b17", muted: "#6f6d62", line: "#e2dccd" };
+const SERIF = "'Fraunces', Georgia, serif";
+
 export function HomePage({ setPage }) {
   const mobile = useIsMobile();
 
-  // Compute top 5 career earners from prize pool
+  // Career earnings across all years (prize split evenly between partners)
   const moneyList = useMemo(() => {
     const earnings = {};
     Object.values(TOURNAMENTS).forEach((t) => {
@@ -1233,220 +1247,105 @@ export function HomePage({ setPage }) {
         }
       });
     });
-    const sorted = Object.entries(earnings)
+    return Object.entries(earnings)
       .map(([name, total]) => ({ name, total }))
-      .sort((a, b) => b.total - a.total);
-    const cutoff = sorted[9]?.total || 0;
-    return sorted.filter((p, i) => i < 10 || p.total === cutoff);
+      .sort((a, b) => b.total - a.total)
+      .slice(0, 8);
   }, []);
+
+  // Champions by year (most recent first)
+  const champions = useMemo(() => {
+    return Object.values(TOURNAMENTS)
+      .sort((a, b) => b.year - a.year)
+      .map((t) => {
+        const w = t.leaderboard[0];
+        const team = t.teams.find((x) => x.num === w.teamNum);
+        const full = team ? `${team.p1} & ${team.p2}` : w.team;
+        const short = team ? `${team.p1.split(" ").pop()} & ${team.p2.split(" ").pop()}` : w.team;
+        return { year: t.year, yearNum: t.yearNum, full, short, toPar: w.toPar, teamNum: w.teamNum, r1Format: t.round1Format, r1Course: t.round1Course, r2Format: t.round2Format, r2Course: t.round2Course };
+      });
+  }, []);
+  const latest = champions[0];
 
   return (
     <div>
-      {/* Hero — Upcoming Tournament */}
-      <div style={{ background: `linear-gradient(135deg, ${colors.greenDark} 0%, #166534 100%)`, borderRadius: mobile ? "12px" : "16px", padding: mobile ? "28px 20px" : "48px 40px", marginBottom: "32px", color: "white", position: "relative", overflow: "hidden" }}>
-        {/* Top 5 Money List — top right */}
-        {!mobile && (
-          <div style={{ position: "absolute", top: "20px", right: "24px", width: "240px" }}>
-            <div style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "1.5px", opacity: 0.6, marginBottom: "8px", fontFamily: "'DM Sans', sans-serif" }}>Career Money List</div>
-            {moneyList.map((p, i) => (
-              <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "5px 0", borderBottom: i < moneyList.length - 1 ? "1px solid rgba(255,255,255,0.1)" : "none" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                  <span style={{ fontSize: "12px", fontWeight: 700, color: i === 0 ? colors.goldLight : "rgba(255,255,255,0.5)", width: "24px" }}>{(() => { let rank = i + 1; while (rank > 1 && moneyList[rank - 2].total === p.total) rank--; const tied = (i > 0 && moneyList[i - 1].total === p.total) || (i < moneyList.length - 1 && moneyList[i + 1].total === p.total); return (tied ? "T" : "") + rank; })()}.</span>
-                  <span style={{ fontSize: "13px", fontWeight: i === 0 ? 700 : 400, color: i === 0 ? "white" : "rgba(255,255,255,0.8)" }}>{p.name.split(" ")[0][0] + ". " + p.name.split(" ").pop()}</span>
-                </div>
-                <span style={{ fontSize: "13px", fontWeight: 700, color: i === 0 ? colors.goldLight : "rgba(255,255,255,0.7)" }}>${p.total.toLocaleString()}</span>
+      {/* Hero */}
+      <div style={{ position: "relative", background: CH.greenDark, color: "#f4efe3", borderRadius: mobile ? "12px" : "14px", overflow: "hidden", marginBottom: "28px" }}>
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(120% 90% at 80% -10%, rgba(44,101,71,0.85), transparent 60%), radial-gradient(90% 80% at 0% 120%, rgba(18,39,27,0.9), transparent 55%)" }} />
+        <svg viewBox="0 0 1200 400" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.16 }}>
+          <g fill="none" stroke={CH.gold} strokeWidth="1">
+            <path d="M-50 320 Q300 260 600 300 T1250 280" />
+            <path d="M-50 350 Q300 290 600 330 T1250 310" />
+            <path d="M-50 290 Q300 230 600 270 T1250 250" />
+            <path d="M-50 260 Q300 205 600 240 T1250 222" />
+            <path d="M-50 230 Q300 180 600 212 T1250 196" />
+          </g>
+        </svg>
+        <div style={{ position: "relative", padding: mobile ? "46px 22px" : "64px 40px", textAlign: "center" }}>
+          <div style={{ color: CH.gold, fontSize: mobile ? "11px" : "12.5px", fontWeight: 600, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "16px" }}>Est. 2018 &middot; Woodington Lake Golf Club</div>
+          <h1 style={{ fontFamily: SERIF, fontWeight: 600, fontSize: mobile ? "40px" : "60px", lineHeight: 1.02, letterSpacing: "-0.5px", margin: 0 }}>The SGP <span style={{ fontWeight: 400, fontStyle: "italic", color: "#e9e2cf" }}>Classic</span></h1>
+          <p style={{ marginTop: "16px", color: "#c3ccbf", fontSize: mobile ? "14px" : "16px" }}>A subsidiary of the <a href="https://sites.google.com/site/statchukgolfpool" target="_blank" rel="noreferrer" style={{ color: CH.gold, textDecoration: "none", borderBottom: `1px solid ${CH.gold}`, paddingBottom: "1px" }}>Statchuk Golf Pool</a></p>
+          <div style={{ width: "46px", height: "2px", background: CH.gold, margin: "24px auto 0" }} />
+          <div onClick={() => setPage({ id: "tournament-detail", year: 2026 })} style={{ marginTop: "30px", display: "inline-flex", alignItems: "center", gap: "10px", background: CH.gold, color: CH.greenDark, fontWeight: 600, fontSize: "14px", letterSpacing: "0.6px", textTransform: "uppercase", padding: "13px 30px", borderRadius: "3px", cursor: "pointer", transition: "transform 0.15s" }} onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-2px)"} onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}>
+            View 2026 Results &rarr;
+          </div>
+        </div>
+      </div>
+
+      {/* 2026 Champions Band */}
+      {latest && (
+        <div style={{ position: "relative", background: CH.greenDark, color: "#f4efe3", borderRadius: "12px", overflow: "hidden", marginBottom: "40px" }}>
+          <div style={{ position: "absolute", inset: 0, background: "radial-gradient(90% 120% at 100% 0%, rgba(44,101,71,0.7), transparent 60%)" }} />
+          <div style={{ position: "relative", display: "flex", flexDirection: mobile ? "column" : "row", alignItems: "center", gap: mobile ? "20px" : "40px", padding: mobile ? "34px 24px" : "44px 40px", textAlign: mobile ? "center" : "left" }}>
+            <div style={{ width: mobile ? "88px" : "104px", height: mobile ? "88px" : "104px", borderRadius: "50%", border: `2px solid ${CH.gold}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: CH.gold, fontSize: mobile ? "34px" : "40px", fontFamily: SERIF }}>&#9819;</div>
+            <div>
+              <div style={{ fontSize: "11.5px", letterSpacing: "2.5px", textTransform: "uppercase", color: CH.gold }}>{latest.year} Champions &middot; Year {latest.yearNum}</div>
+              <h3 style={{ fontFamily: SERIF, fontSize: mobile ? "28px" : "38px", fontWeight: 600, margin: "8px 0 6px" }}>{latest.full}</h3>
+              <div style={{ color: "#b8c2b7", fontSize: "15px" }}>Team {latest.teamNum} &middot; {latest.r1Format} ({latest.r1Course}) + {latest.r2Format} ({latest.r2Course})</div>
+            </div>
+            <div style={{ marginLeft: mobile ? 0 : "auto", textAlign: "center", flexShrink: 0 }}>
+              <div style={{ fontFamily: SERIF, fontSize: mobile ? "48px" : "58px", fontWeight: 600, color: "#fff", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>{formatScore(latest.toPar)}</div>
+              <div style={{ fontSize: "10.5px", letterSpacing: "2px", textTransform: "uppercase", color: CH.gold, marginTop: "8px" }}>Net to par</div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Career Money List + Champions Wall */}
+      <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: "36px", marginBottom: "44px" }}>
+        <div>
+          <div style={{ fontFamily: SERIF, fontSize: "26px", fontWeight: 600, color: CH.greenDark, marginBottom: "18px" }}>Career Money List</div>
+          {moneyList.map((p, i) => (
+            <div key={p.name} onClick={() => setPage({ id: "player-detail", name: p.name })} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "13px 0", borderBottom: i < moneyList.length - 1 ? `1px solid ${CH.line}` : "none", cursor: "pointer", ...(i === 0 ? { borderLeft: `3px solid ${CH.gold}`, paddingLeft: "14px", marginLeft: "-17px" } : {}) }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                <div style={{ fontFamily: SERIF, fontSize: "18px", fontWeight: 600, color: CH.goldDeep, width: "24px" }}>{i + 1}</div>
+                <div style={{ fontWeight: 500, fontSize: "15px", color: CH.ink }}>{p.name}</div>
               </div>
-            ))}
+              <div style={{ fontFamily: SERIF, fontSize: "19px", fontWeight: 600, color: CH.green, fontVariantNumeric: "tabular-nums" }}>${p.total.toLocaleString()}</div>
+            </div>
+          ))}
+        </div>
+        <div>
+          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "18px" }}>
+            <div style={{ fontFamily: SERIF, fontSize: "26px", fontWeight: 600, color: CH.greenDark }}>Champions Wall</div>
+            <div onClick={() => setPage({ id: "tournaments" })} style={{ color: CH.goldDeep, fontSize: "13px", fontWeight: 600, cursor: "pointer" }}>All tournaments &rarr;</div>
           </div>
-        )}
-        <div style={{ position: "relative", maxWidth: mobile ? "100%" : "calc(100% - 280px)" }}>
-          <div style={{ fontSize: mobile ? "12px" : "14px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", opacity: 0.8, marginBottom: "8px", fontFamily: "'DM Sans', sans-serif" }}>Year 9</div>
-          <img src={"/logo-white.png"} alt="SGP Classic" style={{ height: mobile ? "50px" : "80px", objectFit: "contain", marginBottom: "8px" }} />
-          <h1 style={{ fontSize: mobile ? "28px" : "42px", fontWeight: 700, margin: "0 0 8px 0", letterSpacing: "1px", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase" }}>SGP Classic 2026</h1>
-          <p style={{ fontSize: mobile ? "15px" : "18px", opacity: 0.85, margin: "0 0 16px 0" }}>Woodington Lake Golf Club &middot; Tottenham, ON</p>
-          <div onClick={() => setPage({ id: "tournament-detail", year: 2026 })} style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: colors.goldLight, color: colors.greenDark, padding: mobile ? "10px 20px" : "12px 28px", borderRadius: "8px", fontSize: mobile ? "14px" : "16px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "1px", cursor: "pointer", marginBottom: "20px", transition: "transform 0.15s, box-shadow 0.15s", boxShadow: "0 4px 12px rgba(0,0,0,0.3)" }} onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 6px 16px rgba(0,0,0,0.4)"; }} onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.3)"; }}>
-            <Trophy size={18} /> View 2026 Results — Black &amp; Statchuk Win
-          </div>
-          <div style={{ display: "flex", gap: "10px", marginBottom: "20px", justifyContent: "flex-start", flexWrap: "wrap" }}>
-            <div onClick={() => setPage({ id: "sgp-tees-spire" })} style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "rgba(255,255,255,0.15)", color: "white", padding: "8px 16px", borderRadius: "8px", fontSize: "13px", fontWeight: 600, fontFamily: "'DM Sans', sans-serif", cursor: "pointer", transition: "background 0.15s" }}
-              onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.25)"}
-              onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.15)"}
-            >
-              <MapPin size={14} /> Spire Tees (AM)
+          {champions.map((c, i) => (
+            <div key={c.year} onClick={() => setPage({ id: "tournament-detail", year: c.year })} style={{ display: "flex", alignItems: "baseline", gap: "18px", padding: "12px 0", borderBottom: i < champions.length - 1 ? `1px solid ${CH.line}` : "none", cursor: "pointer" }}>
+              <div style={{ fontFamily: SERIF, fontSize: "20px", fontWeight: 600, color: CH.goldDeep, width: "60px", flexShrink: 0 }}>{c.year}</div>
+              <div style={{ fontSize: "15px", fontWeight: 500, flex: 1, color: CH.ink }}>{c.short}</div>
+              <div style={{ fontSize: "14px", color: CH.muted, fontVariantNumeric: "tabular-nums" }}>{c.toPar != null ? formatScore(c.toPar) : "—"}</div>
             </div>
-            <div onClick={() => setPage({ id: "sgp-tees-lake" })} style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "rgba(255,255,255,0.15)", color: "white", padding: "8px 16px", borderRadius: "8px", fontSize: "13px", fontWeight: 600, fontFamily: "'DM Sans', sans-serif", cursor: "pointer", transition: "background 0.15s" }}
-              onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.25)"}
-              onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.15)"}
-            >
-              <MapPin size={14} /> Lake Tees (PM)
-            </div>
-            <div onClick={() => document.getElementById("morning-foursomes")?.scrollIntoView({ behavior: "smooth" })} style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "rgba(255,255,255,0.15)", color: "white", padding: "8px 16px", borderRadius: "8px", fontSize: "13px", fontWeight: 600, fontFamily: "'DM Sans', sans-serif", cursor: "pointer", transition: "background 0.15s" }}
-              onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.25)"}
-              onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.15)"}
-            >
-              <Users size={14} /> Morning Foursomes
-            </div>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3, auto)", gap: mobile ? "10px" : "16px" }}>
-            <div style={{ background: "rgba(255,255,255,0.12)", borderRadius: "10px", padding: "14px 20px" }}>
-              <Calendar size={18} style={{ marginBottom: "6px", opacity: 0.8 }} />
-              <div style={{ fontSize: "12px", opacity: 0.7, marginBottom: "4px" }}>Date</div>
-              <div style={{ fontSize: "18px", fontWeight: 700 }}>July 11, 2026</div>
-            </div>
-            <div style={{ background: "rgba(255,255,255,0.12)", borderRadius: "10px", padding: "14px 20px" }}>
-              <Flag size={18} style={{ marginBottom: "6px", opacity: 0.8 }} />
-              <div style={{ fontSize: "12px", opacity: 0.7, marginBottom: "4px" }}>Round 1 — Morning</div>
-              <div style={{ fontSize: "18px", fontWeight: 700 }}>2-Man Net Best Ball</div>
-              <div style={{ fontSize: "14px", color: colors.goldLight, fontWeight: 600 }}>Spire Course &middot; Shotgun 8:30 AM</div>
-            </div>
-            <div style={{ background: "rgba(255,255,255,0.12)", borderRadius: "10px", padding: "14px 20px" }}>
-              <Flag size={18} style={{ marginBottom: "6px", opacity: 0.8 }} />
-              <div style={{ fontSize: "12px", opacity: 0.7, marginBottom: "4px" }}>Round 2 — Afternoon</div>
-              <div style={{ fontSize: "18px", fontWeight: 700 }}>2-Man Scramble</div>
-              <div style={{ fontSize: "14px", color: colors.goldLight, fontWeight: 600 }}>Lake Course &middot; Tee Times Every 10 Min</div>
-            </div>
-          </div>
-          {mobile && (
-            <div style={{ marginTop: "20px", background: "rgba(255,255,255,0.08)", borderRadius: "10px", padding: "14px 16px" }}>
-              <div style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "1.5px", opacity: 0.6, marginBottom: "8px", fontFamily: "'DM Sans', sans-serif" }}>Career Money List</div>
-              {moneyList.map((p, i) => (
-                <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "4px 0", borderBottom: i < moneyList.length - 1 ? "1px solid rgba(255,255,255,0.1)" : "none" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                    <span style={{ fontSize: "12px", fontWeight: 700, color: i === 0 ? colors.goldLight : "rgba(255,255,255,0.5)", width: "24px" }}>{(() => { let rank = i + 1; while (rank > 1 && moneyList[rank - 2].total === p.total) rank--; const tied = (i > 0 && moneyList[i - 1].total === p.total) || (i < moneyList.length - 1 && moneyList[i + 1].total === p.total); return (tied ? "T" : "") + rank; })()}.</span>
-                    <span style={{ fontSize: "13px", fontWeight: i === 0 ? 700 : 400, color: i === 0 ? "white" : "rgba(255,255,255,0.8)" }}>{p.name.split(" ")[0][0] + ". " + p.name.split(" ").pop()}</span>
-                  </div>
-                  <span style={{ fontSize: "13px", fontWeight: 700, color: i === 0 ? colors.goldLight : "rgba(255,255,255,0.7)" }}>${p.total.toLocaleString()}</span>
-                </div>
-              ))}
-            </div>
-          )}
+          ))}
         </div>
       </div>
 
       {/* Tournament Sponsor */}
-      <div style={{ marginBottom: "32px", textAlign: "center" }}>
-        <div style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", color: colors.textMuted, marginBottom: "10px", fontFamily: "'DM Sans', sans-serif" }}>Tournament Sponsor</div>
-        <div style={{ background: "white", borderRadius: "12px", border: `1px solid ${colors.border}`, padding: mobile ? "16px 20px" : "20px 40px", display: "inline-block" }}>
-          <img src={"/sponsor-logo.svg"} alt="Alpha Bull Canada — Private Wealth Management" style={{ height: mobile ? "50px" : "80px", maxWidth: "100%", objectFit: "contain" }} />
+      <div style={{ textAlign: "center", marginBottom: "8px" }}>
+        <div style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2.5px", color: CH.muted, marginBottom: "16px" }}>Tournament Sponsor</div>
+        <div style={{ background: "white", borderRadius: "3px", border: `1px solid ${CH.line}`, padding: mobile ? "18px 24px" : "22px 44px", display: "inline-block" }}>
+          <img src={"/sponsor-logo.svg"} alt="Alpha Bull Canada — Private Wealth Management" style={{ height: mobile ? "46px" : "70px", maxWidth: "100%", objectFit: "contain" }} />
         </div>
-      </div>
-
-      {/* Morning Foursomes */}
-      <div id="morning-foursomes" />
-      <SectionTitle icon={Users}>Morning Foursomes</SectionTitle>
-      {(() => {
-        const foursomes = [
-          { num: 1, t1: 7, t2: 4, hole: "1A" },
-          { num: 2, t1: 5, t2: 2, hole: "1B" },
-          { num: 3, t1: 9, t2: 8, hole: "17A" },
-          { num: 4, t1: 1, t2: 6, hole: "18A" },
-          { num: 5, t1: 10, t2: 3, hole: "18B" },
-        ];
-        const teamData = {
-          1: { p1: "Reid Hartley", p2: "Joel Greaves" },
-          2: { p1: "Anthony Laud", p2: "Trevor Williams" },
-          3: { p1: "Mark Johnson", p2: "Graham Booth" },
-          4: { p1: "Geoff Crain", p2: "David Carlson" },
-          5: { p1: "Nolan Rundle", p2: "Keon Karamchi" },
-          6: { p1: "Andrew Carlson", p2: "Nick Crain" },
-          7: { p1: "Brendan Black", p2: "Paul Statchuk" },
-          8: { p1: "Patrick Forbes", p2: "Dave MacDougall" },
-          9: { p1: "Chris Williams", p2: "Chris Statchuk" },
-          10: { p1: "Johnny D'Amato", p2: "Kevin Kernohan" },
-        };
-        return (
-          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: "12px", marginBottom: "32px" }}>
-            {foursomes.map((f) => {
-              const a = teamData[f.t1], b = teamData[f.t2];
-              return (
-                <div key={f.num} style={{ background: "white", borderRadius: "10px", overflow: "hidden", border: `1px solid ${colors.border}` }}>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 16px", background: colors.greenDark, color: "white" }}>
-                    <span style={{ fontSize: "16px", fontWeight: 800, fontFamily: "'DM Sans', sans-serif" }}>Foursome {f.num}</span>
-                    <div style={{ background: colors.goldLight, color: colors.greenDark, padding: "5px 14px", borderRadius: "20px", fontSize: "14px", fontWeight: 800, letterSpacing: "0.5px", fontFamily: "'DM Sans', sans-serif" }}>HOLE {f.hole}</div>
-                  </div>
-                  <div style={{ display: "flex" }}>
-                    <div style={{ flex: 1, padding: "12px 16px", borderRight: `1px solid ${colors.border}` }}>
-                      <div style={{ fontSize: "10px", fontWeight: 600, color: colors.textMuted, textTransform: "uppercase", letterSpacing: "1px", marginBottom: "8px" }}>Team {f.t1}</div>
-                      <div style={{ fontSize: "14px", fontWeight: 600, marginBottom: "4px" }}>{a.p1}</div>
-                      <div style={{ fontSize: "14px", fontWeight: 600 }}>{a.p2}</div>
-                    </div>
-                    <div style={{ flex: 1, padding: "12px 16px" }}>
-                      <div style={{ fontSize: "10px", fontWeight: 600, color: colors.textMuted, textTransform: "uppercase", letterSpacing: "1px", marginBottom: "8px" }}>Team {f.t2}</div>
-                      <div style={{ fontSize: "14px", fontWeight: 600, marginBottom: "4px" }}>{b.p1}</div>
-                      <div style={{ fontSize: "14px", fontWeight: 600 }}>{b.p2}</div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        );
-      })()}
-
-      {/* Upcoming Events Timeline */}
-      <SectionTitle icon={Calendar}>Upcoming Dates</SectionTitle>
-      <div style={{ display: "grid", gap: "0", marginBottom: "32px", borderRadius: "12px", border: `1px solid ${colors.border}`, overflow: "hidden" }}>
-        {[
-          { date: "May 20", detail: "9:00 PM", label: "Live Draft — Complete", desc: "View the draft results and team rosters", icon: Users, past: true, link: "live-draft" },
-          { date: "Jun 11", detail: "", label: "Parimutuel Opens", desc: "Betting window opens for all participants", icon: DollarSign, past: new Date("2026-06-11") < new Date() },
-          { date: "Jun 28", detail: "", label: "Handicaps Lock", desc: "Final handicap index recorded for tournament play", icon: Flag, past: new Date("2026-06-28") < new Date() },
-          { date: "Jul 11", detail: "", label: "Tournament Day", desc: "SGP Classic Year 9 at Woodington Lake Golf Club", icon: Trophy, past: new Date("2026-07-11") < new Date() },
-        ].map((evt, i, arr) => {
-          const Icon = evt.icon;
-          return (
-            <div key={i} onClick={evt.link ? () => setPage({ id: evt.link }) : undefined} style={{ display: "flex", alignItems: "center", gap: "16px", padding: "16px 20px", background: evt.highlight ? "#fef2f2" : evt.past ? "#f0fdf4" : "white", borderBottom: i < arr.length - 1 ? `1px solid ${colors.border}` : "none", cursor: evt.link ? "pointer" : "default", borderLeft: evt.highlight ? "4px solid #dc2626" : "none" }}>
-              <div style={{ width: "72px", flexShrink: 0, textAlign: "center" }}>
-                <div style={{ fontSize: "16px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", color: evt.highlight ? "#dc2626" : evt.past ? colors.green : colors.greenDark }}>{evt.date}</div>
-                {evt.detail && <div style={{ fontSize: "12px", color: colors.textMuted }}>{evt.detail}</div>}
-              </div>
-              <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: evt.highlight ? "#dc2626" : evt.past ? colors.green : colors.greenDark, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                {evt.past ? <span style={{ color: "white", fontSize: "16px", fontWeight: 700 }}>&#10003;</span> : <Icon size={16} color="white" />}
-              </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: "15px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px", color: evt.highlight ? "#dc2626" : colors.text }}>{evt.label}</div>
-                <div style={{ fontSize: "13px", color: colors.textMuted }}>{evt.desc}</div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Entry Fee Details */}
-      <SectionTitle icon={DollarSign}>Entry Fee Details</SectionTitle>
-      <Card style={{ marginBottom: "32px", padding: "0", overflow: "hidden" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
-          <thead>
-            <tr style={{ background: colors.greenDark }}>
-              <th style={{ padding: "10px 20px", textAlign: "left", color: "white", fontWeight: 600, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Item</th>
-              <th style={{ padding: "10px 20px", textAlign: "right", color: "white", fontWeight: 600, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Cost</th>
-            </tr>
-          </thead>
-          <tbody>
-            {[
-              { item: "Round 1", cost: "$132.87" },
-              { item: "Round 2", cost: "$112.27" },
-              { item: "HST", cost: "$31.87" },
-              { item: "Golfify Fee", cost: "$5.00" },
-              { item: "After Party", cost: "$30.00" },
-              { item: "Prize Pool", cost: "$60.00" },
-            ].map((row, i) => (
-              <tr key={i} style={{ background: i % 2 === 0 ? "#ffffff" : "#fafaf9", borderBottom: `1px solid ${colors.border}` }}>
-                <td style={{ padding: "10px 20px" }}>{row.item}</td>
-                <td style={{ padding: "10px 20px", textAlign: "right" }}>{row.cost}</td>
-              </tr>
-            ))}
-            <tr style={{ background: colors.greenDark }}>
-              <td style={{ padding: "12px 20px", fontWeight: 700, fontSize: "15px", color: "white", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>Total</td>
-              <td style={{ padding: "12px 20px", textAlign: "right", fontWeight: 700, fontSize: "18px", color: colors.goldLight, fontFamily: "'DM Sans', sans-serif" }}>$372.01</td>
-            </tr>
-          </tbody>
-        </table>
-      </Card>
-
-      {/* Draft Results Link */}
-      <div onClick={() => setPage({ id: "live-draft" })} style={{ padding: "20px 24px", background: `linear-gradient(135deg, ${colors.greenDark} 0%, #166534 100%)`, borderRadius: "12px", textAlign: "center", color: "white", cursor: "pointer", transition: "transform 0.15s" }} onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-2px)"} onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}>
-        <p style={{ margin: "0 0 4px 0", fontSize: "16px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>&#10003; Draft Complete — View Full Draft Board</p>
-        <p style={{ margin: 0, fontSize: "13px", opacity: 0.8 }}>See the pick-by-pick results from May 20th</p>
       </div>
     </div>
   );
