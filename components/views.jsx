@@ -932,14 +932,14 @@ const SCRAMBLES = {
       payoutMultiplier: 4.8,
       bets: [
         { bettor: "Reid Hartley", team: 1, amount: 50 }, { bettor: "Reid Hartley", team: 5, amount: 100 }, { bettor: "Anthony Laud", team: 3, amount: 40 },
-        { bettor: "Anthony Laud", team: 5, amount: 50 }, { bettor: "Anthony Laud", team: 4, amount: 150 }, { bettor: "Andrew Carlson", team: 5, amount: 75 },
+        { bettor: "Anthony Laud", team: 5, amount: 50 }, { bettor: "Anthony Laud", team: 4, amount: 125 }, { bettor: "Andrew Carlson", team: 5, amount: 75 },
         { bettor: "Andrew Carlson", team: 2, amount: 25 }, { bettor: "Keon Karamchi", team: 2, amount: 100 }, { bettor: "Paul Statchuk", team: 2, amount: 100 },
         { bettor: "Dave MacDougall", team: 2, amount: 100 }, { bettor: "Nolan Rundle", team: 2, amount: 60 }, { bettor: "Nolan Rundle", team: 3, amount: 40 },
         { bettor: "Nolan Rundle", team: 5, amount: 50 }, { bettor: "Johnny D\'Amato", team: 4, amount: 50 }, { bettor: "Adam Hoffman", team: 1, amount: 5 },
         { bettor: "Adam Hoffman", team: 2, amount: 5 }, { bettor: "Adam Hoffman", team: 3, amount: 10 }, { bettor: "Adam Hoffman", team: 4, amount: 80 },
         { bettor: "Adam Hoffman", team: 5, amount: 30 }, { bettor: "Chris Statchuk", team: 2, amount: 20 }, { bettor: "Chris Statchuk", team: 4, amount: 20 },
         { bettor: "Chris Statchuk", team: 5, amount: 20 }, { bettor: "Graham Booth", team: 1, amount: 40 }, { bettor: "Nick Crain", team: 3, amount: 40 },
-        { bettor: "Dave MacDougall", team: 5, amount: 100 }, { bettor: "Keon Karamchi", team: 4, amount: 100 }, { bettor: "Mark Johnson", team: 1, amount: 50 },
+        { bettor: "Dave MacDougall", team: 5, amount: 100 }, { bettor: "Keon Karamchi", team: 4, amount: 125 }, { bettor: "Mark Johnson", team: 1, amount: 50 },
         { bettor: "Mark Johnson", team: 2, amount: 50 }, { bettor: "Mark Johnson", team: 5, amount: 50 }, { bettor: "Kevin Kernohan", team: 5, amount: 100 },
         { bettor: "Kevin Kernohan", team: 2, amount: 50 }, { bettor: "Kevin Kernohan", team: 4, amount: 30 }, { bettor: "Brendan Black", team: 5, amount: 100 },
         { bettor: "Brendan Black", team: 2, amount: 50 }, { bettor: "Brendan Black", team: 4, amount: 30 }, { bettor: "Chris Williams", team: 5, amount: 100 },
@@ -947,8 +947,8 @@ const SCRAMBLES = {
         { bettor: "David Carlson", team: 5, amount: 50 }, { bettor: "David Carlson", team: 2, amount: 50 },
       ],
       results: [
-        { bettor: "Anthony Laud", wagered: 240, onWinner: 150, payout: 719.39, net: 479.39 },
-        { bettor: "Keon Karamchi", wagered: 200, onWinner: 100, payout: 479.59, net: 279.59 },
+        { bettor: "Anthony Laud", wagered: 215, onWinner: 125, payout: 599.49, net: 384.49 },
+        { bettor: "Keon Karamchi", wagered: 225, onWinner: 125, payout: 599.49, net: 374.49 },
         { bettor: "Adam Hoffman", wagered: 130, onWinner: 80, payout: 383.67, net: 253.67 },
         { bettor: "Johnny D\'Amato", wagered: 50, onWinner: 50, payout: 239.8, net: 189.8 },
         { bettor: "Chris Statchuk", wagered: 60, onWinner: 20, payout: 95.92, net: 35.92 },
@@ -1164,11 +1164,12 @@ export function Nav({ active, setPage }) {
   const navItems = [
     { id: "home", label: "Home", icon: Home },
     { id: "tournaments", label: "Tournaments", icon: Trophy },
-    { id: "fall-scramble", label: "Fall Scramble", icon: Award },
     { id: "players", label: "Players", icon: Users },
     { id: "parimutuel", label: "Parimutuel", icon: DollarSign },
     { id: "sgp-tees", label: "SGP Tees", icon: MapPin },
   ];
+  const fallScramble = { id: "fall-scramble", label: "Fall Scramble", icon: Award };
+  const fsActive = active === "fall-scramble";
 
   const rulesItems = [
     { id: "rules", label: "Competition Rules", icon: Flag },
@@ -1224,6 +1225,12 @@ export function Nav({ active, setPage }) {
                   </div>
                 );
               })}
+              <div style={{ padding: "12px 16px" }}>
+                <div onClick={() => handleNav("fall-scramble")} style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px 16px", cursor: "pointer", border: `1.5px solid ${colors.gold}`, borderRadius: "4px", background: fsActive ? colors.gold : "transparent" }}>
+                  <Award size={18} color={fsActive ? colors.greenDark : colors.gold} />
+                  <span style={{ color: fsActive ? colors.greenDark : colors.gold, fontSize: "15px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px" }}>Fall Scramble</span>
+                </div>
+              </div>
             </div>
           </>
         )}
@@ -1276,6 +1283,12 @@ export function Nav({ active, setPage }) {
               </>
             )}
           </div>
+          <button onClick={() => handleNav("fall-scramble")} style={{ background: fsActive ? colors.gold : "transparent", color: fsActive ? colors.greenDark : colors.gold, border: `1.5px solid ${colors.gold}`, borderRadius: "4px", padding: "6px 14px", fontSize: "13px", fontWeight: 600, letterSpacing: "0.5px", textTransform: "uppercase", fontFamily: "'DM Sans', sans-serif", cursor: "pointer", whiteSpace: "nowrap", transition: "background 0.15s, color 0.15s" }}
+            onMouseEnter={(e) => { if (!fsActive) e.currentTarget.style.background = "rgba(194,160,74,0.15)"; }}
+            onMouseLeave={(e) => { if (!fsActive) e.currentTarget.style.background = "transparent"; }}
+          >
+            Fall Scramble
+          </button>
         </div>
       </div>
     </nav>
