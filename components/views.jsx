@@ -1157,51 +1157,52 @@ export function Nav({ active, setPage }) {
   }
 
   // Desktop: horizontal nav with Rules dropdown
+  const linkStyle = (isActive) => ({ background: "transparent", border: "none", cursor: "pointer", color: isActive ? "#ffffff" : "#cfd6cd", fontSize: "13.5px", fontWeight: 500, letterSpacing: "0.5px", textTransform: "uppercase", padding: "4px 0", borderBottom: isActive ? `2px solid ${colors.gold}` : "2px solid transparent", fontFamily: "'DM Sans', sans-serif", whiteSpace: "nowrap", transition: "color 0.15s", display: "flex", alignItems: "center", gap: "6px" });
+
   return (
-    <nav style={{ background: colors.greenDark, padding: "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "60px", position: "relative", zIndex: 100, overflow: "visible", borderBottom: "1px solid rgba(194,160,74,0.28)" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: "11px", cursor: "pointer" }} onClick={() => handleNav("home")}>
-        <img src={"/logo-small-white.png"} alt="SGP Classic" style={{ height: "34px", objectFit: "contain" }} />
-        <span style={{ color: "#f4efe3", fontSize: "20px", fontFamily: colors.serif, fontWeight: 600, letterSpacing: "0.3px" }}>SGP Classic</span>
-      </div>
-      <div style={{ display: "flex", gap: "2px", alignItems: "center" }}>
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = active === item.id;
-          return (
-            <button key={item.id} onClick={() => handleNav(item.id)} style={{ background: isActive ? "rgba(255,255,255,0.15)" : "transparent", border: "none", color: "white", padding: "8px 18px", borderRadius: "8px", cursor: "pointer", display: "flex", alignItems: "center", gap: "8px", fontSize: "14px", fontWeight: isActive ? 600 : 400, transition: "background 0.15s", whiteSpace: "nowrap" }}
-              onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
-              onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.background = "transparent"; }}
+    <nav style={{ background: colors.greenDark, position: "relative", zIndex: 100, borderBottom: "1px solid rgba(194,160,74,0.28)" }}>
+      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px", height: "62px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "11px", cursor: "pointer" }} onClick={() => handleNav("home")}>
+          <img src={"/logo-small-white.png"} alt="SGP Classic" style={{ height: "32px", objectFit: "contain" }} />
+          <span style={{ color: "#f4efe3", fontSize: "20px", fontFamily: colors.serif, fontWeight: 600, letterSpacing: "0.3px" }}>SGP Classic</span>
+        </div>
+        <div style={{ display: "flex", gap: "26px", alignItems: "center" }}>
+          {navItems.map((item) => {
+            const isActive = active === item.id;
+            return (
+              <button key={item.id} onClick={() => handleNav(item.id)} style={linkStyle(isActive)}
+                onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.color = "#ffffff"; }}
+                onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.color = "#cfd6cd"; }}
+              >
+                {item.label}
+              </button>
+            );
+          })}
+          <div style={{ position: "relative" }}>
+            <button onClick={() => setRulesOpen(!rulesOpen)} style={linkStyle(isRulesActive)}
+              onMouseEnter={(e) => { if (!isRulesActive) e.currentTarget.style.color = "#ffffff"; }}
+              onMouseLeave={(e) => { if (!isRulesActive) e.currentTarget.style.color = "#cfd6cd"; }}
             >
-              <Icon size={16} />{item.label}
+              Rules <span style={{ fontSize: "9px", transition: "transform 0.2s", display: "inline-block", transform: rulesOpen ? "rotate(180deg)" : "rotate(0deg)" }}>&#9660;</span>
             </button>
-          );
-        })}
-        {/* Rules dropdown */}
-        <div style={{ position: "relative" }}>
-          <button onClick={() => setRulesOpen(!rulesOpen)} style={{ background: isRulesActive ? "rgba(255,255,255,0.15)" : "transparent", border: "none", color: "white", padding: "8px 18px", borderRadius: "8px", cursor: "pointer", display: "flex", alignItems: "center", gap: "8px", fontSize: "14px", fontWeight: isRulesActive ? 600 : 400, transition: "background 0.15s", whiteSpace: "nowrap" }}
-            onMouseEnter={(e) => { if (!isRulesActive) e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
-            onMouseLeave={(e) => { if (!isRulesActive) e.currentTarget.style.background = "transparent"; }}
-          >
-            <Flag size={16} />Rules
-            <span style={{ fontSize: "10px", marginLeft: "2px", transition: "transform 0.2s", display: "inline-block", transform: rulesOpen ? "rotate(180deg)" : "rotate(0deg)" }}>&#9660;</span>
-          </button>
+            {rulesOpen && (
+              <>
+                <div style={{ position: "fixed", inset: 0, zIndex: 150 }} onClick={() => setRulesOpen(false)} />
+                <div style={{ position: "absolute", top: "calc(100% + 19px)", right: 0, background: "white", borderRadius: "4px", boxShadow: "0 10px 30px rgba(0,0,0,0.18)", minWidth: "230px", zIndex: 200, border: `1px solid ${colors.border}`, overflow: "hidden" }}>
+                  {rulesItems.map((item, i, arr) => (
+                    <div key={item.id} onClick={() => handleNav(item.id)} style={{ padding: "12px 16px", cursor: "pointer", display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", fontWeight: 500, color: colors.text, background: active === item.id ? "#f2ede0" : "white", borderBottom: i < arr.length - 1 ? `1px solid ${colors.border}` : "none" }}
+                      onMouseEnter={(e) => e.currentTarget.style.background = "#f7f3ea"}
+                      onMouseLeave={(e) => e.currentTarget.style.background = active === item.id ? "#f2ede0" : "white"}
+                    >
+                      <item.icon size={16} color={colors.goldDeep} />{item.label}
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
-      {rulesOpen && (
-        <>
-          <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 150 }} onClick={() => setRulesOpen(false)} />
-          <div style={{ position: "fixed", top: "56px", right: "32px", background: "white", borderRadius: "8px", boxShadow: "0 8px 24px rgba(0,0,0,0.15)", minWidth: "230px", zIndex: 200, border: `1px solid ${colors.border}` }}>
-            {rulesItems.map((item, i, arr) => (
-              <div key={item.id} onClick={() => handleNav(item.id)} style={{ padding: "12px 16px", cursor: "pointer", display: "flex", alignItems: "center", gap: "10px", fontSize: "14px", fontWeight: 500, color: colors.text, background: active === item.id ? "#f2ede0" : "white", borderBottom: i < arr.length - 1 ? `1px solid ${colors.border}` : "none", borderRadius: i === 0 ? "4px 4px 0 0" : i === arr.length - 1 ? "0 0 4px 4px" : "0" }}
-                onMouseEnter={(e) => e.currentTarget.style.background = "#f7f3ea"}
-                onMouseLeave={(e) => e.currentTarget.style.background = active === item.id ? "#f2ede0" : "white"}
-              >
-                <item.icon size={16} color={colors.green} />{item.label}
-              </div>
-            ))}
-          </div>
-        </>
-      )}
     </nav>
   );
 }
@@ -1229,6 +1230,8 @@ function Breadcrumb({ items, onNavigate }) {
 
 const CH = { greenDark: "#12271b", green: "#1e4d34", gold: "#c2a04a", goldDeep: "#a4842f", cream: "#f6f2e9", ink: "#1b1b17", muted: "#6f6d62", line: "#e2dccd" };
 const SERIF = "'Fraunces', Georgia, serif";
+// Break an element out of the centered content column to span the full viewport width.
+const FULL_BLEED = { position: "relative", left: "50%", right: "50%", width: "100vw", marginLeft: "-50vw", marginRight: "-50vw" };
 
 export function HomePage({ setPage }) {
   const mobile = useIsMobile();
@@ -1269,8 +1272,8 @@ export function HomePage({ setPage }) {
 
   return (
     <div>
-      {/* Hero */}
-      <div style={{ position: "relative", background: CH.greenDark, color: "#f4efe3", borderRadius: mobile ? "12px" : "14px", overflow: "hidden", marginBottom: "28px" }}>
+      {/* Hero — full-bleed */}
+      <div style={{ ...FULL_BLEED, marginTop: "-24px", background: CH.greenDark, color: "#f4efe3", overflow: "hidden" }}>
         <div style={{ position: "absolute", inset: 0, background: "radial-gradient(120% 90% at 80% -10%, rgba(44,101,71,0.85), transparent 60%), radial-gradient(90% 80% at 0% 120%, rgba(18,39,27,0.9), transparent 55%)" }} />
         <svg viewBox="0 0 1200 400" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.16 }}>
           <g fill="none" stroke={CH.gold} strokeWidth="1">
@@ -1281,7 +1284,7 @@ export function HomePage({ setPage }) {
             <path d="M-50 230 Q300 180 600 212 T1250 196" />
           </g>
         </svg>
-        <div style={{ position: "relative", padding: mobile ? "46px 22px" : "64px 40px", textAlign: "center" }}>
+        <div style={{ position: "relative", maxWidth: "1040px", margin: "0 auto", padding: mobile ? "46px 22px" : "70px 40px", textAlign: "center" }}>
           <div style={{ color: CH.gold, fontSize: mobile ? "11px" : "12.5px", fontWeight: 600, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "16px" }}>Est. 2018 &middot; Woodington Lake Golf Club</div>
           <h1 style={{ fontFamily: SERIF, fontWeight: 600, fontSize: mobile ? "40px" : "60px", lineHeight: 1.02, letterSpacing: "-0.5px", margin: 0 }}>The SGP <span style={{ fontWeight: 400, fontStyle: "italic", color: "#e9e2cf" }}>Classic</span></h1>
           <p style={{ marginTop: "16px", color: "#c3ccbf", fontSize: mobile ? "14px" : "16px" }}>A subsidiary of the <a href="https://sites.google.com/site/statchukgolfpool" target="_blank" rel="noreferrer" style={{ color: CH.gold, textDecoration: "none", borderBottom: `1px solid ${CH.gold}`, paddingBottom: "1px" }}>Statchuk Golf Pool</a></p>
@@ -1292,11 +1295,11 @@ export function HomePage({ setPage }) {
         </div>
       </div>
 
-      {/* 2026 Champions Band */}
+      {/* 2026 Champions Band — full-bleed, flush under hero */}
       {latest && (
-        <div style={{ position: "relative", background: CH.greenDark, color: "#f4efe3", borderRadius: "12px", overflow: "hidden", marginBottom: "40px" }}>
+        <div style={{ ...FULL_BLEED, background: CH.greenDark, color: "#f4efe3", overflow: "hidden", borderTop: "1px solid rgba(194,160,74,0.22)" }}>
           <div style={{ position: "absolute", inset: 0, background: "radial-gradient(90% 120% at 100% 0%, rgba(44,101,71,0.7), transparent 60%)" }} />
-          <div style={{ position: "relative", display: "flex", flexDirection: mobile ? "column" : "row", alignItems: "center", gap: mobile ? "20px" : "40px", padding: mobile ? "34px 24px" : "44px 40px", textAlign: mobile ? "center" : "left" }}>
+          <div style={{ position: "relative", maxWidth: "1040px", margin: "0 auto", display: "flex", flexDirection: mobile ? "column" : "row", alignItems: "center", gap: mobile ? "20px" : "40px", padding: mobile ? "34px 24px" : "48px 40px", textAlign: mobile ? "center" : "left" }}>
             <div style={{ width: mobile ? "88px" : "104px", height: mobile ? "88px" : "104px", borderRadius: "50%", border: `2px solid ${CH.gold}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: CH.gold, fontSize: mobile ? "34px" : "40px", fontFamily: SERIF }}>&#9819;</div>
             <div>
               <div style={{ fontSize: "11.5px", letterSpacing: "2.5px", textTransform: "uppercase", color: CH.gold }}>{latest.year} Champions &middot; Year {latest.yearNum}</div>
@@ -1312,7 +1315,7 @@ export function HomePage({ setPage }) {
       )}
 
       {/* Career Money List + Champions Wall */}
-      <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: "36px", marginBottom: "44px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: "36px", marginTop: "48px", marginBottom: "44px" }}>
         <div>
           <div style={{ fontFamily: SERIF, fontSize: "26px", fontWeight: 600, color: CH.greenDark, marginBottom: "18px" }}>Career Money List</div>
           {moneyList.map((p, i) => (
