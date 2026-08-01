@@ -166,7 +166,7 @@ const TOURNAMENTS = {
       { num: 3, p1: "Tyler Perry", p2: "Mark Johnson" },
       { num: 4, p1: "Nick Crain", p2: "Keon Karamchi" },
       { num: 5, p1: "Geoff Crain", p2: "Anthony Laud" },
-      { num: 6, p1: "Johnny D'amato", p2: "Nolan Rundle" },
+      { num: 6, p1: "Johnny D'Amato", p2: "Nolan Rundle" },
       { num: 7, p1: "Kevin Kernohan", p2: "Steve Persa" },
       { num: 8, p1: "Adam Hoffman", p2: "Dave MacDougall" },
     ],
@@ -209,7 +209,7 @@ const TOURNAMENTS = {
       { num: 7, p1: "Reid Hartley", p2: "Dave MacDougall" },
       { num: 8, p1: "Nolan Rundle", p2: "Brandon Mullholand" },
       { num: 9, p1: "Keon Karamchi", p2: "Andrew Carlson" },
-      { num: 10, p1: "Adam Hoffman", p2: "Dave Carlson" },
+      { num: 10, p1: "Adam Hoffman", p2: "David Carlson" },
       { num: 11, p1: "Brett Dutyshcen", p2: "Anthony Laud" },
       { num: 12, p1: "Geoff Crain", p2: "Graham Booth" },
     ],
@@ -242,7 +242,7 @@ const TOURNAMENTS = {
     prizePool: 800,
     prizeSplit: { first: 600, second: 200 },
     teams: [
-      { num: 1, p1: "Dave Carlson", p2: "Tyler Perry" },
+      { num: 1, p1: "David Carlson", p2: "Tyler Perry" },
       { num: 2, p1: "Dave MacDougall", p2: "Keon Karamchi" },
       { num: 3, p1: "Nick Crain", p2: "Adam Hoffman" },
       { num: 4, p1: "Patrick Forbes", p2: "Geoff Crain" },
@@ -282,7 +282,7 @@ const TOURNAMENTS = {
         { bettor: "Chris Statchuk", team: 7, amount: 20 },
         { bettor: "Chris Williams", team: 2, amount: 10 }, { bettor: "Chris Williams", team: 4, amount: 20 },
         { bettor: "Chris Williams", team: 7, amount: 20 },
-        { bettor: "Dave Carlson", team: 1, amount: 50 }, { bettor: "Dave Carlson", team: 5, amount: 50 },
+        { bettor: "David Carlson", team: 1, amount: 50 }, { bettor: "David Carlson", team: 5, amount: 50 },
         { bettor: "Dave MacDougall", team: 2, amount: 50 }, { bettor: "Dave MacDougall", team: 1, amount: 10 },
         { bettor: "Dave MacDougall", team: 4, amount: 20 }, { bettor: "Dave MacDougall", team: 7, amount: 20 },
         { bettor: "Geoff Crain", team: 4, amount: 60 }, { bettor: "Geoff Crain", team: 7, amount: 40 },
@@ -311,7 +311,7 @@ const TOURNAMENTS = {
         { bettor: "Nick Crain", wagered: 60, onWinner: 0, payout: 0, net: -60 },
         { bettor: "Keon Karamchi", wagered: 90, onWinner: 0, payout: 0, net: -90 },
         { bettor: "Geoff Crain", wagered: 100, onWinner: 0, payout: 0, net: -100 },
-        { bettor: "Dave Carlson", wagered: 100, onWinner: 0, payout: 0, net: -100 },
+        { bettor: "David Carlson", wagered: 100, onWinner: 0, payout: 0, net: -100 },
         { bettor: "Dave MacDougall", wagered: 100, onWinner: 0, payout: 0, net: -100 },
         { bettor: "Adam Hoffman", wagered: 180, onWinner: 0, payout: 0, net: -180 },
         { bettor: "Reid Hartley", wagered: 250, onWinner: 0, payout: 0, net: -250 },
@@ -339,7 +339,7 @@ const TOURNAMENTS = {
       { num: 4, p1: "Andrew Carlson", p2: "Trevor Williams" },
       { num: 5, p1: "Mike Forbes", p2: "Nolan Rundle" },
       { num: 6, p1: "Patrick Forbes", p2: "Keon Karamchi" },
-      { num: 7, p1: "Dave Carlson", p2: "Chris Statchuk" },
+      { num: 7, p1: "David Carlson", p2: "Chris Statchuk" },
       { num: 8, p1: "Paul Statchuk", p2: "Dave MacDougall" },
     ],
     leaderboard: [
@@ -367,7 +367,7 @@ const TOURNAMENTS = {
       { name: "Gordon Leslie", hdcp: 10, gross: 95, net: 85, toPar: 23, netToPar: 13, birdies: 0, eagles: 0, front: 50, back: 45 },
       { name: "Dave MacDougall", hdcp: 23, gross: 99, net: 76, toPar: 27, netToPar: 4, birdies: 0, eagles: 0, front: 48, back: 51 },
       { name: "Adam Hoffman", hdcp: 12, gross: 100, net: 88, toPar: 28, netToPar: 16, birdies: 0, eagles: 0, front: 54, back: 46 },
-      { name: "Dave Carlson", hdcp: 29, gross: 104, net: 75, toPar: 32, netToPar: 3, birdies: 0, eagles: 0, front: 53, back: 51 },
+      { name: "David Carlson", hdcp: 29, gross: 104, net: 75, toPar: 32, netToPar: 3, birdies: 0, eagles: 0, front: 53, back: 51 },
       { name: "Nolan Rundle", hdcp: 25, gross: 106, net: 81, toPar: 34, netToPar: 9, birdies: 1, eagles: 0, front: 57, back: 49 },
       { name: "Andrew Carlson", hdcp: 27, gross: 109, net: 82, toPar: 37, netToPar: 10, birdies: 0, eagles: 0, front: 59, back: 50 },
     ],
@@ -435,7 +435,7 @@ const TOURNAMENTS = {
     prizePool: 800,
     prizeSplit: { first: 600, second: 200 },
     teams: [
-      { num: 1, p1: "Dave Carlson", p2: "Adam Hoffman" },
+      { num: 1, p1: "David Carlson", p2: "Adam Hoffman" },
       { num: 2, p1: "Anthony Laud", p2: "Nick Crain" },
       { num: 3, p1: "Reid Hartley", p2: "Paul Statchuk" },
       { num: 4, p1: "Nolan Rundle", p2: "Brendan Black" },
@@ -471,7 +471,7 @@ const TOURNAMENTS = {
       { name: "Adam Hoffman", hdcp: 11, gross: 93, net: 82, toPar: 21, netToPar: 10, birdies: 0, eagles: 0, front: 50, back: 43 },
       { name: "Andrew Carlson", hdcp: 24, gross: 99, net: 75, toPar: 27, netToPar: 3, birdies: 0, eagles: 0, front: 50, back: 49 },
       { name: "Nolan Rundle", hdcp: 23, gross: 100, net: 77, toPar: 28, netToPar: 5, birdies: 0, eagles: 0, front: 50, back: 50 },
-      { name: "Dave Carlson", hdcp: 24, gross: 101, net: 77, toPar: 29, netToPar: 5, birdies: 0, eagles: 0, front: 53, back: 48 },
+      { name: "David Carlson", hdcp: 24, gross: 101, net: 77, toPar: 29, netToPar: 5, birdies: 0, eagles: 0, front: 53, back: 48 },
     ],
     parimutuel: {
       totalPool: 3355,
@@ -491,7 +491,7 @@ const TOURNAMENTS = {
         { bettor: "Chris Statchuk", team: 7, amount: 25 }, { bettor: "Chris Statchuk", team: 6, amount: 25 },
         { bettor: "Chris Williams", team: 8, amount: 50 }, { bettor: "Chris Williams", team: 3, amount: 20 },
         { bettor: "Chris Williams", team: 6, amount: 15 }, { bettor: "Chris Williams", team: 4, amount: 15 },
-        { bettor: "Dave Carlson", team: 1, amount: 50 }, { bettor: "Dave Carlson", team: 6, amount: 25 },
+        { bettor: "David Carlson", team: 1, amount: 50 }, { bettor: "David Carlson", team: 6, amount: 25 },
         { bettor: "Dave MacDougall", team: 7, amount: 75 }, { bettor: "Dave MacDougall", team: 2, amount: 30 },
         { bettor: "Dave MacDougall", team: 3, amount: 20 }, { bettor: "Dave MacDougall", team: 4, amount: 20 },
         { bettor: "Dave MacDougall", team: 8, amount: 30 },
@@ -519,7 +519,7 @@ const TOURNAMENTS = {
         { bettor: "Nolan Rundle", wagered: 125, onWinner: 20, payout: 298, net: 173 },
         { bettor: "Adam Hoffman", wagered: 220, onWinner: 10, payout: 149, net: -71 },
         { bettor: "Graham Booth", wagered: 45, onWinner: 0, payout: 0, net: -45 },
-        { bettor: "Dave Carlson", wagered: 75, onWinner: 0, payout: 0, net: -75 },
+        { bettor: "David Carlson", wagered: 75, onWinner: 0, payout: 0, net: -75 },
         { bettor: "Nick Crain", wagered: 100, onWinner: 0, payout: 0, net: -100 },
         { bettor: "Chris Williams", wagered: 100, onWinner: 0, payout: 0, net: -100 },
         { bettor: "Hoff Father In Law", wagered: 100, onWinner: 0, payout: 0, net: -100 },
@@ -553,7 +553,7 @@ const TOURNAMENTS = {
       { num: 4, p1: "Chris Statchuk", p2: "Nolan Rundle" },
       { num: 5, p1: "Reid Hartley", p2: "Brendan Black" },
       { num: 6, p1: "Anthony Laud", p2: "Mark Johnson" },
-      { num: 7, p1: "Paul Statchuk", p2: "Dave Carlson" },
+      { num: 7, p1: "Paul Statchuk", p2: "David Carlson" },
       { num: 8, p1: "Trevor Williams", p2: "Kevin Kernohan" },
     ],
     leaderboard: [
@@ -580,7 +580,7 @@ const TOURNAMENTS = {
       { name: "Anthony Laud", hdcp: 12, gross: 94, net: 82, toPar: 23, netToPar: 11, birdies: 1, eagles: 0, front: 47, back: 47 },
       { name: "Dave MacDougall", hdcp: 18, gross: 94, net: 76, toPar: 23, netToPar: 5, birdies: 0, eagles: 0, front: 45, back: 49 },
       { name: "Mark Johnson", hdcp: 25, gross: 96, net: 71, toPar: 25, netToPar: 0, birdies: 1, eagles: 0, front: 45, back: 51 },
-      { name: "Dave Carlson", hdcp: 25, gross: 97, net: 72, toPar: 26, netToPar: 1, birdies: 1, eagles: 0, front: 47, back: 50 },
+      { name: "David Carlson", hdcp: 25, gross: 97, net: 72, toPar: 26, netToPar: 1, birdies: 1, eagles: 0, front: 47, back: 50 },
       { name: "Nolan Rundle", hdcp: 26, gross: 99, net: 73, toPar: 28, netToPar: 2, birdies: 2, eagles: 0, front: 53, back: 46 },
       { name: "Keon Karamchi", hdcp: 17, gross: 99, net: 82, toPar: 28, netToPar: 11, birdies: 0, eagles: 0, front: 51, back: 48 },
       { name: "Joel Greaves", hdcp: 24, gross: 102, net: 78, toPar: 31, netToPar: 7, birdies: 0, eagles: 0, front: 54, back: 48 },
@@ -618,7 +618,7 @@ const TOURNAMENTS = {
         { bettor: "Paul Statchuk", team: 6, amount: 100 }, { bettor: "Reid Hartley", team: 6, amount: 30 },
         { bettor: "Adam Hoffman", team: 7, amount: 30 }, { bettor: "Andrew Carlson", team: 7, amount: 25 },
         { bettor: "Brendan Black", team: 7, amount: 30 }, { bettor: "Chris Statchuk", team: 7, amount: 30 },
-        { bettor: "Dave Carlson", team: 7, amount: 150 }, { bettor: "Kevin Kernohan", team: 7, amount: 100 },
+        { bettor: "David Carlson", team: 7, amount: 150 }, { bettor: "Kevin Kernohan", team: 7, amount: 100 },
         { bettor: "Mark Johnson", team: 7, amount: 10 }, { bettor: "Nolan Rundle", team: 7, amount: 30 },
         { bettor: "Paul Statchuk", team: 7, amount: 300 }, { bettor: "Reid Hartley", team: 7, amount: 30 },
         { bettor: "Adam Hoffman", team: 8, amount: 20 }, { bettor: "Anthony Laud", team: 8, amount: 100 },
@@ -627,7 +627,7 @@ const TOURNAMENTS = {
       ],
       results: [
         { bettor: "Paul Statchuk", wagered: 550, onWinner: 300, payout: 1535, net: 985 },
-        { bettor: "Dave Carlson", wagered: 150, onWinner: 150, payout: 767, net: 617 },
+        { bettor: "David Carlson", wagered: 150, onWinner: 150, payout: 767, net: 617 },
         { bettor: "Kevin Kernohan", wagered: 400, onWinner: 100, payout: 512, net: 112 },
         { bettor: "Chris Statchuk", wagered: 120, onWinner: 30, payout: 153, net: 33 },
         { bettor: "Andrew Carlson", wagered: 100, onWinner: 25, payout: 128, net: 28 },
@@ -991,6 +991,18 @@ export const colors = {
 
 const CHART_COLORS = ["#15803d", "#d97706", "#2563eb", "#dc2626", "#7c3aed", "#0891b2", "#ea580c", "#4f46e5"];
 
+// Guest/fill-in players — kept in individual tournament records, but excluded
+// from career stats on the Players and Parimutuel tabs (they skew the numbers).
+export const FILL_INS = new Set([
+  // Fill-in players (played 1–2 events, not pool members)
+  "Ben Barrett", "Brandon Mullholand", "Brett Dutyshcen", "Bryan Gendron",
+  "Johnny D'Amato", "Luke Roth", "Mike Forbes", "Nick Orsatti", "Roscoe Statchuk",
+  "Steve Persa", "Tommy Frazier", "Tyler Dutyshcen", "Tyler Perry", "Gordon Leslie",
+  // Guest bettors (placed parimutuel bets but never played, not pool members)
+  "Andy Williams", "Dusse", "Geoff Dusse", "Gendy", "Hoff Father In Law", "Roscoe",
+]);
+export const isPoolMember = (name) => !FILL_INS.has(name);
+
 // ═══════════════════════════════════════════════════════════════
 // COMPONENTS
 // ═══════════════════════════════════════════════════════════════
@@ -1340,6 +1352,7 @@ export function HomePage({ setPage }) {
     });
     return Object.entries(earnings)
       .map(([name, total]) => ({ name, total }))
+      .filter((p) => isPoolMember(p.name))
       .sort((a, b) => b.total - a.total)
       .slice(0, 8);
   }, []);
@@ -1963,7 +1976,7 @@ export function PlayersPage({ setPage }) {
       if (p.bestGross === Infinity) p.bestGross = null;
       if (p.grossScores.length === 0) p.avgGross = null;
     });
-    return Object.values(players).sort((a, b) => b.years - a.years);
+    return Object.values(players).filter((p) => isPoolMember(p.name)).sort((a, b) => b.years - a.years);
   }, []);
 
   return (
@@ -2110,7 +2123,7 @@ export function ParimutuelPage({ setPage }) {
         bettors[r.bettor].years++;
       });
     });
-    const result = Object.values(bettors);
+    const result = Object.values(bettors).filter((b) => isPoolMember(b.name));
     result.forEach((b) => { b.avgWagered = b.years > 0 ? b.totalWagered / b.years : 0; });
     return result.sort((a, b) => b.totalNet - a.totalNet);
   }, []);
@@ -2133,7 +2146,7 @@ export function ParimutuelPage({ setPage }) {
   const allSingleYearResults = [];
   pariYears.forEach((t) => {
     t.parimutuel.results.forEach((r) => {
-      allSingleYearResults.push({ ...r, year: t.year });
+      if (isPoolMember(r.bettor)) allSingleYearResults.push({ ...r, year: t.year });
     });
   });
   const bestSingleYear = allSingleYearResults.sort((a, b) => b.net - a.net)[0];
