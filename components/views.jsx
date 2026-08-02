@@ -1651,9 +1651,85 @@ export function FallScramblePage({ setPage }) {
         </div>
       </div>
 
+      {/* History — one card per edition, click into a year */}
+      <div style={{ marginTop: "44px" }}>
+        <SectionTitle icon={Award}>Fall Scramble History</SectionTitle>
+        <div style={{ display: "grid", gap: "14px", marginBottom: "32px" }}>
+          {editions.map((e) => {
+            const w = e.leaderboard[0];
+            const wt = e.teams.find((t) => t.num === w.teamNum);
+            return (
+              <Card key={e.year} onClick={() => setPage({ id: "fall-scramble-detail", year: e.year })} style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "18px" }}>
+                  <div style={{ background: CH.greenDark, color: CH.gold, width: "56px", height: "56px", borderRadius: "6px", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: SERIF, fontSize: "20px", fontWeight: 600, flexShrink: 0 }}>{e.year}</div>
+                  <div>
+                    <div style={{ fontSize: "11px", letterSpacing: "1.5px", textTransform: "uppercase", color: CH.muted, marginBottom: "3px" }}>Champions</div>
+                    <div style={{ fontFamily: SERIF, fontSize: mobile ? "17px" : "19px", fontWeight: 600, color: CH.greenDark }}>{wt.players.join(" · ")}</div>
+                    <div style={{ fontSize: "13px", color: CH.muted }}>{e.venue} &middot; {e.date}</div>
+                  </div>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "14px", flexShrink: 0 }}>
+                  <div style={{ fontFamily: SERIF, fontSize: "22px", fontWeight: 600, color: CH.green }}>{formatScore(w.toPar)}</div>
+                  <ChevronRight size={20} color={CH.muted} />
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Detail page for a single Fall Scramble edition
+export function FallScrambleYearPage({ year, setPage }) {
+  const mobile = useIsMobile();
+  const ed = SCRAMBLES[year];
+  if (!ed) return <div style={{ padding: "60px 0", textAlign: "center", color: colors.textMuted }}>That Fall Scramble edition isn’t in the records yet.</div>;
+  const champ = ed.leaderboard[0];
+  const champTeam = ed.teams.find((t) => t.num === champ.teamNum);
+  const pari = ed.parimutuel;
+  const teamPlayers = (teamNum) => {
+    const t = ed.teams.find((x) => x.num === teamNum);
+    return t ? t.players.join(", ") : "";
+  };
+  return (
+    <div>
+      <div onClick={() => setPage({ id: "fall-scramble" })} style={{ display: "inline-flex", alignItems: "center", gap: "5px", color: CH.goldDeep, fontSize: "13px", fontWeight: 600, cursor: "pointer", marginBottom: "16px" }}>
+        <ChevronLeft size={16} /> Fall Scramble
+      </div>
+
+      {/* Header — full-bleed */}
+      <div style={{ ...FULL_BLEED, background: CH.greenDark, color: "#f4efe3", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(120% 90% at 80% -10%, rgba(44,101,71,0.85), transparent 60%), radial-gradient(90% 80% at 0% 120%, rgba(18,39,27,0.9), transparent 55%)" }} />
+        <div style={{ position: "relative", maxWidth: "1040px", margin: "0 auto", padding: mobile ? "38px 22px" : "52px 40px", textAlign: "center" }}>
+          <div style={{ color: CH.gold, fontSize: "12px", fontWeight: 600, letterSpacing: "2.5px", textTransform: "uppercase", marginBottom: "12px" }}>{ed.name} &middot; Edition {ed.edition}</div>
+          <h1 style={{ fontFamily: SERIF, fontWeight: 600, fontSize: mobile ? "36px" : "50px", lineHeight: 1.03, margin: 0 }}>{ed.year} Fall Scramble</h1>
+          <p style={{ marginTop: "12px", color: "#c3ccbf", fontSize: mobile ? "14px" : "15.5px" }}>{ed.venue} &middot; {ed.location} &middot; {ed.date}</p>
+        </div>
+      </div>
+
+      {/* Champion band */}
+      <div style={{ ...FULL_BLEED, background: CH.greenDark, color: "#f4efe3", overflow: "hidden", borderTop: "1px solid rgba(194,160,74,0.22)" }}>
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(90% 120% at 100% 0%, rgba(44,101,71,0.7), transparent 60%)" }} />
+        <div style={{ position: "relative", maxWidth: "1040px", margin: "0 auto", display: "flex", flexDirection: mobile ? "column" : "row", alignItems: "center", gap: mobile ? "20px" : "40px", padding: mobile ? "34px 24px" : "44px 40px", textAlign: mobile ? "center" : "left" }}>
+          <div style={{ width: mobile ? "88px" : "104px", height: mobile ? "88px" : "104px", borderRadius: "50%", border: `2px solid ${CH.gold}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: CH.gold, fontSize: mobile ? "34px" : "40px", fontFamily: SERIF }}>&#9819;</div>
+          <div>
+            <div style={{ fontSize: "11.5px", letterSpacing: "2.5px", textTransform: "uppercase", color: CH.gold }}>{ed.year} Champions</div>
+            <h3 style={{ fontFamily: SERIF, fontSize: mobile ? "24px" : "32px", fontWeight: 600, margin: "8px 0 6px" }}>{champTeam.players.join(" · ")}</h3>
+            <div style={{ color: "#b8c2b7", fontSize: "15px" }}>Team {champ.teamNum} &middot; {ed.format} &middot; {ed.scoring}</div>
+            {champ.prize ? <div style={{ marginTop: "8px", display: "inline-block", background: "rgba(194,160,74,0.15)", color: CH.gold, fontSize: "12.5px", fontWeight: 600, letterSpacing: "0.5px", padding: "4px 12px", borderRadius: "20px" }}>${champ.prize.toLocaleString()} purse &middot; ${Math.round(champ.prize / champTeam.players.length)}/player</div> : null}
+          </div>
+          <div style={{ marginLeft: mobile ? 0 : "auto", textAlign: "center", flexShrink: 0 }}>
+            <div style={{ fontFamily: SERIF, fontSize: mobile ? "48px" : "58px", fontWeight: 600, color: "#fff", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>{formatScore(champ.toPar)}</div>
+            <div style={{ fontSize: "10.5px", letterSpacing: "2px", textTransform: "uppercase", color: CH.gold, marginTop: "8px" }}>To par</div>
+          </div>
+        </div>
+      </div>
+
       {/* Event meta */}
       <div style={{ marginTop: "44px", marginBottom: "28px", display: "flex", flexWrap: "wrap", gap: mobile ? "12px" : "20px" }}>
-        {[["Date", latest.date], ["Venue", `${latest.venue} · ${latest.location}`], ["Format", `${latest.format} · ${latest.scoring}`], ["Course", `${latest.tees} · ${latest.totalYards.toLocaleString()} yds · Par ${latest.par}`], ["Purse", `$${latest.prizePool.toLocaleString()} · $${latest.entryFee}/player entry`]].map(([k, v]) => (
+        {[["Date", ed.date], ["Venue", `${ed.venue} · ${ed.location}`], ["Format", `${ed.format} · ${ed.scoring}`], ["Course", `${ed.tees} · ${ed.totalYards.toLocaleString()} yds · Par ${ed.par}`], ["Purse", `$${ed.prizePool.toLocaleString()} · $${ed.entryFee}/player entry`]].map(([k, v]) => (
           <div key={k} style={{ flex: mobile ? "1 1 100%" : "1 1 200px", background: "#fff", border: `1px solid ${CH.line}`, borderRadius: "4px", padding: "14px 18px" }}>
             <div style={{ fontSize: "10.5px", letterSpacing: "1.5px", textTransform: "uppercase", color: CH.muted, marginBottom: "5px" }}>{k}</div>
             <div style={{ fontSize: "14.5px", fontWeight: 500, color: CH.ink }}>{v}</div>
@@ -1662,7 +1738,7 @@ export function FallScramblePage({ setPage }) {
       </div>
 
       {/* Standings */}
-      <SectionTitle icon={Trophy}>{latest.year} Final Standings</SectionTitle>
+      <SectionTitle icon={Trophy}>{ed.year} Final Standings</SectionTitle>
       <div style={{ marginBottom: "36px" }}>
         <Table
           columns={[
@@ -1673,13 +1749,13 @@ export function FallScramblePage({ setPage }) {
             { header: "To Par", render: (r) => formatScore(r.toPar), align: "center", color: (r) => (r.toPar < 0 ? colors.green : colors.text) },
             { header: "Prize", render: (r) => (r.prize ? `$${r.prize.toLocaleString()}` : "—"), align: "center", color: (r) => (r.prize ? colors.goldDeep : colors.textMuted) },
           ]}
-          data={latest.leaderboard}
+          data={ed.leaderboard}
           rowStyle={(r) => (r.pos === "1" ? { background: "#fbf7ea" } : {})}
         />
       </div>
 
       {/* Parimutuel */}
-      <SectionTitle icon={DollarSign}>{latest.year} Parimutuel</SectionTitle>
+      <SectionTitle icon={DollarSign}>{ed.year} Parimutuel</SectionTitle>
       <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr 1fr" : "repeat(4, 1fr)", gap: "12px", marginBottom: "18px" }}>
         {[["Total Pool", `$${pari.totalPool.toLocaleString()}`], ["Winning Team", `Team ${pari.winningTeam}`], ["Payout", `${pari.payoutMultiplier}×`], ["Bettors", `${new Set(pari.bets.map((b) => b.bettor)).size}`]].map(([k, v]) => (
           <div key={k} style={{ background: "#fff", border: `1px solid ${CH.line}`, borderRadius: "4px", padding: "14px 16px", textAlign: "center" }}>
@@ -1704,7 +1780,7 @@ export function FallScramblePage({ setPage }) {
       {/* Format note */}
       <div style={{ background: "#fff", border: `1px solid ${CH.line}`, borderLeft: `3px solid ${CH.gold}`, borderRadius: "0 4px 4px 0", padding: "18px 22px", marginBottom: "16px" }}>
         <div style={{ fontSize: "11px", letterSpacing: "1.5px", textTransform: "uppercase", color: CH.goldDeep, marginBottom: "6px" }}>How the teams are drafted</div>
-        <div style={{ fontSize: "14.5px", color: CH.ink, lineHeight: 1.5 }}>{latest.draftNote}</div>
+        <div style={{ fontSize: "14.5px", color: CH.ink, lineHeight: 1.5 }}>{ed.draftNote}</div>
       </div>
     </div>
   );
