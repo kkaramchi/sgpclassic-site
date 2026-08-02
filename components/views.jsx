@@ -1333,6 +1333,24 @@ const SERIF = "'Fraunces', Georgia, serif";
 // Break an element out of the centered content column to span the full viewport width.
 const FULL_BLEED = { position: "relative", left: "50%", right: "50%", width: "100vw", marginLeft: "-50vw", marginRight: "-50vw" };
 
+// Fall Scramble availability poll
+const POLL_ORG_PASSWORD = "sgp2026"; // organizer view password — change and push to update
+const POLL_DATES = [
+  { key: "sep26", label: "Sept 26" },
+  { key: "oct3", label: "Oct 3" },
+  { key: "oct17", label: "Oct 17" },
+  { key: "oct24", label: "Oct 24" },
+];
+// Pool roster — dropdown options for the availability poll. A name disappears
+// once that poolie has submitted. Add or remove names here as the pool changes.
+const POOL_MEMBERS = [
+  "Adam Hoffman", "Andrew Carlson", "Anthony Laud", "Brad Blowes", "Brendan Black",
+  "Chase Kaskiw", "Chris MacIntyre", "Chris Statchuk", "Chris Williams", "Dave Carlson",
+  "Dave Macdougall", "Geoff Crain", "Geoff Dusseldorp", "Graham Booth", "Joel Greaves",
+  "Keon Karamchi", "Kevin Kernohan", "Mark Johnson", "Nick Crain", "Nolan Rundle",
+  "Patrick Forbes", "Paul Statchuk", "Reid Hartley", "Ron Fichter", "Trevor Williams",
+];
+
 export function HomePage({ setPage }) {
   const mobile = useIsMobile();
 
@@ -1473,6 +1491,48 @@ export function FallScramblePage({ setPage }) {
     return t ? t.players.join(", ") : "";
   };
 
+  // ── Availability poll ──
+  const [pollName, setPollName] = useState("");
+  const [pollSel, setPollSel] = useState({ sep26: false, oct3: false, oct17: false, oct24: false });
+  const [pollStatus, setPollStatus] = useState(""); // "", saving, done, error, noname
+  const [orgOpen, setOrgOpen] = useState(false);
+  const [orgPw, setOrgPw] = useState("");
+  const [orgUnlocked, setOrgUnlocked] = useState(false);
+  const [orgError, setOrgError] = useState("");
+  const [responses, setResponses] = useState([]);
+  const [submittedNames, setSubmittedNames] = useState(new Set());
+
+  // Who has already responded (so their name drops out of the dropdown)
+  useEffect(() => {
+    (async () => {
+      const { data } = await supabase.from("scramble_availability_2026").select("name");
+      if (data) setSubmittedNames(new Set(data.map((r) => r.name.trim().toLowerCase())));
+    })();
+  }, []);
+  const availableMembers = POOL_MEMBERS.filter((n) => !submittedNames.has(n.toLowerCase()));
+
+  const toggleDate = (k) => setPollSel((s) => ({ ...s, [k]: !s[k] }));
+  const submitPoll = async () => {
+    if (!pollName.trim()) { setPollStatus("noname"); return; }
+    setPollStatus("saving");
+    const { error } = await supabase.from("scramble_availability_2026").insert({ name: pollName.trim(), ...pollSel });
+    if (error) { setPollStatus("error"); return; }
+    setSubmittedNames((s) => new Set(s).add(pollName.trim().toLowerCase()));
+    setPollStatus("done");
+  };
+  const resetPoll = () => { setPollName(""); setPollSel({ sep26: false, oct3: false, oct17: false, oct24: false }); setPollStatus(""); };
+  const unlockOrg = async () => {
+    if (orgPw !== POLL_ORG_PASSWORD) { setOrgError("Wrong password"); setOrgUnlocked(false); return; }
+    setOrgError("");
+    const { data } = await supabase.from("scramble_availability_2026").select("*").order("created_at", { ascending: true });
+    const byName = {};
+    (data || []).forEach((r) => { byName[r.name.trim().toLowerCase()] = r; });
+    setResponses(Object.values(byName));
+    setOrgUnlocked(true);
+  };
+  const dateTally = (k) => responses.filter((r) => r[k]).length;
+  const bestDate = POLL_DATES.reduce((best, d) => (dateTally(d.key) > dateTally(best.key) ? d : best), POLL_DATES[0]);
+
   return (
     <div>
       {/* Header — full-bleed */}
@@ -1482,6 +1542,95 @@ export function FallScramblePage({ setPage }) {
           <div style={{ color: CH.gold, fontSize: mobile ? "11px" : "12.5px", fontWeight: 600, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "14px" }}>Signature Event &middot; Est. 2025</div>
           <h1 style={{ fontFamily: SERIF, fontWeight: 600, fontSize: mobile ? "38px" : "56px", lineHeight: 1.02, letterSpacing: "-0.5px", margin: 0 }}>The Fall <span style={{ fontWeight: 400, fontStyle: "italic", color: "#e9e2cf" }}>Scramble</span></h1>
           <p style={{ marginTop: "14px", color: "#c3ccbf", fontSize: mobile ? "14px" : "16px" }}>A 3-man scratch scramble under the SGP Classic umbrella.</p>
+        </div>
+      </div>
+
+      {/* 2026 Availability Poll */}
+      <div style={{ marginTop: "36px", marginBottom: "8px" }}>
+        <div style={{ background: "#fff", border: `1px solid ${CH.line}`, borderTop: `3px solid ${CH.gold}`, borderRadius: "4px", padding: mobile ? "22px 20px" : "28px 32px" }}>
+          <div style={{ fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", color: CH.goldDeep, marginBottom: "4px" }}>Next up &middot; 2026</div>
+          <div style={{ fontFamily: SERIF, fontSize: "24px", fontWeight: 600, color: CH.greenDark, marginBottom: "4px" }}>Pick Your Dates</div>
+          <div style={{ color: CH.muted, fontSize: "14.5px", marginBottom: "20px" }}>Which dates can you make it? Check all that work.</div>
+          {pollStatus === "done" ? (
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px", color: CH.green, fontWeight: 600, fontSize: "16px" }}>
+                <Award size={20} /> Thanks{pollName ? `, ${pollName.split(" ")[0]}` : ""} — your availability is saved.
+              </div>
+              <div onClick={resetPoll} style={{ marginTop: "12px", color: CH.goldDeep, fontSize: "13px", fontWeight: 600, cursor: "pointer" }}>Submit another response &rarr;</div>
+            </div>
+          ) : availableMembers.length === 0 ? (
+            <div style={{ color: CH.green, fontWeight: 600, fontSize: "16px" }}>Everyone's responded — thanks!</div>
+          ) : (
+            <div>
+              <select value={pollName} onChange={(e) => setPollName(e.target.value)}
+                style={{ width: "100%", maxWidth: "340px", padding: "11px 14px", fontSize: "15px", border: `1px solid ${CH.line}`, borderRadius: "4px", marginBottom: "16px", fontFamily: "'DM Sans', sans-serif", outline: "none", display: "block", background: "#fff", color: pollName ? CH.ink : CH.muted }}>
+                <option value="">Select your name…</option>
+                {availableMembers.map((n) => <option key={n} value={n} style={{ color: CH.ink }}>{n}</option>)}
+              </select>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginBottom: "20px" }}>
+                {POLL_DATES.map((d) => {
+                  const on = pollSel[d.key];
+                  return (
+                    <button key={d.key} onClick={() => toggleDate(d.key)} style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "10px 18px", borderRadius: "4px", border: `1.5px solid ${on ? CH.green : CH.line}`, background: on ? CH.green : "#fff", color: on ? "#fff" : CH.ink, fontWeight: 600, fontSize: "14px", cursor: "pointer", fontFamily: "'DM Sans', sans-serif", transition: "all 0.12s" }}>
+                      <span style={{ width: "16px", height: "16px", borderRadius: "3px", border: `1.5px solid ${on ? "#fff" : CH.muted}`, display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "11px", color: "#fff" }}>{on ? "✓" : ""}</span>
+                      {d.label}
+                    </button>
+                  );
+                })}
+              </div>
+              {pollStatus === "noname" && <div style={{ color: "#a3352d", fontSize: "13px", marginBottom: "10px" }}>Please select your name.</div>}
+              {pollStatus === "error" && <div style={{ color: "#a3352d", fontSize: "13px", marginBottom: "10px" }}>Something went wrong — try again.</div>}
+              <button onClick={submitPoll} disabled={pollStatus === "saving"} style={{ background: CH.gold, color: CH.greenDark, border: "none", borderRadius: "4px", padding: "12px 28px", fontSize: "14px", fontWeight: 600, letterSpacing: "0.5px", textTransform: "uppercase", cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+                {pollStatus === "saving" ? "Saving…" : "Submit Availability"}
+              </button>
+            </div>
+          )}
+          {/* Organizer view */}
+          <div style={{ marginTop: "22px", paddingTop: "16px", borderTop: `1px solid ${CH.line}` }}>
+            {!orgOpen ? (
+              <div onClick={() => setOrgOpen(true)} style={{ fontSize: "12.5px", color: CH.muted, cursor: "pointer" }}>Organizer view &rarr;</div>
+            ) : !orgUnlocked ? (
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", alignItems: "center" }}>
+                <input type="password" value={orgPw} onChange={(e) => setOrgPw(e.target.value)} placeholder="Organizer password"
+                  style={{ padding: "9px 12px", fontSize: "14px", border: `1px solid ${CH.line}`, borderRadius: "4px", fontFamily: "'DM Sans', sans-serif", outline: "none" }} />
+                <button onClick={unlockOrg} style={{ background: CH.greenDark, color: "#fff", border: "none", borderRadius: "4px", padding: "9px 18px", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>Unlock</button>
+                {orgError && <span style={{ color: "#a3352d", fontSize: "13px" }}>{orgError}</span>}
+              </div>
+            ) : (
+              <div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "10px" }}>
+                  <div style={{ fontFamily: SERIF, fontSize: "18px", fontWeight: 600, color: CH.greenDark }}>Responses ({responses.length})</div>
+                  {responses.length > 0 && <div style={{ fontSize: "12.5px", color: CH.goldDeep, fontWeight: 600 }}>Best: {bestDate.label} ({dateTally(bestDate.key)})</div>}
+                </div>
+                {responses.length === 0 ? (
+                  <div style={{ color: CH.muted, fontSize: "14px" }}>No responses yet.</div>
+                ) : (
+                  <div style={{ overflowX: "auto" }}>
+                    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
+                      <thead>
+                        <tr style={{ background: CH.greenDark, color: "#fff" }}>
+                          <th style={{ textAlign: "left", padding: "9px 12px" }}>Name</th>
+                          {POLL_DATES.map((d) => <th key={d.key} style={{ padding: "9px 12px", textAlign: "center" }}>{d.label}</th>)}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {responses.map((r, i) => (
+                          <tr key={i} style={{ background: i % 2 ? "#f8f4ea" : "#fff" }}>
+                            <td style={{ padding: "9px 12px", fontWeight: 500 }}>{r.name}</td>
+                            {POLL_DATES.map((d) => <td key={d.key} style={{ padding: "9px 12px", textAlign: "center", color: r[d.key] ? CH.green : CH.line, fontWeight: 700 }}>{r[d.key] ? "✓" : "·"}</td>)}
+                          </tr>
+                        ))}
+                        <tr style={{ background: CH.cream, fontWeight: 700 }}>
+                          <td style={{ padding: "9px 12px", color: CH.greenDark }}>Total</td>
+                          {POLL_DATES.map((d) => <td key={d.key} style={{ padding: "9px 12px", textAlign: "center", color: CH.greenDark }}>{dateTally(d.key)}</td>)}
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
