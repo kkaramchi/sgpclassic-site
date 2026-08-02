@@ -1345,7 +1345,7 @@ const POLL_DATES = [
 // once that poolie has submitted. Add or remove names here as the pool changes.
 const POOL_MEMBERS = [
   "Adam Hoffman", "Andrew Carlson", "Anthony Laud", "Brad Blowes", "Brendan Black",
-  "Chase Kaskiw", "Chris MacIntyre", "Chris Statchuk", "Chris Williams", "Dave Carlson",
+  "Chase Kaskiw", "Chris Statchuk", "Chris Williams", "Craig MacIntyre", "Dave Carlson",
   "Dave Macdougall", "Geoff Crain", "Geoff Dusseldorp", "Graham Booth", "Joel Greaves",
   "Keon Karamchi", "Kevin Kernohan", "Mark Johnson", "Nick Crain", "Nolan Rundle",
   "Patrick Forbes", "Paul Statchuk", "Reid Hartley", "Ron Fichter", "Trevor Williams",
