@@ -1548,7 +1548,6 @@ export function FallScramblePage({ setPage }) {
       {/* 2026 Availability Poll */}
       <div style={{ marginTop: "36px", marginBottom: "8px" }}>
         <div style={{ background: "#fff", border: `1px solid ${CH.line}`, borderTop: `3px solid ${CH.gold}`, borderRadius: "4px", padding: mobile ? "22px 20px" : "28px 32px" }}>
-          <div style={{ fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", color: CH.goldDeep, marginBottom: "4px" }}>Next up &middot; 2026</div>
           <div style={{ fontFamily: SERIF, fontSize: "24px", fontWeight: 600, color: CH.greenDark, marginBottom: "4px" }}>Pick Your Dates</div>
           <div style={{ color: CH.muted, fontSize: "14.5px", marginBottom: "20px" }}>Which dates can you make it? Check all that work.</div>
           {pollStatus === "done" ? (
