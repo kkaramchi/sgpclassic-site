@@ -1545,8 +1545,16 @@ export function FallScramblePage({ setPage }) {
         </div>
       </div>
 
+      {/* Event Sponsor */}
+      <div style={{ textAlign: "center", marginTop: "32px" }}>
+        <div style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "2.5px", textTransform: "uppercase", color: CH.muted, marginBottom: "14px" }}>Presented By</div>
+        <div style={{ background: "#fff", border: `1px solid ${CH.line}`, borderRadius: "4px", padding: mobile ? "16px 22px" : "20px 40px", display: "inline-block" }}>
+          <img src={"/rbc-sponsor.jpg"} alt="RBC Wealth Management — Dominion Securities — Black Private Wealth Partners" style={{ height: mobile ? "64px" : "88px", maxWidth: "100%", objectFit: "contain", display: "block" }} />
+        </div>
+      </div>
+
       {/* 2026 Availability Poll */}
-      <div style={{ marginTop: "36px", marginBottom: "8px" }}>
+      <div style={{ marginTop: "32px", marginBottom: "8px" }}>
         <div style={{ background: "#fff", border: `1px solid ${CH.line}`, borderTop: `3px solid ${CH.gold}`, borderRadius: "4px", padding: mobile ? "22px 20px" : "28px 32px" }}>
           <div style={{ fontFamily: SERIF, fontSize: "24px", fontWeight: 600, color: CH.greenDark, marginBottom: "4px" }}>Pick Your Dates</div>
           <div style={{ color: CH.muted, fontSize: "14.5px", marginBottom: "20px" }}>Which dates can you make it? Check all that work.</div>
