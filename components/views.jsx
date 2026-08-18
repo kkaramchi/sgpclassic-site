@@ -1556,46 +1556,27 @@ export function FallScramblePage({ setPage }) {
       {/* 2026 Availability Poll */}
       <div style={{ marginTop: "32px", marginBottom: "8px" }}>
         <div style={{ background: "#fff", border: `1px solid ${CH.line}`, borderTop: `3px solid ${CH.gold}`, borderRadius: "4px", padding: mobile ? "22px 20px" : "28px 32px" }}>
-          <div style={{ fontFamily: SERIF, fontSize: "24px", fontWeight: 600, color: CH.greenDark, marginBottom: "4px" }}>Pick Your Dates</div>
-          <div style={{ color: CH.muted, fontSize: "14.5px", marginBottom: "20px" }}>Which dates can you make it? Check all that work.</div>
-          {pollStatus === "done" ? (
-            <div>
-              <div style={{ display: "flex", alignItems: "center", gap: "10px", color: CH.green, fontWeight: 600, fontSize: "16px" }}>
-                <Award size={20} /> Thanks{pollName ? `, ${pollName.split(" ")[0]}` : ""} — your availability is saved.
+          <div style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "2px", textTransform: "uppercase", color: CH.goldDeep, marginBottom: "4px" }}>Upcoming</div>
+          <div style={{ fontFamily: SERIF, fontSize: "24px", fontWeight: 600, color: CH.greenDark, marginBottom: "18px" }}>2026 Fall Scramble</div>
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: "14px 32px" }}>
+            {[
+              ["Date", "Saturday, October 3, 2026"],
+              ["First tee", "11:30 AM"],
+              ["Awards dinner", "5:00 PM · St. Louis Bar & Grill, Aurora ON"],
+              ["Format", "3-Man Scramble · drafted teams"],
+              ["Draft", "Date TBD"],
+              ["Field", "Confirming participants"],
+            ].map(([k, v]) => (
+              <div key={k} style={{ display: "flex", gap: "12px", alignItems: "baseline" }}>
+                <div style={{ fontSize: "10.5px", letterSpacing: "1.5px", textTransform: "uppercase", color: CH.muted, minWidth: "96px", flexShrink: 0 }}>{k}</div>
+                <div style={{ fontSize: "15px", fontWeight: 500, color: CH.ink }}>{v}</div>
               </div>
-              <div onClick={resetPoll} style={{ marginTop: "12px", color: CH.goldDeep, fontSize: "13px", fontWeight: 600, cursor: "pointer" }}>Submit another response &rarr;</div>
-            </div>
-          ) : availableMembers.length === 0 ? (
-            <div style={{ color: CH.green, fontWeight: 600, fontSize: "16px" }}>Everyone's responded — thanks!</div>
-          ) : (
-            <div>
-              <select value={pollName} onChange={(e) => setPollName(e.target.value)}
-                style={{ width: "100%", maxWidth: "340px", padding: "11px 14px", fontSize: "15px", border: `1px solid ${CH.line}`, borderRadius: "4px", marginBottom: "16px", fontFamily: "'DM Sans', sans-serif", outline: "none", display: "block", background: "#fff", color: pollName ? CH.ink : CH.muted }}>
-                <option value="">Select your name…</option>
-                {availableMembers.map((n) => <option key={n} value={n} style={{ color: CH.ink }}>{n}</option>)}
-              </select>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginBottom: "20px" }}>
-                {POLL_DATES.map((d) => {
-                  const on = pollSel[d.key];
-                  return (
-                    <button key={d.key} onClick={() => toggleDate(d.key)} style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "10px 18px", borderRadius: "4px", border: `1.5px solid ${on ? CH.green : CH.line}`, background: on ? CH.green : "#fff", color: on ? "#fff" : CH.ink, fontWeight: 600, fontSize: "14px", cursor: "pointer", fontFamily: "'DM Sans', sans-serif", transition: "all 0.12s" }}>
-                      <span style={{ width: "16px", height: "16px", borderRadius: "3px", border: `1.5px solid ${on ? "#fff" : CH.muted}`, display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "11px", color: "#fff" }}>{on ? "✓" : ""}</span>
-                      {d.label}
-                    </button>
-                  );
-                })}
-              </div>
-              {pollStatus === "noname" && <div style={{ color: "#a3352d", fontSize: "13px", marginBottom: "10px" }}>Please select your name.</div>}
-              {pollStatus === "error" && <div style={{ color: "#a3352d", fontSize: "13px", marginBottom: "10px" }}>Something went wrong — try again.</div>}
-              <button onClick={submitPoll} disabled={pollStatus === "saving"} style={{ background: CH.gold, color: CH.greenDark, border: "none", borderRadius: "4px", padding: "12px 28px", fontSize: "14px", fontWeight: 600, letterSpacing: "0.5px", textTransform: "uppercase", cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
-                {pollStatus === "saving" ? "Saving…" : "Submit Availability"}
-              </button>
-            </div>
-          )}
+            ))}
+          </div>
           {/* Organizer view */}
           <div style={{ marginTop: "22px", paddingTop: "16px", borderTop: `1px solid ${CH.line}` }}>
             {!orgOpen ? (
-              <div onClick={() => setOrgOpen(true)} style={{ fontSize: "12.5px", color: CH.muted, cursor: "pointer" }}>Organizer view &rarr;</div>
+              <div onClick={() => setOrgOpen(true)} style={{ fontSize: "12.5px", color: CH.muted, cursor: "pointer" }}>View availability responses (organizer) &rarr;</div>
             ) : !orgUnlocked ? (
               <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", alignItems: "center" }}>
                 <input type="password" value={orgPw} onChange={(e) => setOrgPw(e.target.value)} placeholder="Organizer password"
