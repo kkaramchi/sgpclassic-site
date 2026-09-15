@@ -1341,6 +1341,28 @@ const POLL_DATES = [
   { key: "oct17", label: "Oct 17" },
   { key: "oct24", label: "Oct 24" },
 ];
+// 2026 Fall Scramble draft — 5 teams of 3, snake draft over 2 picking rounds.
+const DRAFT_CAPTAINS = [
+  { name: "Paul Statchuk", idx: 4.1 },
+  { name: "Brendan Black", idx: 3.6 },
+  { name: "Reid Hartley", idx: 2.1 },
+  { name: "Geoff Crain", idx: 1.8 },
+  { name: "Chris Statchuk", idx: 1.8 },
+];
+// Pick order across the two rounds (snake).
+const DRAFT_ORDER = [
+  "Paul Statchuk", "Brendan Black", "Reid Hartley", "Geoff Crain", "Chris Statchuk",
+  "Chris Statchuk", "Geoff Crain", "Reid Hartley", "Brendan Black", "Paul Statchuk",
+];
+// The 10 players available to be drafted.
+const DRAFT_POOL = [
+  { name: "Adam Hoffman", idx: 6.7 }, { name: "Anthony Laud", idx: 7.5 },
+  { name: "Chris Williams", idx: 7.9 }, { name: "Nick Crain", idx: 8.3 },
+  { name: "Keon Karamchi", idx: 10.0 }, { name: "Graham Booth", idx: 10.2 },
+  { name: "Dave MacDougall", idx: 12.7 }, { name: "Joel Greaves", idx: 15.2 },
+  { name: "Mark Johnson", idx: 19.8 }, { name: "Andrew Carlson", idx: 19.8 },
+];
+
 // Pool roster — dropdown options for the availability poll. A name disappears
 // once that poolie has submitted. Add or remove names here as the pool changes.
 const POOL_MEMBERS = [
@@ -1573,6 +1595,9 @@ export function FallScramblePage({ setPage }) {
               </div>
             ))}
           </div>
+          <div onClick={() => setPage({ id: "fall-scramble-draft" })} style={{ marginTop: "20px", display: "inline-flex", alignItems: "center", gap: "8px", background: CH.gold, color: CH.greenDark, fontWeight: 600, fontSize: "14px", letterSpacing: "0.5px", textTransform: "uppercase", padding: "11px 24px", borderRadius: "4px", cursor: "pointer" }}>
+            <Users size={16} /> Live Draft Board
+          </div>
           {/* Organizer view */}
           <div style={{ marginTop: "22px", paddingTop: "16px", borderTop: `1px solid ${CH.line}` }}>
             {!orgOpen ? (
@@ -1770,6 +1795,155 @@ export function FallScrambleYearPage({ year, setPage }) {
       <div style={{ background: "#fff", border: `1px solid ${CH.line}`, borderLeft: `3px solid ${CH.gold}`, borderRadius: "0 4px 4px 0", padding: "18px 22px", marginBottom: "16px" }}>
         <div style={{ fontSize: "11px", letterSpacing: "1.5px", textTransform: "uppercase", color: CH.goldDeep, marginBottom: "6px" }}>How the teams are drafted</div>
         <div style={{ fontSize: "14.5px", color: CH.ink, lineHeight: 1.5 }}>{ed.draftNote}</div>
+      </div>
+    </div>
+  );
+}
+
+// Live draft board for the 2026 Fall Scramble
+export function FallScrambleDraftPage({ setPage }) {
+  const mobile = useIsMobile();
+  const [picks, setPicks] = useState([]);
+  const [adminOpen, setAdminOpen] = useState(false);
+  const [adminPw, setAdminPw] = useState("");
+  const [adminUnlocked, setAdminUnlocked] = useState(false);
+  const [adminError, setAdminError] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  const fetchPicks = useCallback(async () => {
+    const { data } = await supabase.from("scramble_draft_2026").select("*").order("pick_num", { ascending: true });
+    setPicks(data || []);
+  }, []);
+  useEffect(() => {
+    fetchPicks();
+    const ch = supabase
+      .channel("scramble-draft-2026")
+      .on("postgres_changes", { event: "*", schema: "public", table: "scramble_draft_2026" }, () => fetchPicks())
+      .subscribe();
+    return () => { supabase.removeChannel(ch); };
+  }, [fetchPicks]);
+
+  const taken = new Set(picks.map((p) => p.player));
+  const available = DRAFT_POOL.filter((p) => !taken.has(p.name));
+  const currentIdx = picks.length;
+  const onClock = currentIdx < DRAFT_ORDER.length ? DRAFT_ORDER[currentIdx] : null;
+  const round = currentIdx < DRAFT_CAPTAINS.length ? 1 : 2;
+  const complete = !onClock;
+  const captIdx = (name) => (DRAFT_CAPTAINS.find((c) => c.name === name) || {}).idx;
+  const teamPicks = (cap) => picks.filter((p) => p.captain === cap).map((p) => p.player);
+
+  const makePick = async (playerName) => {
+    if (!onClock || busy || !adminUnlocked) return;
+    setBusy(true);
+    await supabase.from("scramble_draft_2026").insert({ pick_num: currentIdx + 1, captain: onClock, player: playerName });
+    await fetchPicks();
+    setBusy(false);
+  };
+  const undoLast = async () => {
+    if (picks.length === 0 || busy) return;
+    setBusy(true);
+    const last = picks[picks.length - 1];
+    await supabase.from("scramble_draft_2026").delete().eq("id", last.id);
+    await fetchPicks();
+    setBusy(false);
+  };
+  const unlockAdmin = () => {
+    if (adminPw !== POLL_ORG_PASSWORD) { setAdminError("Wrong password"); return; }
+    setAdminError(""); setAdminUnlocked(true);
+  };
+
+  const poolIdx = (name) => (DRAFT_POOL.find((p) => p.name === name) || {}).idx;
+
+  return (
+    <div>
+      <div onClick={() => setPage({ id: "fall-scramble" })} style={{ display: "inline-flex", alignItems: "center", gap: "5px", color: CH.goldDeep, fontSize: "13px", fontWeight: 600, cursor: "pointer", marginBottom: "16px" }}>
+        <ChevronLeft size={16} /> Fall Scramble
+      </div>
+
+      {/* Header — full-bleed */}
+      <div style={{ ...FULL_BLEED, background: CH.greenDark, color: "#f4efe3", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(120% 90% at 80% -10%, rgba(44,101,71,0.85), transparent 60%), radial-gradient(90% 80% at 0% 120%, rgba(18,39,27,0.9), transparent 55%)" }} />
+        <div style={{ position: "relative", maxWidth: "1040px", margin: "0 auto", padding: mobile ? "34px 22px" : "46px 40px", textAlign: "center" }}>
+          <div style={{ color: CH.gold, fontSize: "12px", fontWeight: 600, letterSpacing: "2.5px", textTransform: "uppercase", marginBottom: "12px" }}>2026 Fall Scramble</div>
+          <h1 style={{ fontFamily: SERIF, fontWeight: 600, fontSize: mobile ? "34px" : "48px", lineHeight: 1.03, margin: 0 }}>The Draft</h1>
+          <div style={{ marginTop: "16px", display: "inline-block", background: complete ? "rgba(194,160,74,0.15)" : "rgba(220,60,50,0.18)", color: complete ? CH.gold : "#f0a8a2", fontSize: "13px", fontWeight: 600, letterSpacing: "0.5px", padding: "7px 16px", borderRadius: "20px" }}>
+            {complete ? "Draft Complete" : `On the clock: ${onClock} · Pick ${currentIdx + 1} of ${DRAFT_ORDER.length} · Round ${round}`}
+          </div>
+        </div>
+      </div>
+
+      {/* Teams */}
+      <div style={{ marginTop: "40px", display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(5, 1fr)", gap: "12px" }}>
+        {DRAFT_CAPTAINS.map((c) => {
+          const roster = teamPicks(c.name);
+          const isUp = onClock === c.name;
+          return (
+            <div key={c.name} style={{ background: "#fff", border: isUp ? `2px solid ${CH.gold}` : `1px solid ${CH.line}`, borderRadius: "6px", overflow: "hidden" }}>
+              <div style={{ background: CH.greenDark, color: "#f4efe3", padding: "12px 14px" }}>
+                <div style={{ fontSize: "10px", letterSpacing: "1.5px", textTransform: "uppercase", color: CH.gold, marginBottom: "3px" }}>Captain</div>
+                <div style={{ fontFamily: SERIF, fontSize: "16px", fontWeight: 600 }}>{c.name}</div>
+                <div style={{ fontSize: "11.5px", color: "#b8c2b7" }}>{c.idx.toFixed(1)}</div>
+              </div>
+              <div style={{ padding: "10px 12px" }}>
+                {[0, 1].map((slot) => {
+                  const pl = roster[slot];
+                  return (
+                    <div key={slot} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 0", borderBottom: slot === 0 ? `1px solid ${CH.line}` : "none" }}>
+                      {pl ? (
+                        <>
+                          <span style={{ fontSize: "14px", fontWeight: 500, color: CH.ink }}>{pl}</span>
+                          <span style={{ fontSize: "12px", color: CH.muted, fontVariantNumeric: "tabular-nums" }}>{poolIdx(pl)?.toFixed(1)}</span>
+                        </>
+                      ) : (
+                        <span style={{ fontSize: "13px", color: CH.line, fontStyle: "italic" }}>{isUp && slot === roster.length ? "On the clock…" : "—"}</span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Available pool */}
+      <div style={{ marginTop: "36px" }}>
+        <SectionTitle icon={Users}>Available Players</SectionTitle>
+        {available.length === 0 ? (
+          <div style={{ color: CH.muted, fontSize: "15px", marginBottom: "24px" }}>Everyone's been drafted — the field is set.</div>
+        ) : (
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr 1fr" : "repeat(3, 1fr)", gap: "10px", marginBottom: "8px" }}>
+            {[...available].sort((a, b) => a.idx - b.idx).map((p) => {
+              const pickable = adminUnlocked && onClock && !busy;
+              return (
+                <div key={p.name} onClick={() => pickable && makePick(p.name)} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "#fff", border: `1px solid ${pickable ? CH.gold : CH.line}`, borderRadius: "4px", padding: "11px 14px", cursor: pickable ? "pointer" : "default" }}>
+                  <span style={{ fontSize: "14.5px", fontWeight: 500, color: CH.ink }}>{p.name}</span>
+                  <span style={{ fontSize: "12.5px", color: CH.muted, fontVariantNumeric: "tabular-nums" }}>{p.idx.toFixed(1)}</span>
+                </div>
+              );
+            })}
+          </div>
+        )}
+        {adminUnlocked && onClock && <div style={{ fontSize: "13px", color: CH.goldDeep, fontWeight: 600, marginTop: "8px" }}>Click a player to draft them for {onClock}.</div>}
+      </div>
+
+      {/* Admin */}
+      <div style={{ marginTop: "26px", paddingTop: "16px", borderTop: `1px solid ${CH.line}` }}>
+        {!adminOpen ? (
+          <div onClick={() => setAdminOpen(true)} style={{ fontSize: "12.5px", color: CH.muted, cursor: "pointer" }}>Admin &rarr;</div>
+        ) : !adminUnlocked ? (
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", alignItems: "center" }}>
+            <input type="password" value={adminPw} onChange={(e) => setAdminPw(e.target.value)} placeholder="Admin password"
+              style={{ padding: "9px 12px", fontSize: "14px", border: `1px solid ${CH.line}`, borderRadius: "4px", fontFamily: "'DM Sans', sans-serif", outline: "none" }} />
+            <button onClick={unlockAdmin} style={{ background: CH.greenDark, color: "#fff", border: "none", borderRadius: "4px", padding: "9px 18px", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>Unlock</button>
+            {adminError && <span style={{ color: "#a3352d", fontSize: "13px" }}>{adminError}</span>}
+          </div>
+        ) : (
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", alignItems: "center" }}>
+            <span style={{ fontSize: "13px", color: CH.green, fontWeight: 600 }}>Admin unlocked — click players above to draft.</span>
+            <button onClick={undoLast} disabled={picks.length === 0 || busy} style={{ background: "transparent", color: "#a3352d", border: `1px solid ${picks.length ? "#a3352d" : CH.line}`, borderRadius: "4px", padding: "8px 16px", fontSize: "13px", fontWeight: 600, cursor: picks.length ? "pointer" : "default", fontFamily: "'DM Sans', sans-serif" }}>Undo last pick</button>
+          </div>
+        )}
       </div>
     </div>
   );
