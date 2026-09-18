@@ -1363,6 +1363,15 @@ const DRAFT_POOL = [
   { name: "Mark Johnson", idx: 19.8 }, { name: "Andrew Carlson", idx: 19.8 },
 ];
 
+// Final drafted teams for the 2026 Fall Scramble. Each player: [name, index, isCaptain].
+const SCRAMBLE_TEAMS_2026 = [
+  { num: 1, players: [["Paul Statchuk", 4.1, true], ["Chris Williams", 7.9, false], ["Andrew Carlson", 19.8, false]] },
+  { num: 2, players: [["Brendan Black", 3.6, true], ["Anthony Laud", 7.5, false], ["Joel Greaves", 15.2, false]] },
+  { num: 3, players: [["Reid Hartley", 2.1, true], ["Adam Hoffman", 6.7, false], ["Dave MacDougall", 12.7, false]] },
+  { num: 4, players: [["Geoff Crain", 1.8, true], ["Nick Crain", 8.3, false], ["Mark Johnson", 19.8, false]] },
+  { num: 5, players: [["Chris Statchuk", 1.8, true], ["Keon Karamchi", 10.0, false], ["Graham Booth", 10.2, false]] },
+];
+
 // Pool roster — dropdown options for the availability poll. A name disappears
 // once that poolie has submitted. Add or remove names here as the pool changes.
 const POOL_MEMBERS = [
@@ -1567,11 +1576,19 @@ export function FallScramblePage({ setPage }) {
         </div>
       </div>
 
-      {/* Event Sponsor */}
+      {/* Event Sponsors */}
       <div style={{ textAlign: "center", marginTop: "32px" }}>
         <div style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "2.5px", textTransform: "uppercase", color: CH.muted, marginBottom: "14px" }}>Presented By</div>
-        <div style={{ background: "#fff", border: `1px solid ${CH.line}`, borderRadius: "4px", padding: mobile ? "16px 22px" : "20px 40px", display: "inline-block" }}>
-          <img src={"/rbc-sponsor.jpg"} alt="RBC Wealth Management — Dominion Securities — Black Private Wealth Partners" style={{ height: mobile ? "64px" : "88px", maxWidth: "100%", objectFit: "contain", display: "block" }} />
+        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "16px" }}>
+          {[
+            { src: "/rbc-sponsor.jpg", alt: "RBC Wealth Management — Dominion Securities — Black Private Wealth Partners", h: 80, hm: 62 },
+            { src: "/kingstar-sponsor.jpg", alt: "Kingstar Media", h: 56, hm: 44 },
+            { src: "/hartley-sponsor.png", alt: "Hartley Built", h: 76, hm: 58 },
+          ].map((s) => (
+            <div key={s.src} style={{ flex: mobile ? "1 1 100%" : "1 1 300px", maxWidth: mobile ? "none" : "340px", height: mobile ? "104px" : "124px", background: "#fff", border: `1px solid ${CH.line}`, borderRadius: "4px", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 22px" }}>
+              <img src={s.src} alt={s.alt} style={{ height: mobile ? s.hm : s.h, maxWidth: "100%", objectFit: "contain", display: "block" }} />
+            </div>
+          ))}
         </div>
       </div>
 
@@ -1595,8 +1612,13 @@ export function FallScramblePage({ setPage }) {
               </div>
             ))}
           </div>
-          <div onClick={() => setPage({ id: "fall-scramble-draft" })} style={{ marginTop: "20px", display: "inline-flex", alignItems: "center", gap: "8px", background: CH.gold, color: CH.greenDark, fontWeight: 600, fontSize: "14px", letterSpacing: "0.5px", textTransform: "uppercase", padding: "11px 24px", borderRadius: "4px", cursor: "pointer" }}>
-            <Users size={16} /> Live Draft Board
+          <div style={{ marginTop: "20px", display: "flex", flexWrap: "wrap", gap: "10px" }}>
+            <div onClick={() => setPage({ id: "fall-scramble-betting" })} style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: CH.gold, color: CH.greenDark, fontWeight: 600, fontSize: "14px", letterSpacing: "0.5px", textTransform: "uppercase", padding: "11px 24px", borderRadius: "4px", cursor: "pointer" }}>
+              <DollarSign size={16} /> Live Parimutuel
+            </div>
+            <div onClick={() => setPage({ id: "fall-scramble-draft" })} style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "transparent", color: CH.greenDark, border: `1.5px solid ${CH.greenDark}`, fontWeight: 600, fontSize: "14px", letterSpacing: "0.5px", textTransform: "uppercase", padding: "11px 24px", borderRadius: "4px", cursor: "pointer" }}>
+              <Users size={16} /> Draft Board
+            </div>
           </div>
           {/* Organizer view */}
           <div style={{ marginTop: "22px", paddingTop: "16px", borderTop: `1px solid ${CH.line}` }}>
@@ -1663,6 +1685,27 @@ export function FallScramblePage({ setPage }) {
             <div style={{ fontSize: "10.5px", letterSpacing: "2px", textTransform: "uppercase", color: CH.gold, marginTop: "8px" }}>To par</div>
           </div>
         </div>
+      </div>
+
+      {/* 2026 Teams — drafted field */}
+      <div style={{ marginTop: "44px" }}>
+        <SectionTitle icon={Users}>2026 Teams</SectionTitle>
+        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(5, 1fr)", gap: "12px", marginBottom: "8px" }}>
+          {SCRAMBLE_TEAMS_2026.map((t) => (
+            <div key={t.num} style={{ background: "#fff", border: `1px solid ${CH.line}`, borderRadius: "6px", overflow: "hidden" }}>
+              <div style={{ background: CH.greenDark, color: "#f4efe3", padding: "10px 14px", fontFamily: SERIF, fontSize: "16px", fontWeight: 600 }}>Team {t.num}</div>
+              <div style={{ padding: "6px 14px 10px" }}>
+                {t.players.map(([name, idx, cap], i) => (
+                  <div key={name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 0", borderBottom: i < t.players.length - 1 ? `1px solid ${CH.line}` : "none" }}>
+                    <span style={{ fontSize: "14px", fontWeight: cap ? 600 : 500, color: CH.ink }}>{name}{cap && <span style={{ color: CH.goldDeep, fontSize: "10px", fontWeight: 700, letterSpacing: "0.5px", marginLeft: "6px" }}>(C)</span>}</span>
+                    <span style={{ fontSize: "12px", color: CH.muted, fontVariantNumeric: "tabular-nums" }}>{idx.toFixed(1)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div style={{ fontSize: "12.5px", color: CH.muted, marginBottom: "8px" }}>(C) = captain · Teams set by snake draft.</div>
       </div>
 
       {/* History — one card per edition, click into a year */}
@@ -1809,6 +1852,7 @@ export function FallScrambleDraftPage({ setPage }) {
   const [adminUnlocked, setAdminUnlocked] = useState(false);
   const [adminError, setAdminError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [draftError, setDraftError] = useState("");
 
   const fetchPicks = useCallback(async () => {
     const { data } = await supabase.from("scramble_draft_2026").select("*").order("pick_num", { ascending: true });
@@ -1835,15 +1879,19 @@ export function FallScrambleDraftPage({ setPage }) {
   const makePick = async (playerName) => {
     if (!onClock || busy || !adminUnlocked) return;
     setBusy(true);
-    await supabase.from("scramble_draft_2026").insert({ pick_num: currentIdx + 1, captain: onClock, player: playerName });
+    setDraftError("");
+    const { error } = await supabase.from("scramble_draft_2026").insert({ pick_num: currentIdx + 1, captain: onClock, player: playerName });
+    if (error) setDraftError(`Couldn't save pick: ${error.message}. Check the Supabase table is set up.`);
     await fetchPicks();
     setBusy(false);
   };
   const undoLast = async () => {
     if (picks.length === 0 || busy) return;
     setBusy(true);
+    setDraftError("");
     const last = picks[picks.length - 1];
-    await supabase.from("scramble_draft_2026").delete().eq("id", last.id);
+    const { error } = await supabase.from("scramble_draft_2026").delete().eq("id", last.id);
+    if (error) setDraftError(`Couldn't undo: ${error.message}.`);
     await fetchPicks();
     setBusy(false);
   };
@@ -1925,6 +1973,7 @@ export function FallScrambleDraftPage({ setPage }) {
           </div>
         )}
         {adminUnlocked && onClock && <div style={{ fontSize: "13px", color: CH.goldDeep, fontWeight: 600, marginTop: "8px" }}>Click a player to draft them for {onClock}.</div>}
+        {draftError && <div style={{ fontSize: "13px", color: "#a3352d", fontWeight: 600, marginTop: "10px", background: "#fdf2f1", border: "1px solid #e7c3bf", borderRadius: "4px", padding: "10px 12px" }}>{draftError}</div>}
       </div>
 
       {/* Admin */}
@@ -3479,6 +3528,306 @@ export function LiveBettingPage() {
       {/* How it works */}
       <div style={{ padding: "20px", background: "#f5f5f4", borderRadius: "12px", fontSize: "13px", color: colors.textMuted, lineHeight: 1.6 }}>
         <strong style={{ color: colors.text }}>How it works:</strong> Place your bets on any team — you can bet on multiple teams. The odds update live as the pool grows. After the tournament, the entire pool is divided among bettors who picked the winning team, proportional to their bet size. Minimum bet is $25. All payments are collected and distributed by the SGP Classic committee outside of this website.
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// FALL SCRAMBLE LIVE BETTING
+// ═══════════════════════════════════════════════════════════════
+
+export function FallScrambleBettingPage() {
+  const mobile = useIsMobile();
+  const [bets, setBets] = useState([]);
+  const [config, setConfig] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [formName, setFormName] = useState("");
+  const [formTeam, setFormTeam] = useState("");
+  const [formAmount, setFormAmount] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [message, setMessage] = useState(null);
+  const [flashTeam, setFlashTeam] = useState(null);
+
+  const BETTING_DEADLINE = new Date("2026-10-03T02:00:00Z"); // 10:00 PM ET, Oct 2 2026
+  const [countdown, setCountdown] = useState("");
+  const [deadlinePassed, setDeadlinePassed] = useState(Date.now() >= BETTING_DEADLINE.getTime());
+
+  const teams = SCRAMBLE_TEAMS_2026;
+  const teamShort = (t) => t.players.map((p) => p[0].split(" ").pop()).join(" / ");
+  const teamFull = (t) => t.players.map((p) => p[0]).join(", ");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const [betsRes, configRes] = await Promise.all([
+        supabase.from("scramble_bets_2026").select("*").order("created_at", { ascending: false }),
+        supabase.from("scramble_config").select("*").limit(1).single(),
+      ]);
+      if (betsRes.data) setBets(betsRes.data);
+      if (configRes.data) setConfig(configRes.data);
+      setLoading(false);
+    };
+    fetchData();
+    const channel = supabase
+      .channel("scramble-betting-live")
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "scramble_bets_2026" }, (payload) => {
+        setBets((prev) => [payload.new, ...prev]);
+        setFlashTeam(payload.new.team);
+        setTimeout(() => setFlashTeam(null), 1200);
+      })
+      .on("postgres_changes", { event: "*", schema: "public", table: "scramble_config" }, (payload) => {
+        setConfig(payload.new);
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, []);
+
+  useEffect(() => {
+    const tick = () => {
+      const diff = BETTING_DEADLINE.getTime() - Date.now();
+      if (diff <= 0) { setDeadlinePassed(true); setCountdown("CLOSED"); return; }
+      const days = Math.floor(diff / 86400000);
+      const hrs = Math.floor((diff % 86400000) / 3600000);
+      const mins = Math.floor((diff % 3600000) / 60000);
+      const secs = Math.floor((diff % 60000) / 1000);
+      setCountdown(days > 0 ? `${days}d ${hrs}h ${String(mins).padStart(2, "0")}m` : `${hrs}h ${String(mins).padStart(2, "0")}m ${String(secs).padStart(2, "0")}s`);
+    };
+    tick();
+    const interval = setInterval(tick, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const pools = {};
+  let totalPool = 0;
+  teams.forEach((t) => { pools[t.num] = 0; });
+  bets.forEach((b) => { if (b.team && b.amount) { pools[b.team] = (pools[b.team] || 0) + b.amount; totalPool += b.amount; } });
+  const getOdds = (n) => (pools[n] > 0 && totalPool > 0 ? totalPool / pools[n] : 0);
+
+  const handleSubmit = async () => {
+    if (Date.now() >= BETTING_DEADLINE.getTime()) { setMessage({ type: "error", text: "Betting is now closed." }); setDeadlinePassed(true); return; }
+    if (!formName.trim()) { setMessage({ type: "error", text: "Please enter your name." }); return; }
+    if (!formTeam) { setMessage({ type: "error", text: "Please select a team." }); return; }
+    const amt = parseFloat(formAmount);
+    if (!amt || amt < 25) { setMessage({ type: "error", text: "Minimum bet is $25." }); return; }
+    setSubmitting(true); setMessage(null);
+    let ip = "";
+    try { const r = await fetch("https://api.ipify.org?format=json"); const d = await r.json(); ip = d.ip; } catch (e) {}
+    const { error } = await supabase.from("scramble_bets_2026").insert({ name: formName.trim(), team: parseInt(formTeam), amount: amt, user_agent: navigator.userAgent, ip_address: ip });
+    if (error) { setMessage({ type: "error", text: "Something went wrong. Please try again." }); }
+    else {
+      const t = teams.find((x) => x.num === parseInt(formTeam));
+      setMessage({ type: "success", text: `Bet placed! ${formName.trim()} — $${amt.toLocaleString()} on Team ${formTeam} (${teamFull(t)})` });
+      setFormTeam(""); setFormAmount("");
+    }
+    setSubmitting(false);
+  };
+
+  const isOpen = config?.is_open && !deadlinePassed;
+
+  if (loading) {
+    return (<div style={{ textAlign: "center", padding: "60px 20px" }}><div style={{ fontSize: "16px", color: colors.textMuted }}>Loading live betting…</div></div>);
+  }
+
+  return (
+    <div>
+      {/* Header */}
+      <div style={{ background: `linear-gradient(135deg, ${colors.greenDark} 0%, #166534 100%)`, borderRadius: "12px", padding: mobile ? "16px" : "20px 24px", marginBottom: "16px", color: "white", textAlign: "center" }}>
+        <div style={{ fontSize: "10px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "2px", opacity: 0.7, marginBottom: "4px", fontFamily: "'DM Sans', sans-serif" }}>Fall Scramble 2026</div>
+        <h1 style={{ fontSize: mobile ? "22px" : "28px", fontWeight: 800, margin: "0 0 8px 0", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "1px" }}>Live Parimutuel</h1>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: mobile ? "14px" : "20px", marginTop: "4px", flexWrap: "wrap" }}>
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontSize: "10px", opacity: 0.5, letterSpacing: "0.5px", textTransform: "uppercase" }}>Status</div>
+            <div style={{ fontSize: mobile ? "20px" : "24px", fontWeight: 800, color: isOpen ? "#4ade80" : "#fca5a5", fontFamily: "'DM Sans', sans-serif" }}>{isOpen ? "OPEN" : "CLOSED"}</div>
+          </div>
+          <span style={{ opacity: 0.3 }}>|</span>
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontSize: "10px", opacity: 0.5, letterSpacing: "0.5px", textTransform: "uppercase" }}>Pool</div>
+            <div style={{ fontSize: mobile ? "20px" : "24px", fontWeight: 800, color: colors.goldLight, fontFamily: "'DM Sans', sans-serif" }}>${totalPool.toLocaleString()}</div>
+          </div>
+          <span style={{ opacity: 0.3 }}>|</span>
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontSize: "10px", opacity: 0.5, letterSpacing: "0.5px", textTransform: "uppercase" }}>Bets</div>
+            <div style={{ fontSize: mobile ? "20px" : "24px", fontWeight: 800, fontFamily: "'DM Sans', sans-serif" }}>{bets.length}</div>
+          </div>
+          {!deadlinePassed && countdown && (
+            <>
+              <span style={{ opacity: 0.3 }}>|</span>
+              <div style={{ textAlign: "center" }}>
+                <div style={{ fontSize: "10px", opacity: 0.5, letterSpacing: "0.5px", textTransform: "uppercase" }}>Closes In</div>
+                <div style={{ fontSize: mobile ? "16px" : "20px", fontWeight: 800, color: "#fca5a5", fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.5px" }}>{countdown}</div>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Place Bet Form */}
+      {isOpen && (
+        <div style={{ marginBottom: "24px" }}>
+          <SectionTitle icon={DollarSign}>Place a Bet</SectionTitle>
+          <Card style={{ borderTop: `4px solid ${colors.green}` }}>
+            {message && (
+              <div style={{ padding: "12px 16px", borderRadius: "8px", marginBottom: "16px", background: message.type === "success" ? "#f0fdf4" : "#fef2f2", border: `1px solid ${message.type === "success" ? "#86efac" : "#fecaca"}`, color: message.type === "success" ? "#166534" : "#991b1b", fontSize: "14px", fontWeight: 500 }}>
+                {message.text}
+              </div>
+            )}
+            <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr auto", gap: "12px", alignItems: "end" }}>
+              <div>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: 600, color: colors.textMuted, marginBottom: "6px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Your Name</label>
+                <input type="text" placeholder="e.g. John Smith" value={formName} onChange={(e) => setFormName(e.target.value)} style={{ width: "100%", padding: "10px 14px", borderRadius: "8px", border: `1px solid ${colors.border}`, fontSize: "15px", outline: "none", boxSizing: "border-box", fontFamily: "'DM Sans', sans-serif" }} />
+              </div>
+              <div>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: 600, color: colors.textMuted, marginBottom: "6px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Team</label>
+                <select value={formTeam} onChange={(e) => setFormTeam(e.target.value)} style={{ width: "100%", padding: "10px 14px", borderRadius: "8px", border: `1px solid ${colors.border}`, fontSize: "15px", outline: "none", background: "white", boxSizing: "border-box", fontFamily: "'DM Sans', sans-serif" }}>
+                  <option value="">Select a team...</option>
+                  {teams.map((t) => (
+                    <option key={t.num} value={t.num}>Team {t.num} — {teamFull(t)}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: 600, color: colors.textMuted, marginBottom: "6px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Amount ($25 min)</label>
+                <input type="number" min="25" placeholder="e.g. 50" value={formAmount} onChange={(e) => setFormAmount(e.target.value)} style={{ width: "100%", padding: "10px 14px", borderRadius: "8px", border: `1px solid ${colors.border}`, fontSize: "15px", outline: "none", boxSizing: "border-box", fontFamily: "'DM Sans', sans-serif" }} />
+              </div>
+              <button onClick={handleSubmit} disabled={submitting} style={{ background: colors.greenDark, color: "white", border: "none", padding: "10px 28px", borderRadius: "8px", cursor: submitting ? "not-allowed" : "pointer", fontSize: "15px", fontWeight: 700, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px", opacity: submitting ? 0.6 : 1, whiteSpace: "nowrap", height: "43px" }}>
+                {submitting ? "Placing..." : "Place Bet"}
+              </button>
+            </div>
+          </Card>
+        </div>
+      )}
+
+      {!isOpen && (
+        <Card style={{ textAlign: "center", padding: "24px", marginBottom: "24px", borderTop: "4px solid #dc2626" }}>
+          <p style={{ margin: 0, fontSize: "16px", fontWeight: 700, color: "#991b1b", fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase", letterSpacing: "0.5px" }}>{deadlinePassed ? "Betting is closed — Final odds are locked in" : "Betting is currently closed"}</p>
+        </Card>
+      )}
+
+      {/* Odds Board */}
+      <SectionTitle icon={TrendingUp}>Live Odds Board</SectionTitle>
+      <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(2, 1fr)", gap: "10px", marginBottom: "24px" }}>
+        {[...teams].sort((a, b) => {
+          const oddsA = getOdds(a.num); const oddsB = getOdds(b.num);
+          if (oddsA === 0 && oddsB === 0) return a.num - b.num;
+          if (oddsA === 0) return 1;
+          if (oddsB === 0) return -1;
+          return oddsA - oddsB;
+        }).map((team) => {
+          const teamPool = pools[team.num] || 0;
+          const odds = getOdds(team.num);
+          const pct = totalPool > 0 ? ((teamPool / totalPool) * 100).toFixed(1) : "0.0";
+          const isFlashing = flashTeam === team.num;
+          return (
+            <div key={team.num} style={{ background: isFlashing ? "#f0fdf4" : "white", borderRadius: "10px", border: `1px solid ${isFlashing ? colors.green : colors.border}`, overflow: "hidden", transition: "all 0.4s ease", boxShadow: isFlashing ? `0 0 12px rgba(22,101,52,0.15)` : "none" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: mobile ? "8px 12px" : "10px 14px", background: colors.greenDark, color: "white" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <div style={{ fontSize: "20px", fontWeight: 800, fontFamily: "'DM Sans', sans-serif" }}>{team.num}</div>
+                  <div style={{ fontSize: "13px", fontWeight: 600 }}>{teamShort(team)}</div>
+                </div>
+                <div style={{ fontSize: mobile ? "20px" : "22px", fontWeight: 800, fontFamily: "'DM Sans', sans-serif", transition: "all 0.4s ease" }}>{odds > 0 ? `${odds.toFixed(1)}x` : "—"}</div>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", textAlign: "center" }}>
+                {team.players.map((p, idx) => (
+                  <div key={idx} style={{ padding: mobile ? "8px 6px" : "10px 8px", borderRight: idx < 2 ? `1px solid ${colors.border}` : "none" }}>
+                    <div style={{ fontSize: "10px", color: colors.textMuted, letterSpacing: "0.3px", marginBottom: "4px", fontWeight: 600 }}>{p[0].split(" ").pop().toUpperCase()}{p[2] ? " (C)" : ""}</div>
+                    <div style={{ fontSize: "18px", fontWeight: 800, color: colors.greenDark, fontFamily: "'DM Sans', sans-serif" }}>{p[1].toFixed(1)}</div>
+                    <div style={{ fontSize: "9px", color: colors.textMuted, letterSpacing: "0.3px", marginTop: "2px" }}>INDEX</div>
+                  </div>
+                ))}
+              </div>
+              <div style={{ fontSize: "12px", color: colors.textMuted, padding: "8px 14px", borderTop: `1px solid ${colors.border}` }}>
+                {teamPool > 0 ? `$${teamPool.toLocaleString()} wagered · ${pct}% of pool` : "No bets yet"}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Position Concentration */}
+      {bets.length > 0 && (
+        <div style={{ marginBottom: "24px" }}>
+          <SectionTitle icon={Users}>Position Tracker</SectionTitle>
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(2, 1fr)", gap: "10px" }}>
+            {[...teams].filter((t) => pools[t.num] > 0).sort((a, b) => (pools[b.num] || 0) - (pools[a.num] || 0)).map((team) => {
+              const teamBets = bets.filter((b) => b.team === team.num);
+              const uniqueBettors = new Set(teamBets.map((b) => b.name)).size;
+              const largestBettorTotal = {};
+              teamBets.forEach((b) => { largestBettorTotal[b.name] = (largestBettorTotal[b.name] || 0) + b.amount; });
+              const maxPosition = Math.max(...Object.values(largestBettorTotal));
+              const maxPositionPct = pools[team.num] > 0 ? Math.round((maxPosition / pools[team.num]) * 100) : 0;
+              return (
+                <div key={team.num} style={{ background: "white", borderRadius: "10px", border: `1px solid ${colors.border}`, padding: "14px 16px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <span style={{ fontSize: "14px", fontWeight: 800, color: colors.greenDark, fontFamily: "'DM Sans', sans-serif" }}>{team.num}</span>
+                      <span style={{ fontSize: "13px", fontWeight: 700, color: colors.text }}>{teamShort(team)}</span>
+                    </div>
+                    <span style={{ fontSize: "14px", fontWeight: 800, color: colors.greenDark, fontFamily: "'DM Sans', sans-serif" }}>${pools[team.num].toLocaleString()}</span>
+                  </div>
+                  <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                    <div style={{ fontSize: "12px", color: colors.textMuted }}><span style={{ fontWeight: 700, color: colors.text }}>{uniqueBettors}</span> {uniqueBettors === 1 ? "bettor" : "bettors"}</div>
+                    <div style={{ fontSize: "12px", color: colors.textMuted }}>Top bettor holds: <span style={{ fontWeight: 700, color: colors.text }}>${maxPosition.toLocaleString()}</span></div>
+                    {maxPositionPct >= 40 && (<div style={{ fontSize: "12px", color: "#b45309", fontWeight: 600 }}>1 bettor holds {maxPositionPct}%</div>)}
+                  </div>
+                  <div style={{ marginTop: "8px", height: "6px", background: "#f0f0f0", borderRadius: "3px", overflow: "hidden", position: "relative" }}>
+                    {(() => {
+                      const positions = Object.values(largestBettorTotal).sort((a, b) => b - a);
+                      const teamTotal = pools[team.num];
+                      const barColors = ["#1B3D2F", "#2563eb", "#d4a800", "#dc2626", "#7c3aed", "#ea580c", "#0891b2"];
+                      let offset = 0;
+                      return positions.map((pos, i) => {
+                        const width = (pos / teamTotal) * 100;
+                        const el = <div key={i} style={{ position: "absolute", left: `${offset}%`, width: `${width}%`, height: "100%", background: barColors[i] || barColors[barColors.length - 1] }} />;
+                        offset += width;
+                        return el;
+                      });
+                    })()}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Recent Activity */}
+      {bets.length > 0 && (
+        <div style={{ marginBottom: "24px" }}>
+          <SectionTitle icon={TrendingUp}>Recent Activity</SectionTitle>
+          <Card style={{ padding: 0, overflow: "hidden" }}>
+            {bets.slice(0, 10).map((bet, i) => {
+              const team = teams.find((t) => t.num === bet.team);
+              const timeAgo = (() => {
+                if (!bet.created_at) return "";
+                const diff = Date.now() - new Date(bet.created_at).getTime();
+                const mins = Math.floor(diff / 60000);
+                if (mins < 1) return "Just now";
+                if (mins < 60) return `${mins}m ago`;
+                const hrs = Math.floor(mins / 60);
+                if (hrs < 24) return `${hrs}h ago`;
+                return `${Math.floor(hrs / 24)}d ago`;
+              })();
+              return (
+                <div key={bet.id || i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 16px", borderBottom: i < Math.min(bets.length, 10) - 1 ? `1px solid ${colors.border}` : "none", background: i === 0 && flashTeam === bet.team ? "#f0fdf4" : "transparent", transition: "background 0.4s ease" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                    <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: colors.greenDark, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <DollarSign size={16} color="white" />
+                    </div>
+                    <div>
+                      <div style={{ fontSize: "14px", fontWeight: 700, color: colors.text }}>${bet.amount?.toLocaleString()} on Team {bet.team}</div>
+                      <div style={{ fontSize: "12px", color: colors.textMuted }}>{team ? teamShort(team) : ""}{timeAgo ? ` · ${timeAgo}` : ""}</div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </Card>
+        </div>
+      )}
+
+      {/* How it works */}
+      <div style={{ padding: "20px", background: "#f5f5f4", borderRadius: "12px", fontSize: "13px", color: colors.textMuted, lineHeight: 1.6 }}>
+        <strong style={{ color: colors.text }}>How it works:</strong> Place your bets on any team — you can bet on multiple teams. The odds update live as the pool grows. After the scramble, the entire pool is divided among bettors who picked the winning team, proportional to their bet size. Minimum bet is $25. All payments are collected and distributed by the committee outside of this website.
       </div>
     </div>
   );
