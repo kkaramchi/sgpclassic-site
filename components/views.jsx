@@ -1602,9 +1602,7 @@ export function FallScramblePage({ setPage }) {
               ["Date", "Saturday, October 3, 2026"],
               ["First tee", "11:30 AM"],
               ["Awards dinner", "5:00 PM · St. Louis Bar & Grill, Aurora ON"],
-              ["Format", "3-Man Scramble · drafted teams"],
-              ["Draft", "Date TBD"],
-              ["Field", "Confirming participants"],
+              ["Format", "3-Man Scramble · Gross"],
             ].map(([k, v]) => (
               <div key={k} style={{ display: "flex", gap: "12px", alignItems: "baseline" }}>
                 <div style={{ fontSize: "10.5px", letterSpacing: "1.5px", textTransform: "uppercase", color: CH.muted, minWidth: "96px", flexShrink: 0 }}>{k}</div>
@@ -1669,26 +1667,8 @@ export function FallScramblePage({ setPage }) {
         </div>
       </div>
 
-      {/* Champion band — full-bleed */}
-      <div style={{ ...FULL_BLEED, background: CH.greenDark, color: "#f4efe3", overflow: "hidden", borderTop: "1px solid rgba(194,160,74,0.22)" }}>
-        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(90% 120% at 100% 0%, rgba(44,101,71,0.7), transparent 60%)" }} />
-        <div style={{ position: "relative", maxWidth: "1040px", margin: "0 auto", display: "flex", flexDirection: mobile ? "column" : "row", alignItems: "center", gap: mobile ? "20px" : "40px", padding: mobile ? "34px 24px" : "44px 40px", textAlign: mobile ? "center" : "left" }}>
-          <div style={{ width: mobile ? "88px" : "104px", height: mobile ? "88px" : "104px", borderRadius: "50%", border: `2px solid ${CH.gold}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: CH.gold, fontSize: mobile ? "34px" : "40px", fontFamily: SERIF }}>&#9819;</div>
-          <div>
-            <div style={{ fontSize: "11.5px", letterSpacing: "2.5px", textTransform: "uppercase", color: CH.gold }}>{latest.year} Champions</div>
-            <h3 style={{ fontFamily: SERIF, fontSize: mobile ? "24px" : "32px", fontWeight: 600, margin: "8px 0 6px" }}>{champTeam.players.join(" · ")}</h3>
-            <div style={{ color: "#b8c2b7", fontSize: "15px" }}>Team {champ.teamNum} &middot; {latest.format} &middot; {latest.venue}</div>
-            {champ.prize ? <div style={{ marginTop: "8px", display: "inline-block", background: "rgba(194,160,74,0.15)", color: CH.gold, fontSize: "12.5px", fontWeight: 600, letterSpacing: "0.5px", padding: "4px 12px", borderRadius: "20px" }}>${champ.prize.toLocaleString()} purse &middot; ${Math.round(champ.prize / champTeam.players.length)}/player</div> : null}
-          </div>
-          <div style={{ marginLeft: mobile ? 0 : "auto", textAlign: "center", flexShrink: 0 }}>
-            <div style={{ fontFamily: SERIF, fontSize: mobile ? "48px" : "58px", fontWeight: 600, color: "#fff", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>{formatScore(champ.toPar)}</div>
-            <div style={{ fontSize: "10.5px", letterSpacing: "2px", textTransform: "uppercase", color: CH.gold, marginTop: "8px" }}>To par</div>
-          </div>
-        </div>
-      </div>
-
       {/* 2026 Teams — drafted field */}
-      <div style={{ marginTop: "44px" }}>
+      <div style={{ marginTop: "44px", marginBottom: "40px" }}>
         <SectionTitle icon={Users}>2026 Teams</SectionTitle>
         <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(5, 1fr)", gap: "12px", marginBottom: "8px" }}>
           {SCRAMBLE_TEAMS_2026.map((t) => (
@@ -1705,7 +1685,25 @@ export function FallScramblePage({ setPage }) {
             </div>
           ))}
         </div>
-        <div style={{ fontSize: "12.5px", color: CH.muted, marginBottom: "8px" }}>(C) = captain · Teams set by snake draft.</div>
+        <div style={{ fontSize: "12.5px", color: CH.muted }}>(C) = captain · Teams set by snake draft.</div>
+      </div>
+
+      {/* Champion band — full-bleed */}
+      <div style={{ ...FULL_BLEED, background: CH.greenDark, color: "#f4efe3", overflow: "hidden", borderTop: "1px solid rgba(194,160,74,0.22)" }}>
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(90% 120% at 100% 0%, rgba(44,101,71,0.7), transparent 60%)" }} />
+        <div style={{ position: "relative", maxWidth: "1040px", margin: "0 auto", display: "flex", flexDirection: mobile ? "column" : "row", alignItems: "center", gap: mobile ? "20px" : "40px", padding: mobile ? "34px 24px" : "44px 40px", textAlign: mobile ? "center" : "left" }}>
+          <div style={{ width: mobile ? "88px" : "104px", height: mobile ? "88px" : "104px", borderRadius: "50%", border: `2px solid ${CH.gold}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: CH.gold, fontSize: mobile ? "34px" : "40px", fontFamily: SERIF }}>&#9819;</div>
+          <div>
+            <div style={{ fontSize: "11.5px", letterSpacing: "2.5px", textTransform: "uppercase", color: CH.gold }}>{latest.year} Champions</div>
+            <h3 style={{ fontFamily: SERIF, fontSize: mobile ? "24px" : "32px", fontWeight: 600, margin: "8px 0 6px" }}>{champTeam.players.join(" · ")}</h3>
+            <div style={{ color: "#b8c2b7", fontSize: "15px" }}>Team {champ.teamNum} &middot; {latest.format} &middot; {latest.venue}</div>
+            {champ.prize ? <div style={{ marginTop: "8px", display: "inline-block", background: "rgba(194,160,74,0.15)", color: CH.gold, fontSize: "12.5px", fontWeight: 600, letterSpacing: "0.5px", padding: "4px 12px", borderRadius: "20px" }}>${champ.prize.toLocaleString()} purse &middot; ${Math.round(champ.prize / champTeam.players.length)}/player</div> : null}
+          </div>
+          <div style={{ marginLeft: mobile ? 0 : "auto", textAlign: "center", flexShrink: 0 }}>
+            <div style={{ fontFamily: SERIF, fontSize: mobile ? "48px" : "58px", fontWeight: 600, color: "#fff", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>{formatScore(champ.toPar)}</div>
+            <div style={{ fontSize: "10.5px", letterSpacing: "2px", textTransform: "uppercase", color: CH.gold, marginTop: "8px" }}>To par</div>
+          </div>
+        </div>
       </div>
 
       {/* History — one card per edition, click into a year */}
