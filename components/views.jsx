@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo, useEffect, useCallback } from "react";
+import { useState, useMemo, useEffect, useCallback, Fragment } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, PieChart, Pie, Legend as RLegend } from "recharts";
 import { Trophy, User, DollarSign, Home, ChevronRight, ChevronLeft, Award, Flag, TrendingUp, Users, MapPin, Calendar } from "lucide-react";
 import { supabase } from "@/lib/supabase";
@@ -1349,6 +1349,8 @@ const DRAFT_CAPTAINS = [
   { name: "Geoff Crain", idx: 1.8 },
   { name: "Chris Statchuk", idx: 1.8 },
 ];
+// YouTube recording of the 2026 draft (unlisted).
+const DRAFT_VIDEO_ID = "dPKuGvallKo";
 // Pick order across the two rounds (snake).
 const DRAFT_ORDER = [
   "Paul Statchuk", "Brendan Black", "Reid Hartley", "Geoff Crain", "Chris Statchuk",
@@ -1737,6 +1739,45 @@ export function FallScramblePage({ setPage }) {
                 )}
               </div>
             )}
+          </div>
+        </div>
+      </div>
+
+      {/* Watch the Draft — video + pick-by-pick */}
+      <div style={{ marginBottom: "40px" }}>
+        <SectionTitle icon={Users}>Watch the Draft</SectionTitle>
+        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1.7fr 1fr", gap: "20px", alignItems: "stretch" }}>
+          <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 9", background: "#0f1411", borderRadius: "4px", overflow: "hidden", border: `1px solid ${CH.line}` }}>
+            <iframe
+              src={`https://www.youtube-nocookie.com/embed/${DRAFT_VIDEO_ID}`}
+              title="2026 SGP Fall Scramble — Live Draft"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: 0 }}
+            />
+          </div>
+          <div style={{ border: `1px solid ${CH.line}`, borderRadius: "4px", overflow: "hidden", background: "#fff", display: "flex", flexDirection: "column" }}>
+            <div style={{ background: CH.greenDark, color: "#f4efe3", padding: "9px 14px", fontSize: "11px", fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase", display: "flex", justifyContent: "space-between" }}>
+              <span>Draft Order</span><span style={{ color: CH.gold }}>Snake · {DRAFT_ORDER.length} picks</span>
+            </div>
+            {DRAFT_ORDER.map((captain, i) => {
+              const round = i < DRAFT_CAPTAINS.length ? 1 : 2;
+              const team = SCRAMBLE_TEAMS_2026.find((t) => t.players[0][0] === captain);
+              const player = team ? team.players[round][0] : "";
+              return (
+                <Fragment key={i}>
+                  {(i === 0 || i === DRAFT_CAPTAINS.length) && (
+                    <div style={{ padding: "7px 14px", fontSize: "10.5px", letterSpacing: "1.5px", textTransform: "uppercase", color: CH.muted, background: "#faf7f0", borderBottom: `1px solid ${CH.line}` }}>Round {round}</div>
+                  )}
+                  <div style={{ flex: 1, minHeight: "32px", display: "grid", gridTemplateColumns: "26px 1fr auto", alignItems: "center", gap: "8px", padding: "0 14px", fontSize: "13.5px", borderBottom: i < DRAFT_ORDER.length - 1 ? `1px solid ${CH.line}` : "none" }}>
+                    <span style={{ fontFamily: SERIF, fontWeight: 700, color: CH.goldDeep }}>{i + 1}</span>
+                    <span style={{ color: CH.ink }}>{player}</span>
+                    <span style={{ color: CH.muted, fontSize: "12px", whiteSpace: "nowrap" }}>{captain[0]}. {captain.split(" ").pop()}</span>
+                  </div>
+                </Fragment>
+              );
+            })}
           </div>
         </div>
       </div>
