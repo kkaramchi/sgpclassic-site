@@ -1531,6 +1531,26 @@ export function FallScramblePage({ setPage }) {
   const [orgUnlocked, setOrgUnlocked] = useState(false);
   const [orgError, setOrgError] = useState("");
   const [responses, setResponses] = useState([]);
+  // Live parimutuel summary for the upcoming card
+  const [livePool, setLivePool] = useState({ total: 0, count: 0 });
+  const [pariCfgOpen, setPariCfgOpen] = useState(true);
+  useEffect(() => {
+    const load = async () => {
+      const { data } = await supabase.from("scramble_bets_2026").select("amount");
+      if (data) setLivePool({ total: data.reduce((sum, b) => sum + (Number(b.amount) || 0), 0), count: data.length });
+      const { data: cfg } = await supabase.from("scramble_config").select("is_open").limit(1).single();
+      if (cfg) setPariCfgOpen(!!cfg.is_open);
+    };
+    load();
+    const ch = supabase
+      .channel("scramble-pool-summary")
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "scramble_bets_2026" }, (payload) => {
+        setLivePool((prev) => ({ total: prev.total + (Number(payload.new.amount) || 0), count: prev.count + 1 }));
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(ch); };
+  }, []);
+  const pariOpen = pariCfgOpen && Date.now() < new Date("2026-10-03T02:00:00Z").getTime();
   const [submittedNames, setSubmittedNames] = useState(new Set());
 
   // Who has already responded (so their name drops out of the dropdown)
@@ -1592,50 +1612,84 @@ export function FallScramblePage({ setPage }) {
         </div>
       </div>
 
-      {/* 2026 Availability Poll */}
-      <div style={{ marginTop: "32px", marginBottom: "8px" }}>
+      {/* 2026 Event card */}
+      <div style={{ marginTop: "32px", marginBottom: "40px" }}>
         <div style={{ background: "#fff", border: `1px solid ${CH.line}`, borderTop: `3px solid ${CH.gold}`, borderRadius: "4px", padding: mobile ? "22px 20px" : "28px 32px" }}>
           <div style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "2px", textTransform: "uppercase", color: CH.goldDeep, marginBottom: "4px" }}>Upcoming</div>
-          <div style={{ fontFamily: SERIF, fontSize: "24px", fontWeight: 600, color: CH.greenDark, marginBottom: "18px" }}>2026 Fall Scramble</div>
-          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: "14px 32px" }}>
+          <div style={{ fontFamily: SERIF, fontSize: "26px", fontWeight: 600, color: CH.greenDark, marginBottom: "18px" }}>2026 Fall Scramble</div>
+          {/* Stat bar */}
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr 1fr" : "repeat(4, 1fr)", border: `1px solid ${CH.line}`, borderRadius: "4px" }}>
             {[
-              ["Date", "Saturday, October 3, 2026"],
+              ["Date", "Sat, Oct 3, 2026"],
               ["First tee", "11:30 AM"],
-              ["Awards dinner", "5:00 PM · St. Louis Bar & Grill, Aurora ON"],
               ["Format", "3-Man Scramble · Gross"],
-            ].map(([k, v]) => (
-              <div key={k} style={{ display: "flex", gap: "12px", alignItems: "baseline" }}>
-                <div style={{ fontSize: "10.5px", letterSpacing: "1.5px", textTransform: "uppercase", color: CH.muted, minWidth: "96px", flexShrink: 0 }}>{k}</div>
+              ["Awards dinner", "5:00 PM · St. Louis Bar & Grill, Aurora"],
+            ].map(([k, v], i) => (
+              <div key={k} style={{ padding: "13px 16px", borderRight: (mobile ? i % 2 === 0 : i < 3) ? `1px solid ${CH.line}` : "none", borderBottom: mobile && i < 2 ? `1px solid ${CH.line}` : "none" }}>
+                <div style={{ fontSize: "10.5px", letterSpacing: "1.5px", textTransform: "uppercase", color: CH.muted, marginBottom: "4px" }}>{k}</div>
                 <div style={{ fontSize: "15px", fontWeight: 500, color: CH.ink }}>{v}</div>
               </div>
             ))}
           </div>
-          {/* Entry fee breakdown */}
-          <div style={{ marginTop: "22px", maxWidth: "420px", border: `1px solid ${CH.line}`, borderRadius: "4px", overflow: "hidden" }}>
-            <div style={{ background: CH.greenDark, color: "#f4efe3", padding: "9px 14px", fontSize: "11px", fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase" }}>Entry Fee · Per Player</div>
-            {[
-              ["Green fee", "$132.00"],
-              ["Shared power cart", "$25.00"],
-              ["HST (13%)", "$20.41"],
-              ["Prize Fee", "$50.00"],
-            ].map(([k, v], i) => (
-              <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "9px 14px", fontSize: "14px", background: i % 2 ? "#faf7f0" : "#fff", borderBottom: `1px solid ${CH.line}` }}>
-                <span style={{ color: CH.ink }}>{k}</span>
-                <span style={{ color: CH.ink, fontVariantNumeric: "tabular-nums" }}>{v}</span>
+          {/* Tee sheet + live parimutuel / entry fee */}
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1.65fr 1fr", gap: "20px", marginTop: "20px", alignItems: "stretch" }}>
+            <div style={{ border: `1px solid ${CH.line}`, borderRadius: "4px", overflow: "hidden", display: "flex", flexDirection: "column" }}>
+              <div style={{ background: CH.greenDark, color: "#f4efe3", padding: "9px 14px", fontSize: "11px", fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase", display: "flex", justifyContent: "space-between" }}>
+                <span>Tee Sheet</span><span style={{ color: CH.gold }}>(C) = captain</span>
               </div>
-            ))}
-            <div style={{ display: "flex", justifyContent: "space-between", padding: "11px 14px", background: "#f2ede0" }}>
-              <span style={{ fontWeight: 700, color: CH.greenDark, fontSize: "14px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Total</span>
-              <span style={{ fontFamily: SERIF, fontWeight: 700, color: CH.greenDark, fontSize: "18px", fontVariantNumeric: "tabular-nums" }}>$227.41</span>
+              {[...SCRAMBLE_TEAMS_2026].sort((a, b) => a.teeOrder - b.teeOrder).map((t, i, arr) => (
+                <div key={t.num} style={{ flex: 1, display: "grid", gridTemplateColumns: mobile ? "82px 1fr" : "92px 72px 1fr", alignItems: "center", padding: "11px 16px", background: i % 2 ? "#faf7f0" : "#fff", borderBottom: i < arr.length - 1 ? `1px solid ${CH.line}` : "none" }}>
+                  <div>
+                    <div style={{ fontFamily: SERIF, fontSize: "18px", fontWeight: 700, color: CH.greenDark, fontVariantNumeric: "tabular-nums" }}>{t.tee}</div>
+                    {mobile && <div style={{ fontSize: "12px", fontWeight: 700, color: CH.greenDark, marginTop: "2px" }}>Team {t.num}</div>}
+                  </div>
+                  {!mobile && <div style={{ fontWeight: 700, fontSize: "14px", color: CH.greenDark }}>Team {t.num}</div>}
+                  <div>
+                    {t.players.map(([name, idx, cap]) => (
+                      <div key={name} style={{ display: "flex", justifyContent: "space-between", fontSize: "14px", padding: "2px 0" }}>
+                        <span style={{ fontWeight: cap ? 600 : 500, color: CH.ink }}>{name}{cap && <span style={{ color: CH.goldDeep, fontSize: "10px", fontWeight: 700, marginLeft: "5px" }}>(C)</span>}</span>
+                        <span style={{ fontSize: "12px", color: CH.muted, fontVariantNumeric: "tabular-nums" }}>{idx.toFixed(1)}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
-          </div>
-          <div style={{ marginTop: "8px", fontSize: "12.5px", color: CH.muted }}>Prize pot: $750 (15 × $50) to the winning team — $250 per player.</div>
-          <div style={{ marginTop: "20px", display: "flex", flexWrap: "wrap", gap: "10px" }}>
-            <div onClick={() => setPage({ id: "fall-scramble-betting" })} style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: CH.gold, color: CH.greenDark, fontWeight: 600, fontSize: "14px", letterSpacing: "0.5px", textTransform: "uppercase", padding: "11px 24px", borderRadius: "4px", cursor: "pointer" }}>
-              <DollarSign size={16} /> Live Parimutuel
-            </div>
-            <div onClick={() => setPage({ id: "fall-scramble-draft" })} style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "transparent", color: CH.greenDark, border: `1.5px solid ${CH.greenDark}`, fontWeight: 600, fontSize: "14px", letterSpacing: "0.5px", textTransform: "uppercase", padding: "11px 24px", borderRadius: "4px", cursor: "pointer" }}>
-              <Users size={16} /> Draft Board
+            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+              {/* Live parimutuel pool */}
+              <div style={{ flex: 1, background: CH.greenDark, color: "#f4efe3", borderRadius: "4px", padding: "20px 22px", display: "flex", flexDirection: "column", justifyContent: "space-between", gap: "18px" }}>
+                <div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <div style={{ fontSize: "10.5px", fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase", color: CH.gold }}>Live Parimutuel Pool</div>
+                    <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "1px", padding: "3px 9px", borderRadius: "10px", background: pariOpen ? "rgba(74,222,128,0.16)" : "rgba(252,165,165,0.18)", color: pariOpen ? "#86efac" : "#fca5a5" }}>{pariOpen ? "LIVE" : "CLOSED"}</span>
+                  </div>
+                  <div style={{ fontFamily: SERIF, fontSize: "46px", fontWeight: 700, lineHeight: 1, margin: "10px 0 6px", fontVariantNumeric: "tabular-nums" }}>${livePool.total.toLocaleString()}</div>
+                  <div style={{ color: "#b8c2b7", fontSize: "13.5px" }}>{livePool.count} {livePool.count === 1 ? "bet" : "bets"} · {pariOpen ? "betting closes Oct 2, 10 PM" : "final odds locked"}</div>
+                </div>
+                <div onClick={() => setPage({ id: "fall-scramble-betting" })} style={{ display: "inline-flex", alignSelf: "flex-start", alignItems: "center", gap: "8px", background: CH.gold, color: CH.greenDark, fontWeight: 600, fontSize: "13.5px", letterSpacing: "0.5px", textTransform: "uppercase", padding: "11px 20px", borderRadius: "4px", cursor: "pointer" }}>
+                  <DollarSign size={16} /> {pariOpen ? "Place a bet" : "View final odds"}
+                </div>
+              </div>
+              {/* Entry fee */}
+              <div style={{ border: `1px solid ${CH.line}`, borderRadius: "4px", overflow: "hidden" }}>
+                <div style={{ background: CH.greenDark, color: "#f4efe3", padding: "9px 14px", fontSize: "11px", fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase" }}>Entry Fee · Per Player</div>
+                {[
+                  ["Green fee", "$132.00"],
+                  ["Shared power cart", "$25.00"],
+                  ["HST (13%)", "$20.41"],
+                  ["Prize Fee", "$50.00"],
+                ].map(([k, v], i) => (
+                  <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "9px 14px", fontSize: "14px", background: i % 2 ? "#faf7f0" : "#fff", borderBottom: `1px solid ${CH.line}` }}>
+                    <span style={{ color: CH.ink }}>{k}</span>
+                    <span style={{ color: CH.ink, fontVariantNumeric: "tabular-nums" }}>{v}</span>
+                  </div>
+                ))}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", padding: "11px 14px", background: "#f2ede0" }}>
+                  <span style={{ fontWeight: 700, color: CH.greenDark, fontSize: "14px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Total</span>
+                  <span style={{ fontFamily: SERIF, fontWeight: 700, color: CH.greenDark, fontSize: "18px", fontVariantNumeric: "tabular-nums" }}>$227.41</span>
+                </div>
+                <div style={{ padding: "9px 14px", fontSize: "12.5px", color: CH.muted, borderTop: `1px solid ${CH.line}` }}>Prize pot: $750 to the winning team · $250 per player</div>
+              </div>
             </div>
           </div>
           {/* Organizer view */}
@@ -1685,30 +1739,6 @@ export function FallScramblePage({ setPage }) {
             )}
           </div>
         </div>
-      </div>
-
-      {/* 2026 Teams — drafted field */}
-      <div style={{ marginTop: "44px", marginBottom: "40px" }}>
-        <SectionTitle icon={Users}>2026 Teams &amp; Tee Times</SectionTitle>
-        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(5, 1fr)", gap: "12px", marginBottom: "8px" }}>
-          {[...SCRAMBLE_TEAMS_2026].sort((a, b) => a.teeOrder - b.teeOrder).map((t) => (
-            <div key={t.num} style={{ background: "#fff", border: `1px solid ${CH.line}`, borderRadius: "6px", overflow: "hidden" }}>
-              <div style={{ background: CH.greenDark, color: "#f4efe3", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-                <span style={{ fontFamily: SERIF, fontSize: "16px", fontWeight: 600 }}>Team {t.num}</span>
-                <span style={{ fontSize: "13px", fontWeight: 700, color: CH.gold, fontVariantNumeric: "tabular-nums" }}>{t.tee}</span>
-              </div>
-              <div style={{ padding: "6px 14px 10px" }}>
-                {t.players.map(([name, idx, cap], i) => (
-                  <div key={name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 0", borderBottom: i < t.players.length - 1 ? `1px solid ${CH.line}` : "none" }}>
-                    <span style={{ fontSize: "14px", fontWeight: cap ? 600 : 500, color: CH.ink }}>{name}{cap && <span style={{ color: CH.goldDeep, fontSize: "10px", fontWeight: 700, letterSpacing: "0.5px", marginLeft: "6px" }}>(C)</span>}</span>
-                    <span style={{ fontSize: "12px", color: CH.muted, fontVariantNumeric: "tabular-nums" }}>{idx.toFixed(1)}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-        <div style={{ fontSize: "12.5px", color: CH.muted }}>(C) = captain · Listed in tee order · Teams set by snake draft.</div>
       </div>
 
       {/* Champion band — full-bleed */}
