@@ -1365,11 +1365,11 @@ const DRAFT_POOL = [
 
 // Final drafted teams for the 2026 Fall Scramble. Each player: [name, index, isCaptain].
 const SCRAMBLE_TEAMS_2026 = [
-  { num: 1, players: [["Paul Statchuk", 4.1, true], ["Chris Williams", 7.9, false], ["Andrew Carlson", 19.8, false]] },
-  { num: 2, players: [["Brendan Black", 3.6, true], ["Anthony Laud", 7.5, false], ["Joel Greaves", 15.2, false]] },
-  { num: 3, players: [["Reid Hartley", 2.1, true], ["Adam Hoffman", 6.7, false], ["Dave MacDougall", 12.7, false]] },
-  { num: 4, players: [["Geoff Crain", 1.8, true], ["Nick Crain", 8.3, false], ["Mark Johnson", 19.8, false]] },
-  { num: 5, players: [["Chris Statchuk", 1.8, true], ["Keon Karamchi", 10.0, false], ["Graham Booth", 10.2, false]] },
+  { num: 1, tee: "12:00 PM", teeOrder: 4, players: [["Paul Statchuk", 4.1, true], ["Chris Williams", 7.9, false], ["Andrew Carlson", 19.8, false]] },
+  { num: 2, tee: "11:40 AM", teeOrder: 2, players: [["Brendan Black", 3.6, true], ["Anthony Laud", 7.5, false], ["Joel Greaves", 15.2, false]] },
+  { num: 3, tee: "12:10 PM", teeOrder: 5, players: [["Reid Hartley", 2.1, true], ["Adam Hoffman", 6.7, false], ["Dave MacDougall", 12.7, false]] },
+  { num: 4, tee: "11:30 AM", teeOrder: 1, players: [["Geoff Crain", 1.8, true], ["Nick Crain", 8.3, false], ["Mark Johnson", 19.8, false]] },
+  { num: 5, tee: "11:50 AM", teeOrder: 3, players: [["Chris Statchuk", 1.8, true], ["Keon Karamchi", 10.0, false], ["Graham Booth", 10.2, false]] },
 ];
 
 // Pool roster — dropdown options for the availability poll. A name disappears
@@ -1610,6 +1610,26 @@ export function FallScramblePage({ setPage }) {
               </div>
             ))}
           </div>
+          {/* Entry fee breakdown */}
+          <div style={{ marginTop: "22px", maxWidth: "420px", border: `1px solid ${CH.line}`, borderRadius: "4px", overflow: "hidden" }}>
+            <div style={{ background: CH.greenDark, color: "#f4efe3", padding: "9px 14px", fontSize: "11px", fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase" }}>Entry Fee · Per Player</div>
+            {[
+              ["Green fee", "$132.00"],
+              ["Shared power cart", "$25.00"],
+              ["HST (13%)", "$20.41"],
+              ["Prize Fee", "$50.00"],
+            ].map(([k, v], i) => (
+              <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "9px 14px", fontSize: "14px", background: i % 2 ? "#faf7f0" : "#fff", borderBottom: `1px solid ${CH.line}` }}>
+                <span style={{ color: CH.ink }}>{k}</span>
+                <span style={{ color: CH.ink, fontVariantNumeric: "tabular-nums" }}>{v}</span>
+              </div>
+            ))}
+            <div style={{ display: "flex", justifyContent: "space-between", padding: "11px 14px", background: "#f2ede0" }}>
+              <span style={{ fontWeight: 700, color: CH.greenDark, fontSize: "14px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Total</span>
+              <span style={{ fontFamily: SERIF, fontWeight: 700, color: CH.greenDark, fontSize: "18px", fontVariantNumeric: "tabular-nums" }}>$227.41</span>
+            </div>
+          </div>
+          <div style={{ marginTop: "8px", fontSize: "12.5px", color: CH.muted }}>Prize pot: $750 (15 × $50) to the winning team — $250 per player.</div>
           <div style={{ marginTop: "20px", display: "flex", flexWrap: "wrap", gap: "10px" }}>
             <div onClick={() => setPage({ id: "fall-scramble-betting" })} style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: CH.gold, color: CH.greenDark, fontWeight: 600, fontSize: "14px", letterSpacing: "0.5px", textTransform: "uppercase", padding: "11px 24px", borderRadius: "4px", cursor: "pointer" }}>
               <DollarSign size={16} /> Live Parimutuel
@@ -1669,11 +1689,14 @@ export function FallScramblePage({ setPage }) {
 
       {/* 2026 Teams — drafted field */}
       <div style={{ marginTop: "44px", marginBottom: "40px" }}>
-        <SectionTitle icon={Users}>2026 Teams</SectionTitle>
+        <SectionTitle icon={Users}>2026 Teams &amp; Tee Times</SectionTitle>
         <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(5, 1fr)", gap: "12px", marginBottom: "8px" }}>
-          {SCRAMBLE_TEAMS_2026.map((t) => (
+          {[...SCRAMBLE_TEAMS_2026].sort((a, b) => a.teeOrder - b.teeOrder).map((t) => (
             <div key={t.num} style={{ background: "#fff", border: `1px solid ${CH.line}`, borderRadius: "6px", overflow: "hidden" }}>
-              <div style={{ background: CH.greenDark, color: "#f4efe3", padding: "10px 14px", fontFamily: SERIF, fontSize: "16px", fontWeight: 600 }}>Team {t.num}</div>
+              <div style={{ background: CH.greenDark, color: "#f4efe3", padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                <span style={{ fontFamily: SERIF, fontSize: "16px", fontWeight: 600 }}>Team {t.num}</span>
+                <span style={{ fontSize: "13px", fontWeight: 700, color: CH.gold, fontVariantNumeric: "tabular-nums" }}>{t.tee}</span>
+              </div>
               <div style={{ padding: "6px 14px 10px" }}>
                 {t.players.map(([name, idx, cap], i) => (
                   <div key={name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 0", borderBottom: i < t.players.length - 1 ? `1px solid ${CH.line}` : "none" }}>
@@ -1685,7 +1708,7 @@ export function FallScramblePage({ setPage }) {
             </div>
           ))}
         </div>
-        <div style={{ fontSize: "12.5px", color: CH.muted }}>(C) = captain · Teams set by snake draft.</div>
+        <div style={{ fontSize: "12.5px", color: CH.muted }}>(C) = captain · Listed in tee order · Teams set by snake draft.</div>
       </div>
 
       {/* Champion band — full-bleed */}
