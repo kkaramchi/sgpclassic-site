@@ -1642,7 +1642,7 @@ export function FallScramblePage({ setPage }) {
               {[...SCRAMBLE_TEAMS_2026].sort((a, b) => a.teeOrder - b.teeOrder).map((t, i, arr) => (
                 <div key={t.num} style={{ flex: 1, display: "grid", gridTemplateColumns: mobile ? "82px 1fr" : "92px 72px 1fr", alignItems: "center", padding: "11px 16px", background: i % 2 ? "#faf7f0" : "#fff", borderBottom: i < arr.length - 1 ? `1px solid ${CH.line}` : "none" }}>
                   <div>
-                    <div style={{ fontFamily: SERIF, fontSize: "18px", fontWeight: 700, color: CH.greenDark, fontVariantNumeric: "tabular-nums" }}>{t.tee}</div>
+                    <div style={{ fontSize: "14px", fontWeight: 700, color: CH.greenDark, fontVariantNumeric: "tabular-nums" }}>{t.tee}</div>
                     {mobile && <div style={{ fontSize: "12px", fontWeight: 700, color: CH.greenDark, marginTop: "2px" }}>Team {t.num}</div>}
                   </div>
                   {!mobile && <div style={{ fontWeight: 700, fontSize: "14px", color: CH.greenDark }}>Team {t.num}</div>}
