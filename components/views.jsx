@@ -1365,6 +1365,39 @@ const DRAFT_POOL = [
   { name: "Mark Johnson", idx: 19.8 }, { name: "Andrew Carlson", idx: 19.8 },
 ];
 
+// 2026 Fall Scramble course — St Andrews Valley, SGP tees.
+// avg2025 = average team score on the hole in the 2025 Fall Scramble (5 teams, gross scramble).
+const SCRAMBLE_COURSE_2026 = {
+  name: "St Andrews Valley",
+  location: "Aurora, ON",
+  holes: [
+    { hole: 1, tee: "Green", yards: 365, par: 4, avg2025: 3.2 },
+    { hole: 2, tee: "White", yards: 492, par: 5, avg2025: 4.0, contest: "Long Drive" },
+    { hole: 3, tee: "Green", yards: 425, par: 4, avg2025: 3.2 },
+    { hole: 4, tee: "Gold", yards: 179, par: 3, avg2025: 2.6 },
+    { hole: 5, tee: "Green", yards: 403, par: 4, avg2025: 3.8 },
+    { hole: 6, tee: "Gold", yards: 212, par: 3, avg2025: 3.0 },
+    { hole: 7, tee: "Green", yards: 393, par: 4, avg2025: 3.4 },
+    { hole: 8, tee: "Gold", yards: 454, par: 4, avg2025: 3.8 },
+    { hole: 9, tee: "Green", yards: 505, par: 5, avg2025: 4.2 },
+    { hole: 10, tee: "Gold", yards: 562, par: 5, avg2025: 4.2 },
+    { hole: 11, tee: "Blue", yards: 165, par: 3, avg2025: 2.8, contest: "Closest to the Pin" },
+    { hole: 12, tee: "White", yards: 315, par: 4, avg2025: 3.2 },
+    { hole: 13, tee: "Green", yards: 368, par: 4, avg2025: 3.6 },
+    { hole: 14, tee: "Green", yards: 575, par: 5, avg2025: 4.4 },
+    { hole: 15, tee: "Blue", yards: 159, par: 3, avg2025: 2.8, contest: "Closest to the Pin" },
+    { hole: 16, tee: "Green", yards: 602, par: 5, avg2025: 4.2 },
+    { hole: 17, tee: "White", yards: 129, par: 3, avg2025: 2.6 },
+    { hole: 18, tee: "Gold", yards: 443, par: 4, avg2025: 3.8 },
+  ],
+};
+const SCRAMBLE_TEE_COLORS = {
+  Green: { bg: "#166534", text: "#fff", border: "#166534" },
+  Gold: { bg: "#d4a800", text: "#1b1b17", border: "#d4a800" },
+  White: { bg: "#ffffff", text: "#1b1b17", border: "#cfc7b3" },
+  Blue: { bg: "#2563eb", text: "#fff", border: "#2563eb" },
+};
+
 // Final drafted teams for the 2026 Fall Scramble. Each player: [name, index, isCaptain].
 const SCRAMBLE_TEAMS_2026 = [
   { num: 1, tee: "12:00 PM", teeOrder: 4, players: [["Paul Statchuk", 4.1, true], ["Chris Williams", 7.9, false], ["Andrew Carlson", 19.8, false]] },
@@ -1618,7 +1651,12 @@ export function FallScramblePage({ setPage }) {
       <div style={{ marginTop: "32px", marginBottom: "40px" }}>
         <div style={{ background: "#fff", border: `1px solid ${CH.line}`, borderTop: `3px solid ${CH.gold}`, borderRadius: "4px", padding: mobile ? "22px 20px" : "28px 32px" }}>
           <div style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "2px", textTransform: "uppercase", color: CH.goldDeep, marginBottom: "4px" }}>Upcoming</div>
-          <div style={{ fontFamily: SERIF, fontSize: "26px", fontWeight: 600, color: CH.greenDark, marginBottom: "18px" }}>2026 Fall Scramble</div>
+          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "12px", marginBottom: "18px" }}>
+            <div style={{ fontFamily: SERIF, fontSize: "26px", fontWeight: 600, color: CH.greenDark }}>2026 Fall Scramble</div>
+            <div onClick={() => setPage({ id: "fall-scramble-scorecard" })} style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: CH.greenDark, color: "#f4efe3", fontWeight: 600, fontSize: "13.5px", letterSpacing: "0.5px", textTransform: "uppercase", padding: "10px 18px", borderRadius: "4px", cursor: "pointer" }}>
+              <MapPin size={16} /> Course &amp; Scorecard
+            </div>
+          </div>
           {/* Stat bar */}
           <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr 1fr" : "repeat(4, 1fr)", border: `1px solid ${CH.line}`, borderRadius: "4px" }}>
             {[
@@ -2085,6 +2123,119 @@ export function FallScrambleDraftPage({ setPage }) {
             <button onClick={undoLast} disabled={picks.length === 0 || busy} style={{ background: "transparent", color: "#a3352d", border: `1px solid ${picks.length ? "#a3352d" : CH.line}`, borderRadius: "4px", padding: "8px 16px", fontSize: "13px", fontWeight: 600, cursor: picks.length ? "pointer" : "default", fontFamily: "'DM Sans', sans-serif" }}>Undo last pick</button>
           </div>
         )}
+      </div>
+    </div>
+  );
+}
+
+// Course & scorecard for the 2026 Fall Scramble (built for phones on the course)
+export function FallScrambleScorecardPage({ setPage }) {
+  const mobile = useIsMobile();
+  const holes = SCRAMBLE_COURSE_2026.holes;
+  const diff = (h) => Math.round((h.avg2025 - h.par) * 100) / 100;
+  const rankOf = (h) => {
+    const d = diff(h);
+    const better = holes.filter((x) => diff(x) < d).length;
+    const tied = holes.filter((x) => diff(x) === d).length;
+    return (tied > 1 ? "T" : "") + (better + 1);
+  };
+  const fmtDiff = (d) => (d === 0 ? "E" : `${d > 0 ? "+" : "−"}${Math.abs(d).toFixed(2)}`);
+  const front = holes.slice(0, 9), back = holes.slice(9);
+  const sum = (arr, k) => arr.reduce((t, h) => t + h[k], 0);
+  const cell = { padding: mobile ? "9px 4px" : "11px 10px", textAlign: "center", fontVariantNumeric: "tabular-nums" };
+  const head = { ...cell, padding: mobile ? "9px 4px" : "10px 10px", fontSize: mobile ? "10px" : "11px", fontWeight: 600, letterSpacing: "1px", textTransform: "uppercase", color: "#f4efe3" };
+
+  const Row = ({ h, i }) => {
+    const tc = SCRAMBLE_TEE_COLORS[h.tee];
+    const d = diff(h);
+    return (
+      <tr style={{ background: h.contest ? "#fbf5e2" : i % 2 ? "#faf7f0" : "#fff", borderBottom: `1px solid ${CH.line}` }}>
+        <td style={{ ...cell, fontWeight: 700, color: CH.greenDark, fontSize: mobile ? "15px" : "16px" }}>
+          {h.hole}
+          {h.contest && <div style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.5px", color: CH.goldDeep, marginTop: "1px" }}>{h.contest === "Long Drive" ? "LD" : "CTP"}</div>}
+        </td>
+        <td style={cell}>
+          <span style={{ display: "inline-block", minWidth: mobile ? "46px" : "58px", padding: "3px 6px", borderRadius: "3px", background: tc.bg, color: tc.text, border: `1px solid ${tc.border}`, fontSize: mobile ? "11px" : "12px", fontWeight: 700 }}>{h.tee}</span>
+        </td>
+        <td style={{ ...cell, fontSize: mobile ? "14px" : "15px", fontWeight: 500 }}>{h.yards}</td>
+        <td style={{ ...cell, fontSize: mobile ? "14px" : "15px", fontWeight: 700, color: CH.greenDark }}>{h.par}</td>
+        <td style={{ ...cell, fontSize: mobile ? "13px" : "14px" }}>{h.avg2025.toFixed(2)}</td>
+        <td style={{ ...cell, fontSize: mobile ? "13px" : "14px", fontWeight: 600, color: d < 0 ? colors.green : d > 0 ? "#a3352d" : CH.ink }}>{fmtDiff(d)}</td>
+        <td style={{ ...cell, fontSize: mobile ? "13px" : "14px", fontWeight: 700, color: CH.greenDark }}>{rankOf(h)}</td>
+      </tr>
+    );
+  };
+  const Sub = ({ label, arr }) => (
+    <tr style={{ background: "#f2ede0", borderBottom: `1px solid ${CH.line}` }}>
+      <td style={{ ...cell, fontWeight: 700, color: CH.greenDark, fontSize: "12px", letterSpacing: "0.5px" }}>{label}</td>
+      <td style={cell}></td>
+      <td style={{ ...cell, fontWeight: 700, color: CH.greenDark }}>{sum(arr, "yards").toLocaleString()}</td>
+      <td style={{ ...cell, fontWeight: 700, color: CH.greenDark }}>{sum(arr, "par")}</td>
+      <td style={{ ...cell, fontWeight: 600, color: CH.greenDark }}>{sum(arr, "avg2025").toFixed(1)}</td>
+      <td style={cell}></td>
+      <td style={cell}></td>
+    </tr>
+  );
+
+  return (
+    <div>
+      <div onClick={() => setPage({ id: "fall-scramble" })} style={{ display: "inline-flex", alignItems: "center", gap: "5px", color: CH.goldDeep, fontSize: "13px", fontWeight: 600, cursor: "pointer", marginBottom: "16px" }}>
+        <ChevronLeft size={16} /> Fall Scramble
+      </div>
+
+      {/* Header */}
+      <div style={{ ...FULL_BLEED, background: CH.greenDark, color: "#f4efe3", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(120% 90% at 80% -10%, rgba(44,101,71,0.85), transparent 60%), radial-gradient(90% 80% at 0% 120%, rgba(18,39,27,0.9), transparent 55%)" }} />
+        <div style={{ position: "relative", maxWidth: "1040px", margin: "0 auto", padding: mobile ? "30px 22px" : "44px 40px", textAlign: "center" }}>
+          <div style={{ color: CH.gold, fontSize: "12px", fontWeight: 600, letterSpacing: "2.5px", textTransform: "uppercase", marginBottom: "10px" }}>2026 Fall Scramble · SGP Tees</div>
+          <h1 style={{ fontFamily: SERIF, fontWeight: 600, fontSize: mobile ? "32px" : "46px", lineHeight: 1.05, margin: 0 }}>{SCRAMBLE_COURSE_2026.name}</h1>
+          <p style={{ marginTop: "10px", color: "#c3ccbf", fontSize: mobile ? "14px" : "15.5px" }}>Par {sum(holes, "par")} · {sum(holes, "yards").toLocaleString()} yards · {SCRAMBLE_COURSE_2026.location}</p>
+        </div>
+      </div>
+
+      {/* Scorecard */}
+      <div style={{ border: `1px solid ${CH.line}`, borderRadius: "4px", overflow: "hidden", background: "#fff", marginTop: "28px" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", tableLayout: "fixed" }}>
+          <colgroup>
+            <col style={{ width: mobile ? "13%" : "10%" }} />
+            <col style={{ width: mobile ? "19%" : "16%" }} />
+            <col style={{ width: mobile ? "14%" : "14%" }} />
+            <col style={{ width: mobile ? "11%" : "12%" }} />
+            <col style={{ width: mobile ? "14%" : "16%" }} />
+            <col style={{ width: mobile ? "15%" : "16%" }} />
+            <col style={{ width: mobile ? "14%" : "16%" }} />
+          </colgroup>
+          <thead>
+            <tr style={{ background: CH.greenDark }}>
+              <th style={head}>Hole</th>
+              <th style={head}>Tee</th>
+              <th style={head}>Yds</th>
+              <th style={head}>Par</th>
+              <th style={head}>{mobile ? "'25 Avg" : "2025 Avg"}</th>
+              <th style={head}>vs Par</th>
+              <th style={head}>Rank</th>
+            </tr>
+          </thead>
+          <tbody>
+            {front.map((h, i) => <Row key={h.hole} h={h} i={i} />)}
+            <Sub label="OUT" arr={front} />
+            {back.map((h, i) => <Row key={h.hole} h={h} i={i} />)}
+            <Sub label="IN" arr={back} />
+            <tr style={{ background: CH.greenDark }}>
+              <td style={{ ...cell, fontWeight: 700, color: "#f4efe3", fontSize: "12px", letterSpacing: "0.5px" }}>TOT</td>
+              <td style={cell}></td>
+              <td style={{ ...cell, fontWeight: 700, color: CH.gold }}>{sum(holes, "yards").toLocaleString()}</td>
+              <td style={{ ...cell, fontWeight: 700, color: CH.gold }}>{sum(holes, "par")}</td>
+              <td style={{ ...cell, fontWeight: 600, color: "#f4efe3" }}>{sum(holes, "avg2025").toFixed(1)}</td>
+              <td style={cell}></td>
+              <td style={cell}></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style={{ fontSize: "12.5px", color: CH.muted, lineHeight: 1.6, marginTop: "12px", marginBottom: "8px" }}>
+        <b style={{ color: CH.ink }}>LD</b> = Long Drive · <b style={{ color: CH.ink }}>CTP</b> = Closest to the Pin. 2025 Avg is the average team score on each hole at last year's Fall Scramble (five teams, gross scramble). Rank 1 = easiest against par; T = tied. Hole 1 played from the Gold tee (350 yds) in 2025.
       </div>
     </div>
   );
