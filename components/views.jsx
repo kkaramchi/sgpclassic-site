@@ -3797,7 +3797,11 @@ export function FallScrambleBettingPage() {
   const [deadlinePassed, setDeadlinePassed] = useState(Date.now() >= BETTING_DEADLINE.getTime());
 
   const teams = SCRAMBLE_TEAMS_2026;
-  const teamShort = (t) => t.players.map((p) => p[0].split(" ").pop()).join(" / ");
+  // Last name only, unless another player shares it (Statchuk, Crain) — then add the first initial.
+  const lastNameCount = {};
+  teams.forEach((t) => t.players.forEach((p) => { const ln = p[0].split(" ").pop(); lastNameCount[ln] = (lastNameCount[ln] || 0) + 1; }));
+  const shortName = (full) => { const ln = full.split(" ").pop(); return lastNameCount[ln] > 1 ? `${full[0]}. ${ln}` : ln; };
+  const teamShort = (t) => t.players.map((p) => shortName(p[0])).join(" / ");
   const teamFull = (t) => t.players.map((p) => p[0]).join(", ");
 
   useEffect(() => {
@@ -3972,7 +3976,7 @@ export function FallScrambleBettingPage() {
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", textAlign: "center" }}>
                 {team.players.map((p, idx) => (
                   <div key={idx} style={{ padding: mobile ? "8px 6px" : "10px 8px", borderRight: idx < 2 ? `1px solid ${colors.border}` : "none" }}>
-                    <div style={{ fontSize: "10px", color: colors.textMuted, letterSpacing: "0.3px", marginBottom: "4px", fontWeight: 600 }}>{p[0].split(" ").pop().toUpperCase()}{p[2] ? " (C)" : ""}</div>
+                    <div style={{ fontSize: "10px", color: colors.textMuted, letterSpacing: "0.3px", marginBottom: "4px", fontWeight: 600 }}>{shortName(p[0]).toUpperCase()}{p[2] ? " (C)" : ""}</div>
                     <div style={{ fontSize: "18px", fontWeight: 800, color: colors.greenDark, fontFamily: "'DM Sans', sans-serif" }}>{p[1].toFixed(1)}</div>
                     <div style={{ fontSize: "9px", color: colors.textMuted, letterSpacing: "0.3px", marginTop: "2px" }}>INDEX</div>
                   </div>
