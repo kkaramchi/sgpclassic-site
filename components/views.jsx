@@ -2149,10 +2149,10 @@ export function FallScrambleScorecardPage({ setPage }) {
     const tc = SCRAMBLE_TEE_COLORS[h.tee];
     const d = diff(h);
     return (
-      <tr style={{ background: h.contest ? "#fbf5e2" : i % 2 ? "#faf7f0" : "#fff", borderBottom: `1px solid ${CH.line}` }}>
+      <tr style={{ background: h.contest ? "#f5e1d8" : i % 2 ? "#faf7f0" : "#fff", borderBottom: `1px solid ${CH.line}` }}>
         <td style={{ ...cell, fontWeight: 700, color: CH.greenDark, fontSize: mobile ? "15px" : "16px" }}>
           {h.hole}
-          {h.contest && <div style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.5px", color: CH.goldDeep, marginTop: "1px" }}>{h.contest === "Long Drive" ? "LD" : "CTP"}</div>}
+          {h.contest && <div><span style={{ display: "inline-block", marginTop: "3px", padding: "1px 6px", borderRadius: "9px", background: "#b0532f", color: "#fff", fontSize: "9px", fontWeight: 800, letterSpacing: "0.5px" }}>{h.contest === "Long Drive" ? "LD" : "CTP"}</span></div>}
         </td>
         <td style={cell}>
           <span style={{ display: "inline-block", minWidth: mobile ? "46px" : "58px", padding: "3px 6px", borderRadius: "3px", background: tc.bg, color: tc.text, border: `1px solid ${tc.border}`, fontSize: mobile ? "11px" : "12px", fontWeight: 700 }}>{h.tee}</span>
