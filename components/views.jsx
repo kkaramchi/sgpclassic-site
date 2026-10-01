@@ -1585,7 +1585,7 @@ export function FallScramblePage({ setPage }) {
       .subscribe();
     return () => { supabase.removeChannel(ch); };
   }, []);
-  const pariOpen = pariCfgOpen && Date.now() < new Date("2026-10-03T02:00:00Z").getTime();
+  const pariOpen = pariCfgOpen && Date.now() < new Date("2026-10-03T15:30:00Z").getTime(); // 11:30 AM ET, Oct 3 (first tee)
   const [submittedNames, setSubmittedNames] = useState(new Set());
 
   // Who has already responded (so their name drops out of the dropdown)
@@ -1704,7 +1704,7 @@ export function FallScramblePage({ setPage }) {
                     <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "1px", padding: "3px 9px", borderRadius: "10px", background: pariOpen ? "rgba(74,222,128,0.16)" : "rgba(252,165,165,0.18)", color: pariOpen ? "#86efac" : "#fca5a5" }}>{pariOpen ? "LIVE" : "CLOSED"}</span>
                   </div>
                   <div style={{ fontFamily: SERIF, fontSize: "46px", fontWeight: 700, lineHeight: 1, margin: "10px 0 6px", fontVariantNumeric: "tabular-nums" }}>${livePool.total.toLocaleString()}</div>
-                  <div style={{ color: "#b8c2b7", fontSize: "13.5px" }}>{livePool.count} {livePool.count === 1 ? "bet" : "bets"} · {pariOpen ? "betting closes Oct 2, 10 PM" : "final odds locked"}</div>
+                  <div style={{ color: "#b8c2b7", fontSize: "13.5px" }}>{livePool.count} {livePool.count === 1 ? "bet" : "bets"} · {pariOpen ? "betting closes Oct 3, 11:30 AM" : "final odds locked"}</div>
                 </div>
                 <div onClick={() => setPage({ id: "fall-scramble-betting" })} style={{ display: "inline-flex", alignSelf: "flex-start", alignItems: "center", gap: "8px", background: CH.gold, color: CH.greenDark, fontWeight: 600, fontSize: "13.5px", letterSpacing: "0.5px", textTransform: "uppercase", padding: "11px 20px", borderRadius: "4px", cursor: "pointer" }}>
                   <DollarSign size={16} /> {pariOpen ? "Place a bet" : "View final odds"}
@@ -3792,7 +3792,7 @@ export function FallScrambleBettingPage() {
   const [message, setMessage] = useState(null);
   const [flashTeam, setFlashTeam] = useState(null);
 
-  const BETTING_DEADLINE = new Date("2026-10-03T02:00:00Z"); // 10:00 PM ET, Oct 2 2026
+  const BETTING_DEADLINE = new Date("2026-10-03T15:30:00Z"); // 11:30 AM ET, Oct 3 2026 — first tee shot
   const [countdown, setCountdown] = useState("");
   const [deadlinePassed, setDeadlinePassed] = useState(Date.now() >= BETTING_DEADLINE.getTime());
 
