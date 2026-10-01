@@ -1372,7 +1372,7 @@ const SCRAMBLE_COURSE_2026 = {
   location: "Aurora, ON",
   holes: [
     { hole: 1, tee: "Green", yards: 365, par: 4, avg2025: 3.2 },
-    { hole: 2, tee: "White", yards: 492, par: 5, avg2025: 4.0, contest: "Long Drive" },
+    { hole: 2, tee: "White", yards: 492, par: 5, avg2025: 4.0, contest: "Long Drive", prize: "a Gift Bag", sponsor: "Hartley Built", logo: "/hartley-sponsor.png", logoH: 40 },
     { hole: 3, tee: "Green", yards: 425, par: 4, avg2025: 3.2 },
     { hole: 4, tee: "Gold", yards: 179, par: 3, avg2025: 2.6 },
     { hole: 5, tee: "Green", yards: 403, par: 4, avg2025: 3.8 },
@@ -1381,13 +1381,13 @@ const SCRAMBLE_COURSE_2026 = {
     { hole: 8, tee: "Gold", yards: 454, par: 4, avg2025: 3.8 },
     { hole: 9, tee: "Green", yards: 505, par: 5, avg2025: 4.2 },
     { hole: 10, tee: "Gold", yards: 562, par: 5, avg2025: 4.2 },
-    { hole: 11, tee: "Blue", yards: 165, par: 3, avg2025: 2.8, contest: "Closest to the Pin" },
+    { hole: 11, tee: "Blue", yards: 165, par: 3, avg2025: 2.8 },
     { hole: 12, tee: "White", yards: 315, par: 4, avg2025: 3.2 },
     { hole: 13, tee: "Green", yards: 368, par: 4, avg2025: 3.6 },
     { hole: 14, tee: "Green", yards: 575, par: 5, avg2025: 4.4 },
-    { hole: 15, tee: "Blue", yards: 159, par: 3, avg2025: 2.8, contest: "Closest to the Pin" },
+    { hole: 15, tee: "Blue", yards: 159, par: 3, avg2025: 2.8, contest: "Closest to the Pin", prize: "Two Dozen TP5 Golf Balls", sponsor: "Black Private Wealth Partners", logo: "/rbc-sponsor.jpg", logoH: 52 },
     { hole: 16, tee: "Green", yards: 602, par: 5, avg2025: 4.2 },
-    { hole: 17, tee: "White", yards: 129, par: 3, avg2025: 2.6 },
+    { hole: 17, tee: "White", yards: 129, par: 3, avg2025: 2.6, contest: "Closest to the Pin", prize: "2 Toronto Raptors tickets", sponsor: "Kingstar Media", logo: "/kingstar-sponsor.jpg", logoH: 32 },
     { hole: 18, tee: "Gold", yards: 443, par: 4, avg2025: 3.8 },
   ],
 };
@@ -2149,6 +2149,7 @@ export function FallScrambleScorecardPage({ setPage }) {
     const tc = SCRAMBLE_TEE_COLORS[h.tee];
     const d = diff(h);
     return (
+      <Fragment>
       <tr style={{ background: h.contest ? "#f5e1d8" : i % 2 ? "#faf7f0" : "#fff", borderBottom: `1px solid ${CH.line}` }}>
         <td style={{ ...cell, fontWeight: 700, color: CH.greenDark, fontSize: mobile ? "15px" : "16px" }}>
           {h.hole}
@@ -2163,6 +2164,22 @@ export function FallScrambleScorecardPage({ setPage }) {
         <td style={{ ...cell, fontSize: mobile ? "13px" : "14px", fontWeight: 600, color: d < 0 ? colors.green : d > 0 ? "#a3352d" : CH.ink }}>{fmtDiff(d)}</td>
         <td style={{ ...cell, fontSize: mobile ? "13px" : "14px", fontWeight: 700, color: CH.greenDark }}>{rankOf(h)}</td>
       </tr>
+      {h.prize && (
+        <tr style={{ borderBottom: `1px solid ${CH.line}` }}>
+          <td colSpan={7} style={{ padding: 0, background: "#fff" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: mobile ? "10px" : "16px", padding: mobile ? "9px 10px" : "10px 16px", borderLeft: `4px solid ${CH.gold}`, textAlign: "left" }}>
+              <div style={{ flexShrink: 0, width: mobile ? "92px" : "124px", display: "flex", justifyContent: "center" }}>
+                <img src={h.logo} alt={h.sponsor} style={{ height: mobile ? `${Math.round(h.logoH * 0.8)}px` : `${h.logoH}px`, maxWidth: "100%", width: "auto", objectFit: "contain" }} />
+              </div>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ fontSize: mobile ? "12.5px" : "14px", fontWeight: 700, color: CH.greenDark, lineHeight: 1.3 }}>{h.contest} wins {h.prize}</div>
+                <div style={{ fontSize: mobile ? "11px" : "12px", color: CH.muted, marginTop: "1px" }}>Prize courtesy of {h.sponsor}</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      )}
+      </Fragment>
     );
   };
   const Sub = ({ label, arr }) => (
